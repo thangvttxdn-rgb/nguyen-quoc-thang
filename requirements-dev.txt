@@ -1,3 +1,5 @@
 # Công cụ kiểm thử & lint (dùng cho CI và máy dev). Ghim phiên bản để kết quả ổn định.
+-r requirements.txt
 pytest==9.1.1
 ruff==0.16.8
+httpx==0.28.1  # cho fastapi.testclient

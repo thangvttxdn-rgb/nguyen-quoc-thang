@@ -1,0 +1,568 @@
+<title>Phân công toa xe</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<!-- Bản xem trước sinh từ src/templates/index.html + src/static/app.css + app.js, kèm API giả lập. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
+<style>
+/* Giao diện điện thoại: danh sách một cột, bấm vào người -> bảng trượt từ dưới lên.
+   Đầu trang dải màu xanh-tím-hồng; mỗi trạm/tổ KCTX một màu riêng (gán trong app.js);
+   xanh lá = đang làm, đỏ = đã ngừng, cam-hồng = thao tác chính. */
+:root {
+  --bg: #eef1fb;
+  --surface: #ffffff;
+  --surface-2: #e9edfb;
+  --ink: #111735;
+  --muted: #545d80;
+  --line: #d4daf0;
+  --hero-1: #1d4ed8;
+  --hero-2: #7c3aed;
+  --hero-3: #db2777;
+  --hero-ink: #ffffff;
+  --accent: #f97316;
+  --accent-2: #e11d74;
+  --accent-ink: #ffffff;
+  --on: #047857;
+  --on-bg: #d1fae5;
+  --off: #e11d48;
+  --off-bg: #ffe4e6;
+  --scrim: rgba(17, 23, 53, .5);
+  --font: "Be Vietnam Pro", "Segoe UI", Roboto, system-ui, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #090d22; --surface: #141a3a; --surface-2: #1d2552; --ink: #eef0ff; --muted: #a3abd6;
+    --line: #2b3470; --hero-1: #1e3a8a; --hero-2: #5b21b6; --hero-3: #9d174d; --hero-ink: #ffffff;
+    --accent: #fb923c; --accent-2: #f472b6; --accent-ink: #1c0a12;
+    --on: #34d399; --on-bg: #053b2b; --off: #fb7185; --off-bg: #4a1024; --scrim: rgba(0, 0, 0, .65);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #090d22; --surface: #141a3a; --surface-2: #1d2552; --ink: #eef0ff; --muted: #a3abd6;
+  --line: #2b3470; --hero-1: #1e3a8a; --hero-2: #5b21b6; --hero-3: #9d174d; --hero-ink: #ffffff;
+  --accent: #fb923c; --accent-2: #f472b6; --accent-ink: #1c0a12;
+  --on: #34d399; --on-bg: #053b2b; --off: #fb7185; --off-bg: #4a1024; --scrim: rgba(0, 0, 0, .65);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.5 var(--font);
+  -webkit-text-size-adjust: 100%;
+}
+h1, h2, h3 { margin: 0; line-height: 1.25; text-wrap: balance; }
+p { margin: 0; }
+button, input, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.muted { color: var(--muted); }
+
+#app { max-width: 640px; margin: 0 auto; padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px)); }
+
+.top {
+  position: sticky; top: 0; z-index: 5;
+  background: linear-gradient(135deg, var(--hero-1), var(--hero-2) 55%, var(--hero-3));
+  color: var(--hero-ink);
+  border-radius: 0 0 24px 24px;
+  box-shadow: 0 10px 30px -12px color-mix(in srgb, var(--hero-2) 70%, transparent);
+  padding-top: calc(14px + env(safe-area-inset-top, 0px));
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-bottom: 16px;
+  display: grid; gap: 12px;
+}
+.top-inner { display: flex; justify-content: space-between; align-items: end; gap: 12px; flex-wrap: wrap; }
+.org { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #ffd28a; }
+h1 { font-size: 24px; font-weight: 700; }
+.counts {
+  font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums;
+  padding: 4px 10px; border-radius: 999px; background: rgba(255, 255, 255, .18);
+}
+
+.tools { display: grid; gap: 10px; }
+.search input {
+  width: 100%; min-height: 46px; padding: 10px 14px;
+  border: 0; border-radius: 14px; background: var(--surface); color: var(--ink);
+  box-shadow: 0 4px 14px -6px rgba(0, 0, 0, .35);
+}
+.chips { display: flex; gap: 8px; overflow-x: auto; }
+.chip {
+  min-height: 38px; padding: 6px 14px; border-radius: 999px; white-space: nowrap;
+  border: 1px solid rgba(255, 255, 255, .35); background: rgba(255, 255, 255, .14);
+  color: var(--hero-ink); cursor: pointer; font-size: 14px; font-weight: 600;
+}
+.chip[aria-pressed="true"] { background: #ffffff; color: var(--hero-1); border-color: #ffffff; }
+
+.demo {
+  margin: 12px max(16px, env(safe-area-inset-left, 0px)) 0;
+  padding: 10px 12px; border-radius: 10px; font-size: 13.5px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 22%, var(--surface)), color-mix(in srgb, var(--accent-2) 16%, var(--surface)));
+  color: var(--ink); border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+main {
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 12px;
+}
+.list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.row {
+  width: 100%; text-align: left; cursor: pointer;
+  display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; align-items: center;
+  padding: 12px; min-height: 68px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+  border-left: 6px solid var(--c, var(--line));
+  box-shadow: 0 6px 16px -12px color-mix(in srgb, var(--c, #000) 80%, transparent);
+}
+.row:active { background: var(--surface-2); }
+.avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-items: center; font-weight: 700; font-size: 15px;
+  background: var(--surface-2); color: var(--muted);
+}
+.row.on .avatar { background: linear-gradient(135deg, var(--c), color-mix(in srgb, var(--c) 60%, #ffffff)); color: #ffffff; }
+.row.off { border-left-color: var(--line); }
+.row .name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.row .sub { font-size: 13.5px; line-height: 1.4; color: var(--muted); }
+.row.off .name { color: var(--muted); }
+
+.status {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12.5px; font-weight: 600; padding: 3px 10px; border-radius: 999px; white-space: nowrap;
+  justify-self: start;
+}
+.status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.status.on { background: var(--on-bg); color: var(--on); }
+.status.off { background: var(--off-bg); color: var(--off); }
+.empty { text-align: center; color: var(--muted); padding: 32px 0; }
+
+/* Bảng trượt */
+.scrim { position: fixed; inset: 0; background: var(--scrim); z-index: 10; }
+.sheet {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 11;
+  max-width: 640px; margin: 0 auto; max-height: 88vh; overflow-y: auto;
+  background: var(--surface); border-radius: 20px 20px 0 0;
+  padding: 8px max(16px, env(safe-area-inset-right, 0px)) calc(20px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  display: grid; gap: 14px; align-content: start;
+  animation: up .22s ease-out;
+}
+@keyframes up { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+.grip { width: 44px; height: 5px; border-radius: 3px; background: var(--c, var(--line)); margin: 4px auto 0; }
+.sheet { border-top: 6px solid var(--c, var(--accent)); }
+.s-head { display: flex; justify-content: space-between; gap: 12px; align-items: start; }
+.s-head h2 { font-size: 20px; }
+.icon-btn {
+  width: 44px; height: 44px; flex: none; border-radius: 50%;
+  border: 0; background: var(--surface-2); cursor: pointer; font-size: 16px;
+}
+h3 { font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.pc { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.pc li {
+  padding: 10px 12px; border-radius: 12px; font-size: 15px;
+  background: color-mix(in srgb, var(--c, var(--accent)) 12%, var(--surface));
+  border-left: 4px solid var(--c, var(--accent));
+}
+.pc .none { background: transparent; padding: 0; color: var(--muted); }
+
+.add { display: grid; gap: 8px; }
+.add label { font-weight: 600; }
+.add textarea {
+  width: 100%; min-height: 64px; padding: 10px 12px; resize: vertical;
+  border: 1px solid var(--line); border-radius: 12px; background: var(--bg);
+}
+.hint { font-size: 13px; color: var(--muted); }
+.hint.err { color: var(--off); }
+
+.btn {
+  min-height: 48px; padding: 10px 16px; border-radius: 12px; cursor: pointer;
+  font-weight: 600; border: 1px solid var(--line); background: var(--surface);
+}
+.btn.primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: var(--accent-ink); border: 0;
+  box-shadow: 0 8px 20px -10px var(--accent-2);
+}
+.btn.danger { color: var(--off); border-color: color-mix(in srgb, var(--off) 45%, var(--line)); }
+.btn.danger.solid { background: var(--off); color: var(--surface); border-color: var(--off); }
+.btn:disabled { opacity: .55; cursor: default; }
+.danger-zone { display: grid; gap: 8px; padding-top: 6px; border-top: 1px solid var(--line); }
+.confirm { display: grid; gap: 10px; padding: 12px; border-radius: 12px; background: var(--off-bg); }
+.confirm .two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+.toast {
+  position: fixed; left: 50%; transform: translateX(-50%); z-index: 20;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  max-width: calc(100% - 32px); padding: 12px 16px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--hero-1), var(--hero-2)); color: #ffffff; font-size: 14.5px; box-shadow: 0 6px 24px rgba(0, 0, 0, .25);
+}
+.toast.err { background: var(--off); color: #fff; }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .sheet { animation: none; } }
+</style>
+<div id="app">
+  <header class="top">
+    <div class="top-inner">
+      <div>
+        <p class="org">Chi nhánh Toa xe Đà Nẵng</p>
+        <h1>Phân công nhân sự</h1>
+      </div>
+      <p class="counts" id="counts" aria-live="polite">Đang tải…</p>
+    </div>
+    <div class="tools">
+      <label class="search">
+        <span class="sr">Tìm nhân sự</span>
+        <input id="q" type="search" placeholder="Tìm tên, trạm, chức danh…" autocomplete="off">
+      </label>
+      <div class="chips" role="group" aria-label="Lọc theo trạng thái">
+        <button class="chip" data-f="all" aria-pressed="true">Tất cả</button>
+        <button class="chip" data-f="on" aria-pressed="false">Đang làm</button>
+        <button class="chip" data-f="off" aria-pressed="false">Đã ngừng</button>
+      </div>
+    </div>
+  </header>
+
+  <p class="demo" id="demo" hidden>Đang chạy dữ liệu mẫu. Thay đổi chỉ lưu tạm, không ảnh hưởng CSDL thật.</p>
+
+  <main>
+    <ul class="list" id="list" aria-label="Danh sách nhân sự"></ul>
+    <p class="empty" id="empty" hidden>Không có nhân sự nào khớp bộ lọc.</p>
+  </main>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="s-name" hidden>
+  <div class="grip" aria-hidden="true"></div>
+  <header class="s-head">
+    <div>
+      <h2 id="s-name"></h2>
+      <p id="s-meta" class="muted"></p>
+    </div>
+    <button class="icon-btn" id="s-close" aria-label="Đóng">✕</button>
+  </header>
+  <span class="status" id="s-status"></span>
+
+  <h3>Phân công đang hiệu lực</h3>
+  <ul class="pc" id="s-pc"></ul>
+
+  <form id="s-form" class="add">
+    <label for="s-input">Giao việc mới</label>
+    <textarea id="s-input" rows="2" maxlength="500" placeholder="VD: Khám đoàn tàu SE3 tại ga Diêu Trì"></textarea>
+    <p class="hint" id="s-hint">Tối đa 500 ký tự.</p>
+    <button class="btn primary" type="submit" id="s-add">Giao việc</button>
+  </form>
+
+  <div class="danger-zone" id="s-actions"></div>
+</section>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script>
+// Bản xem trước không cần máy chủ: mô phỏng đúng quy tắc của src/db (dữ liệu mẫu, lưu trong bộ nhớ trang).
+(function () {
+  const ns = [
+    { Id: 1, HoTen: "Nguyễn Văn An", DonVi: "Trạm KCTX Đà Nẵng", ChucDanh: "Khám xa viên", IsActive: 1 },
+    { Id: 2, HoTen: "Trần Thị Bình", DonVi: "Trạm KCTX Diêu Trì", ChucDanh: "Khám xa viên", IsActive: 1 },
+    { Id: 3, HoTen: "Lê Văn Cường", DonVi: "Trạm KCTX Nha Trang", ChucDanh: "Trưởng ca", IsActive: 1 },
+    { Id: 4, HoTen: "Phạm Thị Dung", DonVi: "Tổ KCTX Kim Liên", ChucDanh: "Khám xa viên", IsActive: 1 },
+    { Id: 5, HoTen: "Hoàng Văn Em", DonVi: "Tổ KCTX Tuy Hoà", ChucDanh: "Thợ sửa chữa", IsActive: 0 }
+  ];
+  let nextId = 20;
+  const pc = [
+    { Id: 10, NhanSuId: 1, NoiDung: "Khám đoàn tàu SE1 tại ga Đà Nẵng", IsActive: 1 },
+    { Id: 11, NhanSuId: 2, NoiDung: "Khám đoàn tàu SE3 tại ga Diêu Trì", IsActive: 1 },
+    { Id: 12, NhanSuId: 2, NoiDung: "Trực ca đêm tổ Quảng Ngãi", IsActive: 1 },
+    { Id: 13, NhanSuId: 2, NoiDung: "Kiểm tra hãm tàu SE22 (đã kết thúc)", IsActive: 0 },
+    { Id: 14, NhanSuId: 3, NoiDung: "Trưởng ca trạm Nha Trang", IsActive: 1 },
+    { Id: 15, NhanSuId: 4, NoiDung: "Khám đoàn tàu SE19 tại ga Kim Liên", IsActive: 1 }
+  ];
+  const wait = (v) => new Promise((r) => setTimeout(() => r(JSON.parse(JSON.stringify(v))), 150));
+  const fail = (msg) => new Promise((_, rej) => setTimeout(() => rej(new Error(msg)), 150));
+  const find = (id) => ns.find((p) => p.Id === id);
+  const active = (id) => pc.filter((x) => x.NhanSuId === id && x.IsActive).map(({ Id, NoiDung }) => ({ Id, NoiDung }));
+
+  window.EMS_API = {
+    info: () => wait({ demo: true }),
+    list: () => wait([...ns].sort((a, b) => b.IsActive - a.IsActive || a.Id - b.Id)),
+    phanCong: (id) => wait(active(id)),
+    add(id, text) {
+      const t = text.split(/\s+/).filter(Boolean).join(" ");
+      const p = find(id);
+      if (!t) return fail("Nội dung phân công không được để trống.");
+      if (t.length > 500) return fail("Nội dung phân công dài quá 500 ký tự.");
+      if (!p) return fail("Không tìm thấy nhân sự Id = " + id);
+      if (!p.IsActive) return fail("Nhân sự Id = " + id + " đã ngừng hoạt động.");
+      if (active(id).some((x) => x.NoiDung === t)) return fail("Nhân sự Id = " + id + " đã có phân công đang hiệu lực: " + t);
+      pc.push({ Id: nextId++, NhanSuId: id, NoiDung: t, IsActive: 1 });
+      return wait(active(id));
+    },
+    ngung(id) {
+      const p = find(id);
+      if (!p) return fail("Không tìm thấy nhân sự Id = " + id);
+      const changed = !!p.IsActive;
+      p.IsActive = 0;
+      let n = 0;
+      pc.forEach((x) => { if (x.NhanSuId === id && x.IsActive) { x.IsActive = 0; n++; } });
+      return wait({ nhan_su_changed: changed, phan_cong_count: n });
+    },
+    kichHoat(id) {
+      const p = find(id);
+      if (!p) return fail("Không tìm thấy nhân sự Id = " + id);
+      const changed = !p.IsActive;
+      p.IsActive = 1;
+      return wait({ nhan_su_changed: changed });
+    }
+  };
+})();
+</script>
+<script>
+// Giao diện điện thoại cho quản lý nhân sự & phân công. JavaScript thuần, không thư viện.
+// window.EMS_API (nếu có) thay cho API thật - dùng cho bản xem trước chạy không cần server.
+(function () {
+  "use strict";
+
+  async function call(method, url, body) {
+    const res = await fetch(url, {
+      method,
+      headers: body ? { "Content-Type": "application/json" } : {},
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(typeof data.detail === "string" ? data.detail : "Lỗi máy chủ (" + res.status + ")");
+    return data;
+  }
+
+  const api = window.EMS_API || {
+    info: () => call("GET", "/api/info"),
+    list: () => call("GET", "/api/nhan-su"),
+    phanCong: (id) => call("GET", "/api/nhan-su/" + id + "/phan-cong"),
+    add: (id, noiDung) => call("POST", "/api/nhan-su/" + id + "/phan-cong", { noi_dung: noiDung }),
+    ngung: (id) => call("POST", "/api/nhan-su/" + id + "/ngung"),
+    kichHoat: (id) => call("POST", "/api/nhan-su/" + id + "/kich-hoat"),
+  };
+
+  const $ = (id) => document.getElementById(id);
+  const el = (tag, cls, text) => {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  };
+
+  let people = [];
+  let filter = "all";
+  let current = null; // nhân sự đang mở trong bảng trượt
+  let lastFocus = null;
+
+  // Mỗi trạm/tổ KCTX một màu cố định (theo tên đơn vị), giúp nhận ra nhanh trên danh sách.
+  const PALETTE = ["#2563eb", "#7c3aed", "#db2777", "#ea580c", "#0891b2", "#16a34a", "#c026d3"];
+  const unitColor = (p) => {
+    let h = 0;
+    for (const ch of p.DonVi || String(p.Id)) h = (h * 31 + ch.codePointAt(0)) >>> 0;
+    return PALETTE[h % PALETTE.length];
+  };
+  const name = (p) => p.HoTen || "Nhân sự #" + p.Id;
+  const meta = (p) => [p.DonVi, p.ChucDanh].filter(Boolean).join(" · ") || "Mã " + p.Id;
+  const initials = (p) => name(p).split(/\s+/).slice(-2).map((w) => w[0]).join("").toUpperCase();
+  const norm = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D").toLowerCase();
+
+  function toast(msg, isErr) {
+    const t = $("toast");
+    t.textContent = msg;
+    t.classList.toggle("err", !!isErr);
+    t.hidden = false;
+    clearTimeout(toast.timer);
+    toast.timer = setTimeout(() => (t.hidden = true), 3200);
+  }
+
+  function statusChip(active) {
+    return el("span", "status " + (active ? "on" : "off"), active ? "Đang làm" : "Đã ngừng");
+  }
+
+  function renderList() {
+    const q = norm($("q").value.trim());
+    const list = $("list");
+    list.replaceChildren();
+    const shown = people.filter((p) => {
+      if (filter === "on" && !p.IsActive) return false;
+      if (filter === "off" && p.IsActive) return false;
+      return !q || norm(name(p) + " " + meta(p)).includes(q);
+    });
+    for (const p of shown) {
+      const li = el("li");
+      const b = el("button", "row " + (p.IsActive ? "on" : "off"));
+      b.type = "button";
+      b.style.setProperty("--c", unitColor(p));
+      const text = el("div");
+      text.append(el("div", "name", name(p)), el("div", "sub", meta(p)));
+      b.append(el("span", "avatar", initials(p)), text, statusChip(p.IsActive));
+      b.addEventListener("click", () => openSheet(p));
+      li.append(b);
+      list.append(li);
+    }
+    $("empty").hidden = shown.length > 0;
+    const on = people.filter((p) => p.IsActive).length;
+    $("counts").textContent = on + " đang làm · " + (people.length - on) + " đã ngừng";
+  }
+
+  async function load() {
+    try {
+      people = await api.list();
+      renderList();
+    } catch (e) {
+      $("counts").textContent = "Không tải được";
+      toast(e.message, true);
+    }
+  }
+
+  function renderPhanCong(items) {
+    const ul = $("s-pc");
+    ul.replaceChildren();
+    if (!items.length) ul.append(el("li", "none", "Chưa có phân công nào đang hiệu lực."));
+    for (const it of items) ul.append(el("li", null, it.NoiDung));
+  }
+
+  function renderActions(p, pcCount) {
+    const box = $("s-actions");
+    box.replaceChildren();
+    if (p.IsActive) {
+      const b = el("button", "btn danger", "Ngừng nhân sự");
+      b.type = "button";
+      b.addEventListener("click", () => confirmNgung(p, pcCount));
+      box.append(b);
+    } else {
+      const b = el("button", "btn", "Kích hoạt lại");
+      b.type = "button";
+      b.addEventListener("click", () => doKichHoat(p, b));
+      box.append(b, el("p", "hint", "Phân công cũ không tự khôi phục; giao lại việc sau khi kích hoạt."));
+    }
+  }
+
+  function confirmNgung(p, pcCount) {
+    const box = $("s-actions");
+    box.replaceChildren();
+    const c = el("div", "confirm");
+    c.append(el("p", null, "Ngừng " + name(p) + (pcCount ? " và " + pcCount + " phân công đang hiệu lực?" : "?")));
+    const two = el("div", "two");
+    const cancel = el("button", "btn", "Huỷ");
+    cancel.type = "button";
+    cancel.addEventListener("click", () => renderActions(p, pcCount));
+    const ok = el("button", "btn danger solid", "Xác nhận ngừng");
+    ok.type = "button";
+    ok.addEventListener("click", () => doNgung(p, ok));
+    two.append(cancel, ok);
+    c.append(two);
+    box.append(c);
+    ok.focus();
+  }
+
+  async function doNgung(p, btn) {
+    btn.disabled = true;
+    try {
+      const kq = await api.ngung(p.Id);
+      toast("Đã ngừng " + name(p) + (kq.phan_cong_count ? " và " + kq.phan_cong_count + " phân công" : ""));
+      await refreshCurrent(p.Id);
+    } catch (e) {
+      toast(e.message, true);
+      btn.disabled = false;
+    }
+  }
+
+  async function doKichHoat(p, btn) {
+    btn.disabled = true;
+    try {
+      await api.kichHoat(p.Id);
+      toast("Đã kích hoạt lại " + name(p));
+      await refreshCurrent(p.Id);
+    } catch (e) {
+      toast(e.message, true);
+      btn.disabled = false;
+    }
+  }
+
+  async function refreshCurrent(id) {
+    await load();
+    const p = people.find((x) => x.Id === id);
+    if (p) await fillSheet(p);
+  }
+
+  async function fillSheet(p) {
+    current = p;
+    $("sheet").style.setProperty("--c", unitColor(p));
+    $("s-name").textContent = name(p);
+    $("s-meta").textContent = meta(p);
+    $("s-status").replaceWith(Object.assign(statusChip(p.IsActive), { id: "s-status" }));
+    $("s-form").hidden = !p.IsActive;
+    $("s-pc").replaceChildren(el("li", "none", "Đang tải…"));
+    let items = [];
+    try {
+      items = await api.phanCong(p.Id);
+    } catch (e) {
+      toast(e.message, true);
+    }
+    renderPhanCong(items);
+    renderActions(p, items.length);
+  }
+
+  function openSheet(p) {
+    lastFocus = document.activeElement;
+    $("scrim").hidden = false;
+    $("sheet").hidden = false;
+    $("s-input").value = "";
+    setHint();
+    fillSheet(p);
+    $("s-close").focus();
+  }
+
+  function closeSheet() {
+    $("sheet").hidden = true;
+    $("scrim").hidden = true;
+    current = null;
+    if (lastFocus) lastFocus.focus();
+  }
+
+  function setHint(msg) {
+    const h = $("s-hint");
+    h.textContent = msg || "Tối đa 500 ký tự.";
+    h.classList.toggle("err", !!msg);
+  }
+
+  $("s-form").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const text = $("s-input").value.trim();
+    if (!text) return setHint("Nhập nội dung phân công.");
+    const btn = $("s-add");
+    btn.disabled = true;
+    try {
+      const items = await api.add(current.Id, text);
+      renderPhanCong(items);
+      renderActions(current, items.length);
+      $("s-input").value = "";
+      setHint();
+      toast("Đã giao việc cho " + name(current));
+    } catch (e) {
+      setHint(e.message);
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  $("s-close").addEventListener("click", closeSheet);
+  $("scrim").addEventListener("click", closeSheet);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !$("sheet").hidden) closeSheet();
+  });
+  $("q").addEventListener("input", renderList);
+  document.querySelectorAll(".chip").forEach((c) =>
+    c.addEventListener("click", () => {
+      filter = c.dataset.f;
+      document.querySelectorAll(".chip").forEach((x) => x.setAttribute("aria-pressed", String(x === c)));
+      renderList();
+    })
+  );
+
+  api.info().then((i) => ($("demo").hidden = !i.demo)).catch(() => {});
+  load();
+})();
+</script>

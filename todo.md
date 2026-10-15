@@ -1,12 +1,16 @@
 # KẾ HOẠCH TÁC VỤ HIỆN TẠI (todo.md)
 
-## Mục tiêu: Ví dụ thực tế chạy được cho xóa mềm NhanSu + PhanCong
+## Mục tiêu: Giao diện điện thoại quản lý nhân sự & phân công
 
 ### Các bước thực hiện (Think -> Act -> Observe)
-- [x] 1. `examples/vi_du_ngung_nhan_su.py`: dữ liệu mẫu 3 trạm KCTX, SQLite trong bộ nhớ, lớp bọc giống pyodbc, 4 tình huống (ngừng, mã sai → rollback, kích hoạt lại, thử DELETE).
-- [x] 2. `tests/examples/test_vi_du_ngung_nhan_su.py`: chạy câu SQL thật trên SQLite (5 test).
-- [x] 3. Nghiệm thu: `pytest -q` 85/85 xanh, `ruff check .` sạch.
+- [x] 1. API `src/api/app.py` (FastAPI): danh sách nhân sự, phân công đang hiệu lực, giao việc, ngừng, kích hoạt lại. Lỗi nghiệp vụ → 404/409/422 kèm thông báo tiếng Việt. Chế độ `EMS_DEMO=1` dùng SQLite mẫu.
+- [x] 2. Giao diện `src/templates/index.html`, `src/static/app.css`, `app.js` (JS thuần): tìm kiếm không dấu, lọc trạng thái, bảng trượt chi tiết, giao việc, xác nhận ngừng ngay trong trang, sáng/tối theo máy.
+- [x] 3. `nhan_su.list_all`; `requirements.txt` (fastapi, uvicorn); `requirements-dev.txt` thêm httpx.
+- [x] 4. Test API `tests/api/test_app.py` (9 test). Nghiệm thu: `pytest -q` 103/103 xanh trên Python 3.11 & 3.13, `ruff` sạch.
+- [x] 5. Chạy thử trên trình duyệt giả lập iPhone 13: giao việc → ngừng → thông báo đúng, không lỗi JS, không tràn ngang.
+- [x] 6. Bản xem trước không cần server: `docs/giao-dien-mobile.html`.
 
 ### Việc còn treo
-- [ ] Đối chiếu schema thật: khóa `NhanSu.Id`, cột liên kết `PhanCong.NhanSuId`, cờ `IsActive` ở cả hai bảng.
-- [ ] Thử với SQL Server thật (cần `pyodbc` + ODBC Driver 18 + `.env`).
+- [ ] **Đăng nhập / phân quyền** trước khi dùng thật (hiện ai vào được mạng nội bộ cũng thao tác được).
+- [ ] Đối chiếu schema thật (`NhanSu.Id`, `HoTen`, `DonVi`, `ChucDanh`; `PhanCong.NhanSuId`, `NoiDung`, `IsActive`).
+- [ ] Thử với SQL Server thật và chọn cách triển khai (IIS + reverse proxy hoặc dịch vụ Windows).

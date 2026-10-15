@@ -1,0 +1,4 @@
+# Thư viện chạy ứng dụng web (src/api). Ghim phiên bản để kết quả ổn định.
+fastapi==0.143.1
+uvicorn==0.54.0
+# pyodbc chỉ cần khi kết nối SQL Server thật (chế độ demo dùng SQLite có sẵn trong Python).

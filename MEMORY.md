@@ -11,8 +11,11 @@
 - `[2026-10-15]` **Truy cập CSDL đi qua `src/db/connection.py`**: `fetch_all` chỉ nhận một câu SELECT/WITH tham số hóa `?`, chặn `SELECT INTO`, nhiều câu nối `;`, và params dạng chuỗi.
 - `[2026-10-15]` **Luật `Read(./.env.*)` chặn cả `.env.example`**: luật permissions không có ngoại lệ, nên file mẫu cũng không sửa được qua Edit. Đã đổi sang liệt kê tên cụ thể (`.env.local`, `.env.production`...). Thêm biến thể `.env.<tên>` mới thì phải bổ sung luật deny tương ứng.
 - `[2026-10-15]` **Ghi CSDL đi qua `execute_write` trong `transaction`** (`src/db/connection.py`): chỉ INSERT/UPDATE có WHERE, không tự commit. Xóa mềm `NhanSu` dùng `src/db/nhan_su.py` - UPDATE có điều kiện `AND IsActive = ?` để biết dòng đã đổi hay chưa.
+- `[2026-10-15]` **CSS `display` đè thuộc tính `hidden`**: `.sheet { display: grid }` làm bảng trượt hiện sẵn dù có `hidden`. Đã thêm `[hidden] { display: none !important; }` ở `src/static/app.css`.
+- `[2026-10-15]` **Web app chưa có đăng nhập** (`src/api/app.py`): chỉ chạy thử trong mạng nội bộ; phải thêm xác thực trước khi dùng thật.
 
 ## 2. Đặc thù Cơ sở dữ liệu & Nghiệp vụ
 - Bảng `NhanSu` và `PhanCong` liên kết qua mã định danh nội bộ, tuyệt đối không xóa cứng (hard delete) mà chỉ cập nhật cờ `IsActive = 0`.
 - `[2026-10-15]` **Ngừng nhân sự thì ngừng luôn PhanCong liên quan** (chủ dự án xác nhận), trong cùng giao dịch - xem `src/db/nhan_su.py` hàm `deactivate`. Kích hoạt lại nhân sự KHÔNG tự khôi phục PhanCong.
+- `[2026-10-15]` **Giao phân công mới qua `src/db/phan_cong.py` hàm `add`**: chỉ cho nhân sự đang hoạt động; chặn trùng nội dung với phân công đang hiệu lực (nội dung đã gọn khoảng trắng). Hàm không trả về Id mới vì SQL Server (`OUTPUT`) và SQLite (`RETURNING`) khác cú pháp.
 - Các truy vấn báo cáo tổng hợp bắt buộc phải có `WITH (NOLOCK)` hoặc tối ưu index để tránh khóa bảng trong giờ cao điểm.

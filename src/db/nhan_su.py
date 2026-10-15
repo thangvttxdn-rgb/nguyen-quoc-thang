@@ -21,6 +21,7 @@ from src.db.connection import execute_write, fetch_all
 _SQL_EXISTS = "SELECT IsActive FROM NhanSu WHERE Id = ?"
 _SQL_SET_ACTIVE = "UPDATE NhanSu SET IsActive = ? WHERE Id = ? AND IsActive = ?"
 _SQL_LIST_ACTIVE = "SELECT * FROM NhanSu WHERE IsActive = 1 ORDER BY Id"
+_SQL_LIST_ALL = "SELECT * FROM NhanSu ORDER BY IsActive DESC, Id"
 _SQL_DEACTIVATE_PHAN_CONG = "UPDATE PhanCong SET IsActive = 0 WHERE NhanSuId = ? AND IsActive = 1"
 
 
@@ -65,3 +66,8 @@ def reactivate(conn: Any, nhan_su_id: int) -> bool:
 def list_active(conn: Any) -> list[dict[str, Any]]:
     """Danh sách nhân sự đang hoạt động (mọi truy vấn nghiệp vụ phải lọc IsActive = 1)."""
     return fetch_all(conn, _SQL_LIST_ACTIVE)
+
+
+def list_all(conn: Any) -> list[dict[str, Any]]:
+    """Toàn bộ nhân sự, người đang làm xếp trước (dùng cho màn hình quản lý)."""
+    return fetch_all(conn, _SQL_LIST_ALL)
