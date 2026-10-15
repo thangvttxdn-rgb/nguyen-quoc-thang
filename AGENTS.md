@@ -17,6 +17,7 @@ Luôn sử dụng cờ rút gọn (quiet/short) khi chạy lệnh để cắt gi
 - **Kiểm tra lỗi cú pháp/quy chuẩn (Lint):** `ruff check src/ --quiet`
 - **Cài công cụ:** `pip install -r requirements-dev.txt` (phiên bản ghim, trùng với CI; đã gồm `requirements.txt`).
 - **Chạy web app (dữ liệu mẫu):** `EMS_DEMO=1 uvicorn src.api.app:app --host 0.0.0.0 --port 8000` (1 worker). Cần file tài khoản `secrets/users.json`; tạo chuỗi băm mật khẩu bằng `python -m src.api.auth`. Tác tử không được đọc `secrets/`. Sửa giao diện (`src/templates`, `src/static`) thì sinh lại bản xem trước `docs/giao-dien-mobile.html`.
+- **Triển khai IIS:** làm theo `docs/TRIEN-KHAI-IIS.md`; máy chủ cài `requirements-prod.txt`. Không bao giờ commit `deploy/iis/web.config` (chỉ commit file `.mau`).
 - **CI:** `.github/workflows/ci.yml` chạy `ruff check .` và `pytest` trên Python 3.11 và 3.13 cho mọi PR và push lên `main`.
 
 ## 3. Quy tắc An toàn & Phân quyền (Policy Gate)

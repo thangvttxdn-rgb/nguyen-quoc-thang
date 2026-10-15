@@ -137,3 +137,9 @@ def test_ngung_roi_kich_hoat_lai(ql):
 def test_ngung_ma_khong_ton_tai(ql):
     assert ql.post("/api/nhan-su/99/ngung").status_code == 404
     assert ql.post("/api/nhan-su/99/kich-hoat").status_code == 404
+
+
+def test_ghi_nhat_ky_nguoi_thao_tac(ql, caplog):
+    with caplog.at_level("INFO", logger="ems.nhat_ky"):
+        ql.post("/api/nhan-su/2/ngung")
+    assert any("ql ngừng nhân sự 2" in r.getMessage() for r in caplog.records)

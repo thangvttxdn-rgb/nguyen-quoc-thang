@@ -13,6 +13,8 @@
 - `[2026-10-15]` **Ghi CSDL đi qua `execute_write` trong `transaction`** (`src/db/connection.py`): chỉ INSERT/UPDATE có WHERE, không tự commit. Xóa mềm `NhanSu` dùng `src/db/nhan_su.py` - UPDATE có điều kiện `AND IsActive = ?` để biết dòng đã đổi hay chưa.
 - `[2026-10-15]` **CSS `display` đè thuộc tính `hidden`**: `.sheet { display: grid }` làm bảng trượt hiện sẵn dù có `hidden`. Đã thêm `[hidden] { display: none !important; }` ở `src/static/app.css`.
 - `[2026-10-15]` **Đăng nhập web app** (`src/api/auth.py`): tài khoản ở `secrets/users.json`, băm scrypt; phiên trong bộ nhớ nên **chỉ chạy 1 worker** uvicorn, khởi động lại thì phải đăng nhập lại. Vai trò `quan_ly` (sửa) / `xem` (chỉ đọc). Trong code tránh đặt tên biến chứa "password" gán chuỗi literal (hook chặn) - dùng tên tiếng Việt `mat_khau`, `bam`.
+- `[2026-10-15]` **Logger tự tạo không ra log dưới uvicorn**: uvicorn chỉ cấu hình logger của nó, nên `ems.nhat_ky` ở mức INFO bị nuốt. Đã gắn StreamHandler riêng trong `src/api/app.py`.
+- `[2026-10-15]` **Triển khai IIS**: HttpPlatformHandler khởi động uvicorn (`--app-dir`), site IIS chỉ trỏ vào `deploy/iis` (chỉ chứa web.config). web.config thật chứa mật khẩu CSDL - đã gitignore, chỉ commit `web.config.mau`. Xem `docs/TRIEN-KHAI-IIS.md`.
 
 ## 2. Đặc thù Cơ sở dữ liệu & Nghiệp vụ
 - Bảng `NhanSu` và `PhanCong` liên kết qua mã định danh nội bộ, tuyệt đối không xóa cứng (hard delete) mà chỉ cập nhật cờ `IsActive = 0`.

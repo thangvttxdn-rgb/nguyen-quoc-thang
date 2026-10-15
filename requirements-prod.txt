@@ -1,0 +1,3 @@
+# Cài trên máy chủ chạy thật (Windows/IIS): thư viện web + driver kết nối SQL Server.
+-r requirements.txt
+pyodbc==5.3.0
