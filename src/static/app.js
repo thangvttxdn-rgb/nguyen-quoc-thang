@@ -10,12 +10,16 @@
       body: body ? JSON.stringify(body) : undefined,
     });
     const data = await res.json().catch(() => ({}));
+    if (res.status === 401 && url !== "/api/dang-nhap") showLogin();
     if (!res.ok) throw new Error(typeof data.detail === "string" ? data.detail : "Lỗi máy chủ (" + res.status + ")");
     return data;
   }
 
   const api = window.EMS_API || {
     info: () => call("GET", "/api/info"),
+    me: () => call("GET", "/api/toi"),
+    login: (u, p) => call("POST", "/api/dang-nhap", { ten_dang_nhap: u, mat_khau: p }),
+    logout: () => call("POST", "/api/dang-xuat"),
     list: () => call("GET", "/api/nhan-su"),
     phanCong: (id) => call("GET", "/api/nhan-su/" + id + "/phan-cong"),
     add: (id, noiDung) => call("POST", "/api/nhan-su/" + id + "/phan-cong", { noi_dung: noiDung }),
@@ -32,6 +36,7 @@
   };
 
   let people = [];
+  let me = null; // người đang đăng nhập: {ten_dang_nhap, ten, vai_tro}
   let filter = "all";
   let current = null; // nhân sự đang mở trong bảng trượt
   let lastFocus = null;
@@ -107,6 +112,10 @@
   function renderActions(p, pcCount) {
     const box = $("s-actions");
     box.replaceChildren();
+    if (!me || me.vai_tro !== "quan_ly") {
+      box.append(el("p", "hint", "Tài khoản của bạn chỉ có quyền xem."));
+      return;
+    }
     if (p.IsActive) {
       const b = el("button", "btn danger", "Ngừng nhân sự");
       b.type = "button";
@@ -174,7 +183,7 @@
     $("s-name").textContent = name(p);
     $("s-meta").textContent = meta(p);
     $("s-status").replaceWith(Object.assign(statusChip(p.IsActive), { id: "s-status" }));
-    $("s-form").hidden = !p.IsActive;
+    $("s-form").hidden = !p.IsActive || !me || me.vai_tro !== "quan_ly";
     $("s-pc").replaceChildren(el("li", "none", "Đang tải…"));
     let items = [];
     try {
@@ -243,6 +252,54 @@
     })
   );
 
-  api.info().then((i) => ($("demo").hidden = !i.demo)).catch(() => {});
-  load();
+  // --- Đăng nhập ---------------------------------------------------------------
+  function showLogin(msg) {
+    me = null;
+    people = [];
+    if (!$("sheet").hidden) closeSheet();
+    $("app").hidden = true;
+    $("login").hidden = false;
+    $("l-err").textContent = msg || "";
+    $("l-pass").value = "";
+    $("l-user").focus();
+  }
+
+  function startApp(user) {
+    me = user;
+    $("login").hidden = true;
+    $("app").hidden = false;
+    $("who-name").textContent = user.ten;
+    $("who-role").textContent = user.vai_tro === "quan_ly" ? "Quản lý" : "Chỉ xem";
+    load();
+  }
+
+  $("l-form").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const btn = $("l-btn");
+    btn.disabled = true;
+    $("l-err").textContent = "";
+    try {
+      startApp(await api.login($("l-user").value.trim(), $("l-pass").value));
+    } catch (e) {
+      $("l-err").textContent = e.message;
+      $("l-pass").select();
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  $("logout").addEventListener("click", async () => {
+    try {
+      await api.logout();
+    } catch (e) {
+      /* phiên đã hết hạn thì coi như đã đăng xuất */
+    }
+    showLogin("Đã đăng xuất.");
+  });
+
+  api.info().then((i) => {
+    $("demo").hidden = !i.demo;
+    $("l-demo").hidden = !i.demo;
+  }).catch(() => {});
+  api.me().then(startApp).catch(() => showLogin());
 })();

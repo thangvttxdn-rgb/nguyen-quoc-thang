@@ -1,16 +1,15 @@
 # KẾ HOẠCH TÁC VỤ HIỆN TẠI (todo.md)
 
-## Mục tiêu: Giao diện điện thoại quản lý nhân sự & phân công
+## Mục tiêu: Thêm đăng nhập cho giao diện điện thoại
 
 ### Các bước thực hiện (Think -> Act -> Observe)
-- [x] 1. API `src/api/app.py` (FastAPI): danh sách nhân sự, phân công đang hiệu lực, giao việc, ngừng, kích hoạt lại. Lỗi nghiệp vụ → 404/409/422 kèm thông báo tiếng Việt. Chế độ `EMS_DEMO=1` dùng SQLite mẫu.
-- [x] 2. Giao diện `src/templates/index.html`, `src/static/app.css`, `app.js` (JS thuần): tìm kiếm không dấu, lọc trạng thái, bảng trượt chi tiết, giao việc, xác nhận ngừng ngay trong trang, sáng/tối theo máy.
-- [x] 3. `nhan_su.list_all`; `requirements.txt` (fastapi, uvicorn); `requirements-dev.txt` thêm httpx.
-- [x] 4. Test API `tests/api/test_app.py` (9 test). Nghiệm thu: `pytest -q` 103/103 xanh trên Python 3.11 & 3.13, `ruff` sạch.
-- [x] 5. Chạy thử trên trình duyệt giả lập iPhone 13: giao việc → ngừng → thông báo đúng, không lỗi JS, không tràn ngang.
-- [x] 6. Bản xem trước không cần server: `docs/giao-dien-mobile.html`.
+- [x] 1. `src/api/auth.py`: tài khoản trong `secrets/users.json` (gitignore), mật khẩu băm scrypt (thư viện chuẩn), phiên 12 giờ lưu trong bộ nhớ, khóa tạm 5 phút sau 5 lần sai, thông báo sai giống nhau cho tên sai/mật khẩu sai, lệnh `python -m src.api.auth` tạo chuỗi băm.
+- [x] 2. `src/api/app.py`: `/api/dang-nhap`, `/api/dang-xuat`, `/api/toi`; mọi API dữ liệu cần đăng nhập (401); giao việc/ngừng/kích hoạt cần vai trò `quan_ly` (403); cookie HttpOnly + SameSite=Strict (+ Secure khi `EMS_COOKIE_SECURE=1`); ghi nhật ký ai làm gì.
+- [x] 3. Giao diện: màn hình đăng nhập, tên + vai trò + nút đăng xuất ở đầu trang, tài khoản "xem" không thấy nút sửa, hết phiên tự về màn đăng nhập.
+- [x] 4. Test: `tests/api/test_auth.py` (9), `tests/api/test_app.py` viết lại có đăng nhập (17). `pytest -q` 120/120, `ruff` sạch.
+- [x] 5. Chạy thử trên giả lập iPhone 13: sai mật khẩu, đăng nhập, đăng xuất, tài khoản chỉ xem. Bản xem trước cập nhật.
 
 ### Việc còn treo
-- [ ] **Đăng nhập / phân quyền** trước khi dùng thật (hiện ai vào được mạng nội bộ cũng thao tác được).
-- [ ] Đối chiếu schema thật (`NhanSu.Id`, `HoTen`, `DonVi`, `ChucDanh`; `PhanCong.NhanSuId`, `NoiDung`, `IsActive`).
-- [ ] Thử với SQL Server thật và chọn cách triển khai (IIS + reverse proxy hoặc dịch vụ Windows).
+- [ ] Tạo `secrets/users.json` thật trên máy chủ (anh tự làm, không đưa mật khẩu cho tác tử).
+- [ ] Chạy qua HTTPS (IIS reverse proxy) và đặt `EMS_COOKIE_SECURE=1`.
+- [ ] Đối chiếu schema thật; thử với SQL Server thật.
