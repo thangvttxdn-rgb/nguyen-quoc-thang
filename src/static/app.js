@@ -36,6 +36,13 @@
   let current = null; // nhân sự đang mở trong bảng trượt
   let lastFocus = null;
 
+  // Mỗi trạm/tổ KCTX một màu cố định (theo tên đơn vị), giúp nhận ra nhanh trên danh sách.
+  const PALETTE = ["#2563eb", "#7c3aed", "#db2777", "#ea580c", "#0891b2", "#16a34a", "#c026d3"];
+  const unitColor = (p) => {
+    let h = 0;
+    for (const ch of p.DonVi || String(p.Id)) h = (h * 31 + ch.codePointAt(0)) >>> 0;
+    return PALETTE[h % PALETTE.length];
+  };
   const name = (p) => p.HoTen || "Nhân sự #" + p.Id;
   const meta = (p) => [p.DonVi, p.ChucDanh].filter(Boolean).join(" · ") || "Mã " + p.Id;
   const initials = (p) => name(p).split(/\s+/).slice(-2).map((w) => w[0]).join("").toUpperCase();
@@ -67,6 +74,7 @@
       const li = el("li");
       const b = el("button", "row " + (p.IsActive ? "on" : "off"));
       b.type = "button";
+      b.style.setProperty("--c", unitColor(p));
       const text = el("div");
       text.append(el("div", "name", name(p)), el("div", "sub", meta(p)));
       b.append(el("span", "avatar", initials(p)), text, statusChip(p.IsActive));
@@ -162,6 +170,7 @@
 
   async function fillSheet(p) {
     current = p;
+    $("sheet").style.setProperty("--c", unitColor(p));
     $("s-name").textContent = name(p);
     $("s-meta").textContent = meta(p);
     $("s-status").replaceWith(Object.assign(statusChip(p.IsActive), { id: "s-status" }));
