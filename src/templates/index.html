@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f1b2d">
+<title>Phân công toa xe</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <div class="top-inner">
+      <div>
+        <p class="org">Chi nhánh Toa xe Đà Nẵng</p>
+        <h1>Phân công nhân sự</h1>
+      </div>
+      <p class="counts" id="counts" aria-live="polite">Đang tải…</p>
+    </div>
+    <div class="tools">
+      <label class="search">
+        <span class="sr">Tìm nhân sự</span>
+        <input id="q" type="search" placeholder="Tìm tên, trạm, chức danh…" autocomplete="off">
+      </label>
+      <div class="chips" role="group" aria-label="Lọc theo trạng thái">
+        <button class="chip" data-f="all" aria-pressed="true">Tất cả</button>
+        <button class="chip" data-f="on" aria-pressed="false">Đang làm</button>
+        <button class="chip" data-f="off" aria-pressed="false">Đã ngừng</button>
+      </div>
+    </div>
+  </header>
+
+  <p class="demo" id="demo" hidden>Đang chạy dữ liệu mẫu. Thay đổi chỉ lưu tạm, không ảnh hưởng CSDL thật.</p>
+
+  <main>
+    <ul class="list" id="list" aria-label="Danh sách nhân sự"></ul>
+    <p class="empty" id="empty" hidden>Không có nhân sự nào khớp bộ lọc.</p>
+  </main>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="s-name" hidden>
+  <div class="grip" aria-hidden="true"></div>
+  <header class="s-head">
+    <div>
+      <h2 id="s-name"></h2>
+      <p id="s-meta" class="muted"></p>
+    </div>
+    <button class="icon-btn" id="s-close" aria-label="Đóng">✕</button>
+  </header>
+  <span class="status" id="s-status"></span>
+
+  <h3>Phân công đang hiệu lực</h3>
+  <ul class="pc" id="s-pc"></ul>
+
+  <form id="s-form" class="add">
+    <label for="s-input">Giao việc mới</label>
+    <textarea id="s-input" rows="2" maxlength="500" placeholder="VD: Khám đoàn tàu SE3 tại ga Diêu Trì"></textarea>
+    <p class="hint" id="s-hint">Tối đa 500 ký tự.</p>
+    <button class="btn primary" type="submit" id="s-add">Giao việc</button>
+  </form>
+
+  <div class="danger-zone" id="s-actions"></div>
+</section>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

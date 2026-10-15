@@ -81,7 +81,8 @@ class SqliteConn:
 
 
 def tao_csdl_mau() -> SqliteConn:
-    raw = sqlite3.connect(":memory:")
+    # check_same_thread=False: cho phép web server dùng chung kết nối demo giữa các luồng.
+    raw = sqlite3.connect(":memory:", check_same_thread=False)
     raw.executescript(SCHEMA)
     raw.executemany("INSERT INTO NhanSu VALUES (?, ?, ?, ?, ?)", NHAN_SU_MAU)
     raw.executemany("INSERT INTO PhanCong VALUES (?, ?, ?, ?)", PHAN_CONG_MAU)

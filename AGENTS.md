@@ -15,7 +15,8 @@ Luôn sử dụng cờ rút gọn (quiet/short) khi chạy lệnh để cắt gi
 - **Chạy toàn bộ test:** `pytest -q --tb=short`
 - **Chạy test theo phân hệ:** `pytest tests/<ten_phan_he>/ -q`
 - **Kiểm tra lỗi cú pháp/quy chuẩn (Lint):** `ruff check src/ --quiet`
-- **Cài công cụ:** `pip install -r requirements-dev.txt` (phiên bản ghim, trùng với CI).
+- **Cài công cụ:** `pip install -r requirements-dev.txt` (phiên bản ghim, trùng với CI; đã gồm `requirements.txt`).
+- **Chạy web app (dữ liệu mẫu):** `EMS_DEMO=1 uvicorn src.api.app:app --host 0.0.0.0 --port 8000`. Sửa giao diện (`src/templates`, `src/static`) thì sinh lại bản xem trước `docs/giao-dien-mobile.html`.
 - **CI:** `.github/workflows/ci.yml` chạy `ruff check .` và `pytest` trên Python 3.11 và 3.13 cho mọi PR và push lên `main`.
 
 ## 3. Quy tắc An toàn & Phân quyền (Policy Gate)
