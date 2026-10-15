@@ -21,7 +21,22 @@ Luôn sử dụng cờ rút gọn (quiet/short) khi chạy lệnh để cắt gi
 - **PHẢI XIN PHÉP CON NGƯỜI (ASK/APPROVE):** Mọi thao tác sửa file cấu hình hệ thống, thay đổi cấu trúc bảng (`ALTER/DROP TABLE`), cài đặt thêm thư viện mới, hoặc đẩy code lên nhánh chính.
 - **CẤM TUYỆT ĐỐI (DENY):** Xóa thư mục gốc (`rm -rf`), can thiệp ra ngoài phạm vi thư mục dự án, hardcode mật khẩu/chuỗi kết nối CSDL trực tiếp vào mã nguồn.
 
-> Phần lệnh shell được cưỡng chế kỹ thuật tại `.claude/settings.local.json`. Riêng giới hạn `SELECT`/`ALTER`/`DROP` là luật hành vi: tác tử phải tự tuân thủ, nên tốt nhất dùng tài khoản CSDL chỉ có quyền đọc khi làm việc với tác tử.
+### Cưỡng chế kỹ thuật
+| Lớp | File | Chặn được |
+|---|---|---|
+| Permissions | `.claude/settings.local.json` | Lệnh/đường dẫn khớp mẫu chữ |
+| Hook PreToolUse | `.claude/hooks/guard.py` | Mọi biến thể `rm -rf`; câu SQL ghi/đổi cấu trúc trong lệnh gọi CSDL (ask), `SHUTDOWN`/`DROP DATABASE` (deny); ghi file ngoài dự án; mật khẩu hardcode |
+| Ruff `S` | `pyproject.toml` | Mật khẩu hardcode (S105/S106), SQL ghép chuỗi (S608) |
+| Tài khoản CSDL | `.env` | Tác tử chỉ dùng tài khoản `db_datareader` - lớp chắc chắn nhất |
+
+Sửa `guard.py` phải kèm test tại `tests/harness/test_guard.py`.
+
+## 3a. Quy tắc SQL Server
+- **Tham số hóa mọi truy vấn** (`cursor.execute("... WHERE Id = ?", ma)` hoặc `text(":ma")` của SQLAlchemy). Cấm ghép chuỗi/f-string vào câu SQL.
+- **Cấu hình kết nối** đọc từ biến môi trường (mẫu tại `.env.example`); `.env` không được commit.
+- **Thay đổi cấu trúc bảng** chỉ qua script đánh số trong `src/db/migrations/` (vd. `0003_them_cot_ghi_chu.sql`), có kèm script hoàn tác, và phải được người duyệt trước khi chạy.
+- **Không xóa cứng** bảng nghiệp vụ: cập nhật `IsActive = 0` (xem `MEMORY.md`).
+- **Kiểu dữ liệu**: `DECIMAL` -> `decimal.Decimal`, không ép sang `float` khi tính toán; `DATETIME` lưu và so sánh theo một múi giờ thống nhất.
 
 ## 4. Điều phối Tác tử phụ (Subagents)
 - Khi cần tìm kiếm vị trí sử dụng của một biến/hàm trên toàn bộ dự án hoặc đọc tài liệu quy chuẩn dài, hãy tách **Subagent** với vùng ngữ cảnh độc lập để rà soát và chỉ trả về bản tóm tắt ngắn gọn cho Agent chính.

@@ -5,6 +5,8 @@
 ## 1. Lỗi điển hình & Bài học xương máu (Bug Patterns)
 - `[2026-10-15]` **Lỗi sai lệch số liệu / kiểu dữ liệu**: Khi xử lý dữ liệu từ SQL Server lên Python, các trường `DECIMAL` cần ép kiểu rõ ràng trước khi serialize sang JSON (Xem cách xử lý tại `src/utils/formatter.py:42`).
 - `[Mẫu từ sơ đồ]` `"currency bug: tax.py:88"` — Luôn kiểm tra đơn vị tiền tệ trước khi áp thuế.
+- `[2026-10-15]` **Luật permissions chỉ khớp mẫu chữ**: `Bash(DROP TABLE *)` không bao giờ khớp vì SQL nằm trong `sqlcmd -Q "..."`; `Bash(rm -rf *)` để lọt `rm -r -f`. Đã chuyển phần chặn này sang hook `.claude/hooks/guard.py`.
+- `[2026-10-15]` **Hook soi cả nội dung lệnh**: lệnh có `python`/`sqlcmd` kèm chữ SQL (kể cả trong commit message, heredoc) sẽ bị hỏi/chặn. Viết commit message ra file rồi `git commit -F <file>` trong lệnh riêng.
 
 ## 2. Đặc thù Cơ sở dữ liệu & Nghiệp vụ
 - Bảng `NhanSu` và `PhanCong` liên kết qua mã định danh nội bộ, tuyệt đối không xóa cứng (hard delete) mà chỉ cập nhật cờ `IsActive = 0`.
