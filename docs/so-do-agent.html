@@ -1,0 +1,667 @@
+<title>Sơ đồ Agent Harness</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: một bảng điều khiển tối như phòng điều độ chạy tàu - sơ đồ luồng ở giữa, nhật ký bên cạnh, giải thích bên dưới. */
+:root {
+  --bg: #0a0f1f;
+  --panel: #111933;
+  --panel-2: #172144;
+  --ink: #e9edff;
+  --muted: #9ba7d4;
+  --line: #2b3770;
+  --on-accent: #0a0f1f;
+
+  --c-user: #60a5fa;
+  --c-ctx: #22d3ee;
+  --c-plan: #34d399;
+  --c-act: #a78bfa;
+  --c-hook: #c084fc;
+  --c-perm: #818cf8;
+  --c-exec: #4ade80;
+  --c-obs: #2dd4bf;
+  --c-ver: #e879f9;
+  --c-mem: #38bdf8;
+  --c-ci: #fb923c;
+  --c-pr: #a3e635;
+  --c-ask: #fbbf24;
+  --c-deny: #fb7185;
+  --c-db: #93c5fd;
+
+  --f-display: "Be Vietnam Pro", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Be Vietnam Pro", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f3f5fc; --panel: #ffffff; --panel-2: #eaeefb; --ink: #141a33; --muted: #4f5a86; --line: #c9d0ec;
+    --c-user: #2563eb; --c-ctx: #0891b2; --c-plan: #059669; --c-act: #7c3aed; --c-hook: #9333ea; --c-perm: #4f46e5;
+    --c-exec: #16a34a; --c-obs: #0d9488; --c-ver: #c026d3; --c-mem: #0284c7; --c-ci: #ea580c; --c-pr: #65a30d;
+    --c-ask: #d97706; --c-deny: #e11d48; --c-db: #3b82f6; --on-accent: #ffffff;
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #f3f5fc; --panel: #ffffff; --panel-2: #eaeefb; --ink: #141a33; --muted: #4f5a86; --line: #c9d0ec;
+  --c-user: #2563eb; --c-ctx: #0891b2; --c-plan: #059669; --c-act: #7c3aed; --c-hook: #9333ea; --c-perm: #4f46e5;
+  --c-exec: #16a34a; --c-obs: #0d9488; --c-ver: #c026d3; --c-mem: #0284c7; --c-ci: #ea580c; --c-pr: #65a30d;
+  --c-ask: #d97706; --c-deny: #e11d48; --c-db: #3b82f6; --on-accent: #ffffff;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 15px;
+  line-height: 1.6;
+}
+.wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 56px;
+  display: grid;
+  gap: 28px;
+}
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.2; }
+h1 { font-size: clamp(28px, 4.2vw, 44px); font-weight: 800; letter-spacing: -0.02em; }
+h1 .grad {
+  background: linear-gradient(90deg, var(--c-ctx), var(--c-hook) 45%, var(--c-ci));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+h2 { font-size: 22px; font-weight: 800; }
+h3 { font-size: 16px; font-weight: 700; }
+p { margin: 0; max-width: 68ch; }
+code, .mono { font-family: var(--f-mono); font-size: 0.88em; }
+code { background: var(--panel-2); padding: 1px 6px; border-radius: 6px; }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.lead { color: var(--muted); font-size: 16.5px; }
+
+header { display: grid; gap: 12px; }
+
+/* --- Bảng điều khiển --- */
+.console { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
+
+.stage {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+  min-width: 0;
+}
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px; border-bottom: 1px solid var(--line); }
+.scn {
+  font: 600 13.5px/1.2 var(--f-body);
+  color: var(--ink);
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 14px;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.scn .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--c); box-shadow: 0 0 10px var(--c); }
+.scn:hover { border-color: var(--c); }
+.scn[aria-pressed="true"] { background: color-mix(in srgb, var(--c) 22%, var(--panel-2)); border-color: var(--c); }
+.scn:focus-visible, .ctl:focus-visible { outline: 2px solid var(--c-ctx); outline-offset: 2px; }
+
+.caption {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 12px 16px; min-height: 58px;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--cap, var(--c-ctx)) 10%, var(--panel));
+  transition: background .4s;
+}
+.caption .step { font: 600 12px var(--f-mono); color: var(--muted); }
+.caption .text { font-weight: 600; min-width: 0; }
+
+.svg-scroll { overflow-x: auto; }
+svg#flow { display: block; width: 100%; min-width: 760px; height: auto; }
+
+.zone { fill: color-mix(in srgb, var(--c-hook) 6%, transparent); stroke: color-mix(in srgb, var(--c-hook) 40%, transparent); stroke-dasharray: 3 6; }
+.zone.repo { fill: color-mix(in srgb, var(--c-ci) 6%, transparent); stroke: color-mix(in srgb, var(--c-ci) 40%, transparent); }
+.zone.loop { fill: color-mix(in srgb, var(--c-plan) 5%, transparent); stroke: color-mix(in srgb, var(--c-plan) 35%, transparent); }
+.zone-label { font: 700 11px var(--f-body); letter-spacing: .12em; text-transform: uppercase; fill: var(--muted); }
+
+.edge {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 2.2;
+  stroke-dasharray: 5 9;
+  animation: flow 1.4s linear infinite;
+}
+.edge.active {
+  stroke: var(--c);
+  stroke-width: 3.6;
+  stroke-dasharray: 10 8;
+  animation-duration: .5s;
+  filter: drop-shadow(0 0 6px var(--c));
+}
+@keyframes flow { to { stroke-dashoffset: -14; } }
+.edge-label { text-anchor: middle; font: 600 11.5px var(--f-mono); fill: var(--muted); paint-order: stroke; stroke: var(--panel); stroke-width: 4px; }
+
+.node rect.box {
+  fill: color-mix(in srgb, var(--c) 14%, var(--panel));
+  stroke: var(--c);
+  stroke-width: 1.8;
+  transition: fill .3s;
+}
+.node rect.bar { fill: var(--c); }
+.node .t { font: 700 15px var(--f-display); fill: var(--ink); }
+.node .s { font: 400 12px var(--f-mono); fill: var(--muted); }
+.node.hit rect.box { fill: color-mix(in srgb, var(--c) 40%, var(--panel)); }
+.node.hit { animation: pop .6s ease-out; transform-box: fill-box; transform-origin: center; }
+@keyframes pop { 0% { transform: scale(1); } 40% { transform: scale(1.07); } 100% { transform: scale(1); } }
+.node .halo { fill: none; stroke: var(--c); stroke-width: 2; opacity: 0; }
+.node.hit .halo { animation: halo .9s ease-out; }
+@keyframes halo { from { opacity: .9; stroke-width: 6; } to { opacity: 0; stroke-width: 18; } }
+
+#token circle.core { fill: var(--tok, var(--c-ctx)); }
+#token circle.glow { fill: var(--tok, var(--c-ctx)); opacity: .35; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; padding: 12px 16px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 12px; height: 12px; border-radius: 4px; background: var(--c); display: inline-block; }
+
+/* --- Nhật ký --- */
+.logbox {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 18px;
+  display: grid; grid-template-rows: auto minmax(0, 1fr) auto; max-height: 420px; min-width: 0;
+}
+.logbox .head { padding: 14px 16px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+#log { list-style: none; margin: 0; padding: 12px 14px; overflow-y: auto; display: grid; gap: 10px; align-content: start; min-height: 220px; }
+#log li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: start; font-size: 13.5px; animation: slide .35s ease-out; }
+@keyframes slide { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.badge {
+  font: 700 10.5px/1 var(--f-mono); letter-spacing: .04em;
+  padding: 5px 7px; border-radius: 6px; white-space: nowrap;
+  background: var(--c); color: var(--on-accent);
+}
+.empty { color: var(--muted); font-size: 13.5px; }
+.ctl {
+  font: 600 13px var(--f-body); color: var(--ink); background: var(--panel-2);
+  border: 1px solid var(--line); border-radius: 10px; padding: 7px 12px; cursor: pointer;
+  --c: var(--c-ctx);
+}
+.ctl[aria-pressed="true"] { border-color: var(--c-ci); background: color-mix(in srgb, var(--c-ci) 20%, var(--panel-2)); }
+.logbox .foot { padding: 12px 16px; border-top: 1px solid var(--line); display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* --- Phần giải thích --- */
+section { display: grid; gap: 14px; }
+.grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.card {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 16px;
+  display: grid; gap: 8px; align-content: start; min-width: 0;
+  border-top: 4px solid var(--c);
+}
+.card .tag { font: 600 11.5px var(--f-mono); color: var(--c); }
+.card ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 14px; }
+.card .lim { font-size: 13px; color: var(--muted); }
+.table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 14px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+tr:last-child td { border-bottom: 0; }
+td .sw { display: inline-block; width: 10px; height: 10px; border-radius: 3px; background: var(--c); margin-right: 8px; }
+.done { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.done div { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: grid; gap: 4px; }
+.done b { font-family: var(--f-mono); color: var(--c-ver); }
+.notes { background: var(--panel); border: 1px dashed var(--line); border-radius: 16px; padding: 16px 18px; }
+.notes ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 14px; color: var(--muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  .edge, .edge.active { animation: none; }
+  .node.hit, .node.hit .halo, #log li { animation: none; }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Repo nguyen-quoc-thang · PR #4</div>
+    <h1>Agent Harness <span class="grad">vận hành thế nào</span></h1>
+    <p class="lead">Sơ đồ này cho thấy đường đi của một yêu cầu: từ lúc anh giao việc cho tác tử AI, qua hai lớp kiểm soát, chạy lệnh, tự kiểm tra kết quả, ghi nhớ bài học, cho đến khi CI trên GitHub xác nhận. Chọn một tình huống để xem chấm sáng chạy qua từng khối, kèm ghi chú ở mỗi bước.</p>
+  </header>
+
+  <div class="console">
+    <div class="stage">
+      <div class="toolbar" role="group" aria-label="Chọn tình huống">
+        <button class="scn" id="s-ok" style="--c: var(--c-exec)" aria-pressed="false"><span class="dot"></span>Chạy test</button>
+        <button class="scn" id="s-loop" style="--c: var(--c-ver)" aria-pressed="false"><span class="dot"></span>Tác vụ thật có vòng lặp</button>
+        <button class="scn" id="s-rm" style="--c: var(--c-deny)" aria-pressed="false"><span class="dot"></span>rm -r -f src</button>
+        <button class="scn" id="s-sql" style="--c: var(--c-ask)" aria-pressed="false"><span class="dot"></span>DROP TABLE qua sqlcmd</button>
+        <button class="scn" id="s-pwd" style="--c: var(--c-hook)" aria-pressed="false"><span class="dot"></span>Ghi mật khẩu vào code</button>
+        <button class="scn" id="s-push" style="--c: var(--c-perm)" aria-pressed="false"><span class="dot"></span>git push --force</button>
+      </div>
+      <div class="caption" id="caption">
+        <span class="step" id="cap-step">SẴN SÀNG</span>
+        <span class="text" id="cap-text">Bấm một tình huống phía trên để bắt đầu.</span>
+      </div>
+      <div class="svg-scroll">
+        <svg id="flow" viewBox="-20 -10 1170 700" role="img" aria-label="Sơ đồ luồng hoạt động của agent harness">
+          <defs>
+            <filter id="blur" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="6"/></filter>
+          </defs>
+          <g id="zones">
+            <rect class="zone loop" x="-6" y="0" width="910" height="122" rx="18"/>
+            <text class="zone-label" x="10" y="114">Think · lập kế hoạch</text>
+            <rect class="zone" x="690" y="150" width="452" height="374" rx="18"/>
+            <text class="zone-label" x="706" y="512">Policy Gate + Sandbox</text>
+            <rect class="zone loop" x="-6" y="420" width="680" height="122" rx="18"/>
+            <text class="zone-label" x="10" y="534">Observe → Verify → Memory</text>
+            <rect class="zone repo" x="-6" y="562" width="460" height="118" rx="18"/>
+            <text class="zone-label" x="10" y="672">GitHub</text>
+          </g>
+          <g id="edges"></g>
+          <g id="labels"></g>
+          <g id="nodes"></g>
+          <g id="token" transform="translate(-100,-100)">
+            <circle class="glow" r="16" filter="url(#blur)"/>
+            <circle class="core" r="7.5"/>
+          </g>
+        </svg>
+      </div>
+      <div class="legend" aria-label="Chú giải màu">
+        <span style="--c: var(--c-exec)"><i></i>Được tự chạy</span>
+        <span style="--c: var(--c-ask)"><i></i>Phải xin duyệt</span>
+        <span style="--c: var(--c-deny)"><i></i>Bị chặn</span>
+        <span style="--c: var(--c-hook)"><i></i>Lớp 1 · hook</span>
+        <span style="--c: var(--c-perm)"><i></i>Lớp 2 · phân quyền</span>
+        <span style="--c: var(--c-ver)"><i></i>Kiểm tra DONE</span>
+        <span style="--c: var(--c-ci)"><i></i>CI trên GitHub</span>
+      </div>
+    </div>
+
+    <aside class="logbox" aria-label="Nhật ký từng bước">
+      <div class="head">
+        <h3>Nhật ký</h3>
+        <span class="eyebrow" id="log-count">0 bước</span>
+      </div>
+      <ol id="log"><li class="empty">Chưa có bước nào. Chọn một tình huống để xem từng bước được ghi lại tại đây.</li></ol>
+      <div class="foot">
+        <button class="ctl" id="replay">Chạy lại</button>
+        <button class="ctl" id="auto" aria-pressed="false">Tự chạy lần lượt</button>
+      </div>
+    </aside>
+  </div>
+
+  <section>
+    <h2>Các khối và file tương ứng</h2>
+    <p>Mỗi khối trong sơ đồ là một file thật trong repo. Agent đọc hoặc bị ràng buộc bởi các file này ở mỗi phiên làm việc.</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Khối</th><th>File</th><th>Việc nó làm</th></tr></thead>
+        <tbody>
+          <tr><td><span class="sw" style="--c: var(--c-ctx)"></span>Context Builder</td><td><code>CLAUDE.md</code> → <code>AGENTS.md</code></td><td>Nạp kiến trúc, lệnh chuẩn, luật an toàn và định nghĩa DONE vào đầu mỗi phiên.</td></tr>
+          <tr><td><span class="sw" style="--c: var(--c-plan)"></span>Lập kế hoạch</td><td><code>todo.md</code></td><td>Ghi các bước của tác vụ hiện tại, đánh dấu đã xong, đang làm, còn treo.</td></tr>
+          <tr><td><span class="sw" style="--c: var(--c-act)"></span>Tool Registry</td><td><code>settings.local.json</code> (allow)</td><td>Danh sách lệnh được tự chạy: <code>pytest</code>, <code>ruff check</code>, các lệnh git chỉ đọc.</td></tr>
+          <tr><td><span class="sw" style="--c: var(--c-hook)"></span>Policy Gate · lớp 1</td><td><code>.claude/hooks/guard.py</code></td><td>Soi nội dung từng lệnh và từng file sắp ghi, chặn hoặc hỏi trước khi chạy.</td></tr>
+          <tr><td><span class="sw" style="--c: var(--c-perm)"></span>Policy Gate · lớp 2</td><td><code>settings.local.json</code> (ask, deny)</td><td>Khớp mẫu lệnh: mọi lần sửa file phải duyệt, cấm force-push, cấm đọc <code>.env</code>.</td></tr>
+          <tr><td><span class="sw" style="--c: var(--c-exec)"></span>Sandbox</td><td><code>guard.py</code></td><td>Chỉ cho ghi file bên trong thư mục dự án.</td></tr>
+          <tr><td><span class="sw" style="--c: var(--c-obs)"></span>Observe &amp; Trim</td><td><code>pytest -q</code>, <code>ruff --quiet</code></td><td>Chỉ lấy kết quả ngắn gọn để không làm tràn bộ nhớ ngữ cảnh.</td></tr>
+          <tr><td><span class="sw" style="--c: var(--c-ver)"></span>Verifier</td><td><code>AGENTS.md</code> mục 5, CI</td><td>Chưa đủ 3 điều kiện DONE thì quay lại sửa tiếp.</td></tr>
+          <tr><td><span class="sw" style="--c: var(--c-mem)"></span>Memory</td><td><code>MEMORY.md</code></td><td>Lưu bài học và quyết định kỹ thuật, dùng lại ở các phiên sau.</td></tr>
+          <tr><td><span class="sw" style="--c: var(--c-db)"></span>Truy cập CSDL</td><td><code>src/db/connection.py</code>, <code>nhan_su.py</code></td><td>Chỉ SELECT tham số hóa khi đọc; chỉ INSERT/UPDATE có WHERE khi ghi; xóa mềm bằng <code>IsActive = 0</code>.</td></tr>
+          <tr><td><span class="sw" style="--c: var(--c-ci)"></span>CI</td><td><code>.github/workflows/ci.yml</code></td><td>Chạy lại ruff và pytest trên Python 3.11 và 3.13 mỗi lần đẩy code.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Năm lớp phòng thủ</h2>
+    <p>Không lớp nào hoàn hảo một mình. Lệnh nguy hiểm phải lọt qua tất cả các lớp mới gây hại được.</p>
+    <div class="grid">
+      <div class="card" style="--c: var(--c-hook)">
+        <span class="tag">Lớp 1 · guard.py</span>
+        <h3>Hook soi nội dung</h3>
+        <ul>
+          <li>Cấm mọi kiểu <code>rm -rf</code>, kể cả <code>rm -r -f</code>, <code>rm -fr</code></li>
+          <li>Cấm <code>SHUTDOWN</code>, <code>DROP DATABASE</code></li>
+          <li>Cấm ghi file ngoài dự án và mật khẩu viết thẳng</li>
+          <li>Hỏi trước câu SQL ghi hoặc đổi cấu trúc</li>
+        </ul>
+        <p class="lim">Giới hạn: soi theo chữ nên đôi khi chặn nhầm, ví dụ commit message có chữ SQL.</p>
+      </div>
+      <div class="card" style="--c: var(--c-perm)">
+        <span class="tag">Lớp 2 · settings.local.json</span>
+        <h3>Luật phân quyền</h3>
+        <ul>
+          <li>Tự chạy: test, lint, git chỉ đọc</li>
+          <li>Hỏi: sửa file, commit, push, cài thư viện, sqlcmd</li>
+          <li>Cấm: force-push, reset --hard, đọc <code>.env</code></li>
+        </ul>
+        <p class="lim">Giới hạn: khớp mẫu chữ, biến thể khác cách viết có thể lọt.</p>
+      </div>
+      <div class="card" style="--c: var(--c-db)">
+        <span class="tag">Lớp 3 · connection.py</span>
+        <h3>Code truy cập CSDL</h3>
+        <ul>
+          <li><code>fetch_all</code> chỉ nhận một câu SELECT</li>
+          <li><code>execute_write</code> chỉ INSERT hoặc UPDATE có WHERE</li>
+          <li>Không có đường nào để DELETE</li>
+        </ul>
+        <p class="lim">Giới hạn: chỉ bảo vệ code đi qua module này.</p>
+      </div>
+      <div class="card" style="--c: var(--c-exec)">
+        <span class="tag">Lớp 4 · SQL Server</span>
+        <h3>Tài khoản CSDL</h3>
+        <ul>
+          <li>Agent: chỉ <code>db_datareader</code></li>
+          <li>Ứng dụng: không cấp quyền DELETE</li>
+        </ul>
+        <p class="lim">Lớp chắc chắn nhất. Cần anh cấu hình trên máy chủ.</p>
+      </div>
+      <div class="card" style="--c: var(--c-ci)">
+        <span class="tag">Lớp 5 · GitHub Actions</span>
+        <h3>CI tự động</h3>
+        <ul>
+          <li>ruff với luật bảo mật S</li>
+          <li>pytest trên Python 3.11 và 3.13</li>
+          <li>Chạy mỗi PR và mỗi lần đẩy lên main</li>
+        </ul>
+        <p class="lim">Bắt lỗi sau khi code đã viết, không chặn lệnh lúc agent chạy.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Khi nào một việc được tính là xong</h2>
+    <div class="done">
+      <div><b>1 · pytest -q</b><span>Toàn bộ test xanh 100%.</span></div>
+      <div><b>2 · ruff check</b><span>Không phát sinh lỗi lint mới.</span></div>
+      <div><b>3 · todo.md + MEMORY.md</b><span>Trạng thái đã cập nhật, bài học quan trọng đã ghi lại.</span></div>
+    </div>
+  </section>
+
+  <div class="notes">
+    <h3 style="margin-bottom:8px">Ghi chú</h3>
+    <ul>
+      <li>Tình huống "Tác vụ thật có vòng lặp" dùng kết quả minh họa (lần đầu 1 test đỏ) để cho thấy Verifier đẩy việc quay lại bước lập kế hoạch.</li>
+      <li>Hook chạy trước luật phân quyền: theo tài liệu Claude Code, hook PreToolUse được gọi trước khi xét quyền của công cụ.</li>
+      <li>Phân quyền tài khoản trên SQL Server (lớp 4) chưa được cấu hình; sơ đồ thể hiện trạng thái mong muốn.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+(function () {
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const SVGNS = "http://www.w3.org/2000/svg";
+  const W = 176, H = 64;
+
+  const NODES = {
+    user: { x: 100,  y: 60,  t: "Người dùng",        s: "giao việc 1 câu",      c: "user" },
+    ctx:  { x: 330,  y: 60,  t: "Context Builder",   s: "CLAUDE.md→AGENTS.md",  c: "ctx" },
+    plan: { x: 560,  y: 60,  t: "Lập kế hoạch",       s: "todo.md",              c: "plan" },
+    act:  { x: 790,  y: 60,  t: "Agent gọi công cụ",  s: "Bash · Edit · Write",  c: "act" },
+    hook: { x: 790,  y: 200, t: "Lớp 1 · Hook",       s: "guard.py",             c: "hook" },
+    perm: { x: 790,  y: 340, t: "Lớp 2 · Phân quyền", s: "settings.local.json",  c: "perm" },
+    exec: { x: 790,  y: 480, t: "Thực thi",           s: "trong thư mục dự án",  c: "exec" },
+    deny: { x: 1020, y: 200, t: "CHẶN",               s: "deny · exit 2",        c: "deny" },
+    ask:  { x: 1020, y: 340, t: "Người duyệt",        s: "ask · chờ bấm duyệt",  c: "ask" },
+    db:   { x: 1020, y: 480, t: "SQL Server",         s: "connection.py",        c: "db" },
+    obs:  { x: 560,  y: 480, t: "Observe & Trim",     s: "pytest -q · ruff",     c: "obs" },
+    ver:  { x: 330,  y: 480, t: "Verifier",           s: "3 điều kiện DONE",     c: "ver" },
+    mem:  { x: 100,  y: 480, t: "Memory",             s: "MEMORY.md",            c: "mem" },
+    ci:   { x: 100,  y: 620, t: "CI",                 s: "GitHub Actions",       c: "ci" },
+    pr:   { x: 330,  y: 620, t: "Pull Request",       s: "chờ người merge",      c: "pr" }
+  };
+
+  const EDGES = {
+    u_c:    { d: "M188,60 H242" },
+    c_p:    { d: "M418,60 H472" },
+    p_a:    { d: "M648,60 H702" },
+    a_h:    { d: "M790,92 V168" },
+    h_p:    { d: "M790,232 V308" },
+    p_e:    { d: "M790,372 V448" },
+    e_o:    { d: "M702,480 H648" },
+    o_v:    { d: "M472,480 H418" },
+    v_m:    { d: "M242,480 H188" },
+    m_ci:   { d: "M100,512 V588" },
+    ci_pr:  { d: "M188,620 H242" },
+    v_back: { d: "M330,448 C330,300 560,270 560,92", label: "chưa đạt" },
+    h_deny: { d: "M878,200 H932", label: "deny" },
+    h_ask:  { d: "M850,232 C850,290 1020,262 1020,308", label: "ask" },
+    p_ask:  { d: "M878,340 H932", label: "ask" },
+    p_deny: { d: "M878,352 C960,420 1128,420 1128,300 C1128,230 1120,205 1108,200", label: "deny" },
+    ask_e:  { d: "M990,372 C990,430 900,420 862,448", label: "đã duyệt" },
+    e_db:   { d: "M878,488 H932" },
+    deny_a: { d: "M1020,168 C1020,70 960,60 878,60", label: "báo lý do" }
+  };
+
+  const elEdges = document.getElementById("edges");
+  const elLabels = document.getElementById("labels");
+  const elNodes = document.getElementById("nodes");
+  const token = document.getElementById("token");
+
+  for (const [id, e] of Object.entries(EDGES)) {
+    const p = document.createElementNS(SVGNS, "path");
+    p.setAttribute("d", e.d);
+    p.setAttribute("class", "edge");
+    p.id = "e-" + id;
+    elEdges.appendChild(p);
+    e.el = p;
+    if (e.label) {
+      const len = p.getTotalLength();
+      const pt = p.getPointAtLength(len / 2);
+      const t = document.createElementNS(SVGNS, "text");
+      t.setAttribute("class", "edge-label");
+      t.setAttribute("x", pt.x);
+      t.setAttribute("y", pt.y - 8);
+      t.textContent = e.label;
+      elLabels.appendChild(t);
+    }
+  }
+
+  for (const [id, n] of Object.entries(NODES)) {
+    const g = document.createElementNS(SVGNS, "g");
+    g.setAttribute("class", "node");
+    g.style.setProperty("--c", "var(--c-" + n.c + ")");
+    g.id = "n-" + id;
+    const x = n.x - W / 2, y = n.y - H / 2;
+    g.innerHTML =
+      '<rect class="halo" x="' + x + '" y="' + y + '" width="' + W + '" height="' + H + '" rx="14"/>' +
+      '<rect class="box" x="' + x + '" y="' + y + '" width="' + W + '" height="' + H + '" rx="14"/>' +
+      '<rect class="bar" x="' + (x + 12) + '" y="' + (y + 14) + '" width="4" height="36" rx="2"/>' +
+      '<text class="t" x="' + (x + 26) + '" y="' + (y + 28) + '"></text>' +
+      '<text class="s" x="' + (x + 26) + '" y="' + (y + 47) + '"></text>';
+    g.querySelector(".t").textContent = n.t;
+    g.querySelector(".s").textContent = n.s;
+    elNodes.appendChild(g);
+    n.el = g;
+  }
+
+  // Mỗi bước: e = cạnh đi qua, r = đi ngược, n = ô đích, b = nhãn, k = màu nhãn, t = ghi chú.
+  const S = (e, n, b, k, t, r) => ({ e, n, b, k, t, r: !!r });
+  const intro = (task, cmd) => [
+    S("u_c", "ctx", "NẠP", "ctx", "CLAUDE.md nạp AGENTS.md, MEMORY.md, todo.md vào ngữ cảnh. Việc: " + task),
+    S("c_p", "plan", "KẾ HOẠCH", "plan", "Agent ghi các bước vào todo.md trước khi làm."),
+    S("p_a", "act", "GỌI", "act", "Agent gọi công cụ: " + cmd)
+  ];
+
+  const SCENARIOS = {
+    "s-ok": { name: "Chạy test", steps: [
+      ...intro("chạy toàn bộ test", "pytest -q --tb=short"),
+      S("a_h", "hook", "QUA", "exec", "guard.py: không phải lệnh xóa, không chạy SQL → cho qua."),
+      S("h_p", "perm", "ALLOW", "exec", 'Khớp luật "Bash(pytest *)" → được tự chạy, không cần hỏi.'),
+      S("p_e", "exec", "CHẠY", "exec", "Lệnh chạy trong thư mục dự án."),
+      S("e_o", "obs", "RÚT GỌN", "obs", 'Chỉ giữ dòng "78 passed" thay vì cả trang log.'),
+      S("o_v", "ver", "ĐẠT", "ver", "Đủ 3 điều kiện DONE: test xanh, ruff sạch, todo.md đã cập nhật."),
+      S("v_m", "mem", "GHI NHỚ", "mem", "Có bài học mới thì ghi vào MEMORY.md cho các phiên sau."),
+      S("m_ci", "ci", "CI", "ci", "git push → GitHub Actions chạy lại ruff + pytest trên Python 3.11 và 3.13."),
+      S("ci_pr", "pr", "XANH", "pr", "CI xanh. PR chờ anh xem và merge.")
+    ]},
+    "s-loop": { name: "Tác vụ thật có vòng lặp", steps: [
+      ...intro("thêm hàm xóa mềm cho bảng NhanSu", "Edit src/db/nhan_su.py"),
+      S("a_h", "hook", "QUA", "exec", "File nằm trong dự án, không chứa mật khẩu → cho qua."),
+      S("h_p", "perm", "ASK", "ask", 'Khớp luật "Edit(**)" → mọi lần sửa file đều phải hỏi.'),
+      S("p_ask", "ask", "CHỜ", "ask", "Anh xem nội dung sửa và bấm duyệt."),
+      S("ask_e", "exec", "GHI", "exec", "Được duyệt, file được ghi."),
+      S("e_o", "obs", "RÚT GỌN", "obs", "pytest -q: 1 failed (minh họa). Chỉ tên test lỗi và dòng lỗi được giữ lại."),
+      S("o_v", "ver", "CHƯA ĐẠT", "deny", "Còn test đỏ → chưa được tính là xong."),
+      S("v_back", "plan", "SỬA TIẾP", "plan", "Quay lại todo.md: ghi nguyên nhân, lên bước sửa."),
+      S("p_a", "act", "GỌI", "act", "Edit src/db/nhan_su.py lần 2."),
+      S("a_h", "hook", "QUA", "exec", "Hook kiểm tra lại từ đầu → cho qua."),
+      S("h_p", "perm", "ASK", "ask", "Vẫn phải xin duyệt như lần trước."),
+      S("p_ask", "ask", "CHỜ", "ask", "Anh duyệt lần sửa thứ hai."),
+      S("ask_e", "exec", "GHI", "exec", "File được ghi."),
+      S("e_o", "obs", "RÚT GỌN", "obs", "pytest -q: 78 passed. ruff: sạch."),
+      S("o_v", "ver", "ĐẠT", "ver", "Đủ 3 điều kiện DONE."),
+      S("v_m", "mem", "GHI NHỚ", "mem", "Ghi bài học vào MEMORY.md: dùng hằng FAKE_SECRET trong test."),
+      S("m_ci", "ci", "CI", "ci", "Đẩy code lên, CI chạy lại toàn bộ."),
+      S("ci_pr", "pr", "XANH", "pr", "Cả hai job xanh. PR sẵn sàng.")
+    ]},
+    "s-rm": { name: "rm -r -f src", steps: [
+      ...intro("dọn thư mục", "rm -r -f src"),
+      S("a_h", "hook", "SOI", "hook", "guard.py tách cờ của lệnh rm: có cả r và f → xóa đệ quy cưỡng bức."),
+      S("h_deny", "deny", "DENY", "deny", 'Chặn ngay (exit 2). Luật "Bash(rm -rf *)" sẽ bỏ lọt cách viết này, hook thì không.'),
+      S("deny_a", "act", "PHẢN HỒI", "act", "Lý do bị chặn được gửi lại cho agent để chọn cách khác.")
+    ]},
+    "s-sql": { name: "DROP TABLE qua sqlcmd", steps: [
+      ...intro("thử xóa bảng tạm", 'sqlcmd -Q "DROP TABLE NhanSu"'),
+      S("a_h", "hook", "ASK", "ask", "Lệnh CSDL có câu DROP → chỉ SELECT mới được tự chạy, phải xin duyệt."),
+      S("h_ask", "ask", "CHỜ", "ask", "Hộp hỏi hiện ra kèm lý do. Anh quyết định có cho chạy không."),
+      S("ask_e", "exec", "DUYỆT", "exec", "Giả sử lỡ tay bấm duyệt, lệnh được gửi đi."),
+      S("e_db", "db", "TỪ CHỐI", "deny", "Tài khoản của agent chỉ có quyền đọc (db_datareader) → SQL Server từ chối DROP."),
+      S("e_db", "exec", "LỖI QUYỀN", "deny", "Lỗi quyền trả về cho agent.", true),
+      S("e_o", "obs", "BÁO LẠI", "obs", "Agent đọc lỗi rút gọn và báo lại cho anh. Bảng NhanSu vẫn nguyên vẹn.")
+    ]},
+    "s-pwd": { name: "Ghi mật khẩu vào code", steps: [
+      ...intro("thêm cấu hình kết nối", "Write src/db/config.py, trong đó mật khẩu viết thẳng vào code"),
+      S("a_h", "hook", "SOI", "hook", "guard.py đọc nội dung file sắp ghi và tìm thấy mật khẩu viết thẳng."),
+      S("h_deny", "deny", "DENY", "deny", "Chặn, file không được tạo."),
+      S("deny_a", "act", "GỢI Ý", "act", "Agent được nhắc: đọc mật khẩu từ biến môi trường trong .env.")
+    ]},
+    "s-push": { name: "git push --force", steps: [
+      ...intro("đẩy code đè lên nhánh", "git push --force"),
+      S("a_h", "hook", "QUA", "exec", "Không phải lệnh xóa hay SQL → hook cho qua."),
+      S("h_p", "perm", "SOI", "perm", 'Khớp luật deny "Bash(git push --force *)".'),
+      S("p_deny", "deny", "DENY", "deny", "Bị chặn bởi settings.local.json. Lịch sử trên GitHub an toàn."),
+      S("deny_a", "act", "PHẢN HỒI", "act", "Agent nhận lý do, dùng git push thường (vẫn phải xin duyệt).")
+    ]}
+  };
+
+  const cap = document.getElementById("caption");
+  const capStep = document.getElementById("cap-step");
+  const capText = document.getElementById("cap-text");
+  const log = document.getElementById("log");
+  const logCount = document.getElementById("log-count");
+  const buttons = [...document.querySelectorAll(".scn")];
+  const autoBtn = document.getElementById("auto");
+
+  let runId = 0;
+  let current = "s-ok";
+  let autoOn = false;
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  const cvar = (k) => "var(--c-" + k + ")";
+
+  function placeToken(x, y) { token.setAttribute("transform", "translate(" + x + "," + y + ")"); }
+
+  function travel(edge, rev, color, id) {
+    const p = edge.el;
+    const len = p.getTotalLength();
+    p.style.setProperty("--c", color);
+    p.classList.add("active");
+    token.style.setProperty("--tok", color);
+    if (reduce) {
+      const pt = p.getPointAtLength(rev ? 0 : len);
+      placeToken(pt.x, pt.y);
+      return Promise.resolve();
+    }
+    const dur = Math.max(450, len * 3.2);
+    return new Promise((resolve) => {
+      const t0 = performance.now();
+      function frame(now) {
+        if (id !== runId) return resolve();
+        const k = Math.min(1, (now - t0) / dur);
+        const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+        const pt = p.getPointAtLength(len * (rev ? 1 - e : e));
+        placeToken(pt.x, pt.y);
+        if (k < 1) requestAnimationFrame(frame); else resolve();
+      }
+      requestAnimationFrame(frame);
+    });
+  }
+
+  function hitNode(id) {
+    const g = NODES[id].el;
+    g.classList.remove("hit");
+    void g.getBBox();
+    g.classList.add("hit");
+  }
+
+  function resetVisuals() {
+    for (const e of Object.values(EDGES)) e.el.classList.remove("active");
+    for (const n of Object.values(NODES)) n.el.classList.remove("hit");
+  }
+
+  function addLog(i, total, step) {
+    if (log.querySelector(".empty")) log.innerHTML = "";
+    const li = document.createElement("li");
+    const b = document.createElement("span");
+    b.className = "badge";
+    b.style.setProperty("--c", cvar(step.k));
+    b.textContent = step.b;
+    const t = document.createElement("span");
+    t.textContent = step.t;
+    li.append(b, t);
+    log.appendChild(li);
+    log.scrollTop = log.scrollHeight;
+    logCount.textContent = (i + 1) + "/" + total + " bước";
+    capStep.textContent = "BƯỚC " + (i + 1) + "/" + total + " · " + step.b;
+    capText.textContent = step.t;
+    cap.style.setProperty("--cap", cvar(step.k));
+  }
+
+  async function run(key) {
+    const id = ++runId;
+    current = key;
+    const sc = SCENARIOS[key];
+    buttons.forEach((b) => b.setAttribute("aria-pressed", String(b.id === key)));
+    resetVisuals();
+    log.innerHTML = "";
+    const start = NODES.user;
+    placeToken(start.x, start.y);
+    hitNode("user");
+    capStep.textContent = "BẮT ĐẦU";
+    capText.textContent = "Tình huống: " + sc.name;
+    cap.style.setProperty("--cap", cvar("user"));
+    await sleep(reduce ? 0 : 500);
+    for (let i = 0; i < sc.steps.length; i++) {
+      if (id !== runId) return;
+      const st = sc.steps[i];
+      // Mỗi bước chỉ làm sáng cạnh đang đi; các cạnh đã đi mờ dần lại.
+      for (const e of Object.values(EDGES)) if (e !== EDGES[st.e]) e.el.classList.remove("active");
+      await travel(EDGES[st.e], st.r, cvar(st.k), id);
+      if (id !== runId) return;
+      hitNode(st.n);
+      addLog(i, sc.steps.length, st);
+      await sleep(reduce ? 0 : 1100);
+    }
+    if (id === runId && autoOn) {
+      await sleep(1600);
+      if (id !== runId || !autoOn) return;
+      const keys = Object.keys(SCENARIOS);
+      run(keys[(keys.indexOf(key) + 1) % keys.length]);
+    }
+  }
+
+  buttons.forEach((b) => b.addEventListener("click", () => run(b.id)));
+  document.getElementById("replay").addEventListener("click", () => run(current));
+  autoBtn.addEventListener("click", () => {
+    autoOn = !autoOn;
+    autoBtn.setAttribute("aria-pressed", String(autoOn));
+    autoBtn.textContent = autoOn ? "Dừng tự chạy" : "Tự chạy lần lượt";
+    if (autoOn) run(current);
+  });
+
+  placeToken(NODES.user.x, NODES.user.y);
+  setTimeout(() => run("s-ok"), 700);
+})();
+</script>
