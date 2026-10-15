@@ -1,15 +1,16 @@
 # KẾ HOẠCH TÁC VỤ HIỆN TẠI (todo.md)
 
-## Mục tiêu: Thêm đăng nhập cho giao diện điện thoại
+## Mục tiêu: Hướng dẫn triển khai web app lên máy chủ IIS nội bộ
 
 ### Các bước thực hiện (Think -> Act -> Observe)
-- [x] 1. `src/api/auth.py`: tài khoản trong `secrets/users.json` (gitignore), mật khẩu băm scrypt (thư viện chuẩn), phiên 12 giờ lưu trong bộ nhớ, khóa tạm 5 phút sau 5 lần sai, thông báo sai giống nhau cho tên sai/mật khẩu sai, lệnh `python -m src.api.auth` tạo chuỗi băm.
-- [x] 2. `src/api/app.py`: `/api/dang-nhap`, `/api/dang-xuat`, `/api/toi`; mọi API dữ liệu cần đăng nhập (401); giao việc/ngừng/kích hoạt cần vai trò `quan_ly` (403); cookie HttpOnly + SameSite=Strict (+ Secure khi `EMS_COOKIE_SECURE=1`); ghi nhật ký ai làm gì.
-- [x] 3. Giao diện: màn hình đăng nhập, tên + vai trò + nút đăng xuất ở đầu trang, tài khoản "xem" không thấy nút sửa, hết phiên tự về màn đăng nhập.
-- [x] 4. Test: `tests/api/test_auth.py` (9), `tests/api/test_app.py` viết lại có đăng nhập (17). `pytest -q` 120/120, `ruff` sạch.
-- [x] 5. Chạy thử trên giả lập iPhone 13: sai mật khẩu, đăng nhập, đăng xuất, tài khoản chỉ xem. Bản xem trước cập nhật.
+- [x] 1. `docs/TRIEN-KHAI-IIS.md`: 9 bước (chuẩn bị máy chủ → mã nguồn → tài khoản SQL → tài khoản đăng nhập → web.config → NTFS → App Pool/Site → kiểm tra → cập nhật/quay lại), bảng xử lý sự cố, giới hạn.
+- [x] 2. `deploy/iis/web.config.mau` (HttpPlatformHandler, 1 tiến trình, uvicorn chỉ nghe 127.0.0.1); `web.config` thật và `logs/` vào `.gitignore`.
+- [x] 3. `deploy/sql/tao-tai-khoan.sql`: tài khoản `ems_phan_cong` chỉ SELECT/INSERT/UPDATE, DENY DELETE.
+- [x] 4. `requirements-prod.txt` (thêm pyodbc 5.3.0).
+- [x] 5. Sửa lỗi: nhật ký thao tác (`ems.nhat_ky`) không ra log khi chạy uvicorn - gắn handler riêng; thêm test.
+- [x] 6. Nghiệm thu: `pytest -q` 121/121, `ruff` sạch, XML web.config hợp lệ.
 
 ### Việc còn treo
-- [ ] Tạo `secrets/users.json` thật trên máy chủ (anh tự làm, không đưa mật khẩu cho tác tử).
-- [ ] Chạy qua HTTPS (IIS reverse proxy) và đặt `EMS_COOKIE_SECURE=1`.
+- [ ] Làm theo tài liệu trên máy chủ thật (người quản trị).
+- [ ] (Tùy chọn) Đăng nhập SQL bằng Windows Authentication thay mật khẩu trong web.config - cần sửa code kết nối.
 - [ ] Đối chiếu schema thật; thử với SQL Server thật.

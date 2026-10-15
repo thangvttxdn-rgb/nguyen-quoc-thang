@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MẪU cấu hình IIS cho web app Phân công toa xe (dùng HttpPlatformHandler).
+  Cách dùng: sao chép thành web.config CÙNG THƯ MỤC này trên máy chủ rồi điền các ô <điền>.
+  web.config thật đã nằm trong .gitignore - KHÔNG commit vì chứa mật khẩu CSDL.
+  Xem hướng dẫn đầy đủ: docs/TRIEN-KHAI-IIS.md
+-->
+<configuration>
+  <system.webServer>
+    <handlers>
+      <add name="httpPlatformHandler" path="*" verb="*" modules="httpPlatformHandler"
+           resourceType="Unspecified" requireAccess="Script" />
+    </handlers>
+
+    <!-- IIS tự khởi động uvicorn, chuyển tiếp request vào cổng nội bộ %HTTP_PLATFORM_PORT%.
+         Chỉ 1 tiến trình vì phiên đăng nhập lưu trong bộ nhớ. -->
+    <httpPlatform processPath="D:\Apps\phan-cong\.venv\Scripts\python.exe"
+                  arguments="-m uvicorn src.api.app:app --app-dir D:\Apps\phan-cong --host 127.0.0.1 --port %HTTP_PLATFORM_PORT% --proxy-headers"
+                  processesPerApplication="1"
+                  startupTimeLimit="60"
+                  startupRetryCount="3"
+                  stdoutLogEnabled="true"
+                  stdoutLogFile="D:\Apps\phan-cong\logs\uvicorn">
+      <environmentVariables>
+        <environmentVariable name="PYTHONUNBUFFERED" value="1" />
+        <environmentVariable name="EMS_USERS_FILE" value="D:\Apps\phan-cong\secrets\users.json" />
+        <environmentVariable name="EMS_COOKIE_SECURE" value="1" />
+        <environmentVariable name="DB_SERVER" value="&lt;điền tên máy chủ SQL&gt;" />
+        <environmentVariable name="DB_NAME" value="&lt;điền tên CSDL&gt;" />
+        <environmentVariable name="DB_USER_APP" value="ems_phan_cong" />
+        <environmentVariable name="DB_PASSWORD_APP" value="&lt;điền&gt;" />
+        <!-- Chỉ đặt =1 khi máy chủ SQL dùng chứng chỉ tự ký nội bộ. -->
+        <environmentVariable name="DB_TRUST_CERT" value="no" />
+      </environmentVariables>
+    </httpPlatform>
+
+    <security>
+      <requestFiltering removeServerHeader="true">
+        <requestLimits maxAllowedContentLength="65536" />
+      </requestFiltering>
+    </security>
+    <httpProtocol>
+      <customHeaders>
+        <add name="X-Content-Type-Options" value="nosniff" />
+        <add name="X-Frame-Options" value="DENY" />
+        <add name="Referrer-Policy" value="same-origin" />
+      </customHeaders>
+    </httpProtocol>
+  </system.webServer>
+</configuration>

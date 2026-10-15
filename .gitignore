@@ -11,3 +11,7 @@ __pycache__/
 venv/
 .pytest_cache/
 .ruff_cache/
+
+# Cấu hình IIS thật trên máy chủ (chứa mật khẩu CSDL) - chỉ commit file mẫu .mau
+deploy/iis/web.config
+logs/

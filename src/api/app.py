@@ -34,6 +34,13 @@ COOKIE = "ems_phien"
 COOKIE_SECURE = os.environ.get("EMS_COOKIE_SECURE", "").lower() in ("1", "true", "yes")
 
 log = logging.getLogger("ems.nhat_ky")
+if not log.handlers:
+    # uvicorn chỉ cấu hình logger của nó; tự gắn handler để nhật ký thao tác ra stderr
+    # (IIS HttpPlatformHandler ghi stderr vào file log).
+    _handler = logging.StreamHandler()
+    _handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
+    log.addHandler(_handler)
+    log.setLevel(logging.INFO)
 app = FastAPI(title="Quản lý phân công toa xe", docs_url=None, redoc_url=None)
 app.mount("/static", StaticFiles(directory=SRC / "static"), name="static")
 auth = Auth()
