@@ -53,3 +53,4 @@ def test_script_chay_tron_ven(capsys):
     out = capsys.readouterr().out
     assert "DeactivateResult(nhan_su_changed=True, phan_cong_count=2)" in out
     assert "đã rollback" in out and "bị chặn" in out
+    assert "[5] Giao việc mới -> ['Khám đoàn tàu SE3 tại ga Diêu Trì']" in out

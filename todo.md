@@ -1,12 +1,13 @@
 # KẾ HOẠCH TÁC VỤ HIỆN TẠI (todo.md)
 
-## Mục tiêu: Ví dụ thực tế chạy được cho xóa mềm NhanSu + PhanCong
+## Mục tiêu: Hàm thêm phân công mới cho nhân sự
 
 ### Các bước thực hiện (Think -> Act -> Observe)
-- [x] 1. `examples/vi_du_ngung_nhan_su.py`: dữ liệu mẫu 3 trạm KCTX, SQLite trong bộ nhớ, lớp bọc giống pyodbc, 4 tình huống (ngừng, mã sai → rollback, kích hoạt lại, thử DELETE).
-- [x] 2. `tests/examples/test_vi_du_ngung_nhan_su.py`: chạy câu SQL thật trên SQLite (5 test).
-- [x] 3. Nghiệm thu: `pytest -q` 85/85 xanh, `ruff check .` sạch.
+- [x] 1. `src/db/phan_cong.py`: `add(conn, nhan_su_id, noi_dung)` - chỉ giao cho nhân sự tồn tại và đang hoạt động, chặn trùng phân công đang hiệu lực, kiểm tra nội dung rỗng/quá dài; `list_active(conn, nhan_su_id)`.
+- [x] 2. Test: `tests/db/test_phan_cong.py` (10 test, gồm 3 test chạy SQL thật trên SQLite).
+- [x] 3. Ví dụ: thêm tình huống [5] giao việc lại sau khi kích hoạt nhân sự.
+- [x] 4. Nghiệm thu: `pytest -q` 95/95 xanh, `ruff check .` sạch.
 
 ### Việc còn treo
-- [ ] Đối chiếu schema thật: khóa `NhanSu.Id`, cột liên kết `PhanCong.NhanSuId`, cờ `IsActive` ở cả hai bảng.
+- [ ] Đối chiếu schema thật: `NhanSu.Id`, `PhanCong.NhanSuId`, `PhanCong.NoiDung` (độ dài?), `IsActive`, `PhanCong.Id` có IDENTITY không.
 - [ ] Thử với SQL Server thật (cần `pyodbc` + ODBC Driver 18 + `.env`).

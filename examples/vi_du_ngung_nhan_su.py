@@ -13,7 +13,7 @@ from __future__ import annotations
 import sqlite3
 from typing import Any
 
-from src.db import nhan_su
+from src.db import nhan_su, phan_cong
 from src.db.connection import UnsafeQueryError, execute_write, fetch_all, transaction
 
 SCHEMA = """
@@ -129,6 +129,11 @@ def main() -> None:
         execute_write(conn, "DELETE FROM NhanSu WHERE Id = ?", (2,))
     except UnsafeQueryError as e:
         print(f"\n[4] Thử DELETE -> bị chặn: {e}")
+
+    # 5. Giao việc mới cho chị Bình sau khi quay lại làm.
+    with transaction(conn):
+        phan_cong.add(conn, 2, "Khám đoàn tàu SE3 tại ga Diêu Trì")
+    print(f"\n[5] Giao việc mới -> {[r['NoiDung'] for r in phan_cong.list_active(conn, 2)]}")
 
     conn.close()
 
