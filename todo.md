@@ -1,12 +1,13 @@
 # KẾ HOẠCH TÁC VỤ HIỆN TẠI (todo.md)
 
-## Mục tiêu: Hàm ghi có xóa mềm cho bảng NhanSu
+## Mục tiêu: Thêm workflow CI chạy pytest và ruff
 
 ### Các bước thực hiện (Think -> Act -> Observe)
-- [x] 1. `src/db/connection.py`: tài khoản ghi riêng (`read_only=False`), `transaction` (commit/rollback), `execute_write` (chỉ INSERT/UPDATE có WHERE, cấm DELETE).
-- [x] 2. `src/db/nhan_su.py`: `deactivate`, `reactivate`, `list_active`, lỗi `NhanSuNotFoundError`.
-- [x] 3. Test: `tests/db/test_write.py`, `tests/db/test_nhan_su.py`, kết nối giả `tests/db/conftest.py`.
-- [x] 4. Nghiệm thu: `pytest -q` 78/78 xanh, `ruff check .` sạch.
-- [x] 5. Đổi luật deny `.env.*` sang tên cụ thể; thêm `DB_USER_APP` / `DB_PASSWORD_APP` vào `.env.example`.
-- [ ] 6. Đối chiếu schema thật: tên khóa chính (`Id`?) và cột `IsActive` của `NhanSu`.
-- [ ] 7. Hỏi nghiệp vụ: ngừng hoạt động nhân sự có phải ngừng luôn các bản ghi `PhanCong` liên quan?
+- [x] 1. `requirements-dev.txt`: ghim `pytest==9.1.1`, `ruff==0.16.8`.
+- [x] 2. `.github/workflows/ci.yml`: ruff (gồm luật bảo mật S) + pytest, ma trận Python 3.11 / 3.13, quyền `contents: read`.
+- [x] 3. Chạy thử đúng các bước CI trên máy: Python 3.11 và 3.13 đều 78/78 xanh, ruff sạch.
+- [ ] 4. Theo dõi lần chạy CI đầu tiên trên PR #4.
+
+### Việc còn treo từ tác vụ trước
+- [ ] Đối chiếu schema thật của `NhanSu` (khóa `Id`? cờ `IsActive`?).
+- [ ] Nghiệp vụ: ngừng nhân sự có ngừng luôn `PhanCong` liên quan?
