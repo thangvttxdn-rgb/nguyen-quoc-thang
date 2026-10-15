@@ -1,15 +1,14 @@
 {
   "permissions": {
     "allow": [
+      "Bash(pytest:*)",
+      "Bash(python -m pytest:*)",
+      "Bash(ruff check:*)",
       "Bash(git status:*)",
       "Bash(git diff:*)",
       "Bash(git log:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(npm ci)",
-      "Bash(npm test:*)",
-      "Bash(npm run lint:*)",
-      "Bash(npm run build:*)",
       "Edit(src/**)",
       "Edit(tests/**)",
       "Edit(todo.md)",
@@ -17,9 +16,14 @@
     ],
     "ask": [
       "Bash(git push:*)",
-      "Bash(npm install:*)",
+      "Bash(pip install:*)",
+      "Bash(python -m pip install:*)",
+      "Bash(uv add:*)",
+      "Bash(sqlcmd:*)",
       "Edit(AGENTS.md)",
-      "Edit(.claude/**)"
+      "Edit(.claude/**)",
+      "Edit(requirements*.txt)",
+      "Edit(pyproject.toml)"
     ],
     "deny": [
       "Read(./.env)",
@@ -27,6 +31,7 @@
       "Read(./secrets/**)",
       "Bash(rm -rf:*)",
       "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
       "Bash(git reset --hard:*)",
       "Bash(curl:*)",
       "Bash(wget:*)"

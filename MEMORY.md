@@ -1,15 +1,11 @@
-# MEMORY.md — Bộ nhớ dài hạn
+# BỘ NHỚ DÀI HẠN DỰ ÁN (MEMORY.md)
 
-> Vai trò: **[8] Memory – Forever**. Ghi bài học, quyết định kỹ thuật, "bẫy" đã gặp — thứ còn đúng ở các phiên sau.
-> Không ghi trạng thái tác vụ (để ở `todo.md`). Mỗi mục: ngắn, có ngày, có lý do.
+*Chỉ ghi lại các quyết định kiến trúc quan trọng, đặc thù hệ thống và các lỗi hóc búa đã xử lý (Kèm tên file và số dòng).*
 
-## Quyết định kiến trúc
-- 2026-10-15 — Khởi tạo khung repo cho tác tử AI (AGENTS.md / MEMORY.md / todo.md / settings). Lý do: chuẩn hoá cách làm việc giữa các phiên.
+## 1. Lỗi điển hình & Bài học xương máu (Bug Patterns)
+- `[2026-10-15]` **Lỗi sai lệch số liệu / kiểu dữ liệu**: Khi xử lý dữ liệu từ SQL Server lên Python, các trường `DECIMAL` cần ép kiểu rõ ràng trước khi serialize sang JSON (Xem cách xử lý tại `src/utils/formatter.py:42`).
+- `[Mẫu từ sơ đồ]` `"currency bug: tax.py:88"` — Luôn kiểm tra đơn vị tiền tệ trước khi áp thuế.
 
-## Bài học & lỗi đã gặp
-<!-- Mẫu:
-- YYYY-MM-DD — [Chủ đề] Hiện tượng → Nguyên nhân → Cách xử lý.
--->
-
-## Thông tin hạ tầng đã xác nhận
-<!-- Chỉ ghi thông tin KHÔNG nhạy cảm (không mật khẩu, token). -->
+## 2. Đặc thù Cơ sở dữ liệu & Nghiệp vụ
+- Bảng `NhanSu` và `PhanCong` liên kết qua mã định danh nội bộ, tuyệt đối không xóa cứng (hard delete) mà chỉ cập nhật cờ `IsActive = 0`.
+- Các truy vấn báo cáo tổng hợp bắt buộc phải có `WITH (NOLOCK)` hoặc tối ưu index để tránh khóa bảng trong giờ cao điểm.

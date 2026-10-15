@@ -1,17 +1,13 @@
-# todo.md — Tác vụ hiện tại
+# KẾ HOẠCH TÁC VỤ HIỆN TẠI (todo.md)
 
-> Vai trò: **[8] Memory – This Task**. Ghi đè khi bắt đầu tác vụ mới; chuyển bài học sang `MEMORY.md` trước khi xoá.
+## Mục tiêu: [Tên tính năng hoặc lỗi cần sửa - VD: Sửa lỗi tính toán ở phân hệ X]
 
-## Mục tiêu
-<!-- Một câu: làm gì, để làm gì. -->
+### Các bước thực hiện (Think -> Act -> Observe)
+- [x] 1. Khoanh vùng lỗi: Đọc log và chạy thử test tại phân hệ liên quan.
+- [~] 2. Xử lý mã nguồn: Cập nhật logic tại file `src/...` (Đang thực hiện).
+- [ ] 3. Viết bổ sung kịch bản kiểm thử (unit test) cho trường hợp biên.
+- [ ] 4. Nghiệm thu (Verifier): Chạy lại toàn bộ test và kiểm tra lint.
 
-## Kế hoạch
-- [ ] Bước 1
-- [ ] Bước 2
-
-## Trạng thái / Ghi chú
-- Đang làm:
-- Vướng mắc:
-
-## Nghiệm thu
-Đối chiếu checklist tại `AGENTS.md` mục 4.
+### Nháp trong lượt (Scratchpad)
+- Nguyên nhân gốc nằm ở hàm xử lý làm tròn số dòng 88.
+- Cần kiểm tra xem có ảnh hưởng đến báo cáo tổng hợp không.
