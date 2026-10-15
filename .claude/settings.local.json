@@ -1,40 +1,36 @@
 {
   "permissions": {
     "allow": [
-      "Bash(pytest:*)",
-      "Bash(python -m pytest:*)",
-      "Bash(ruff check:*)",
-      "Bash(git status:*)",
-      "Bash(git diff:*)",
-      "Bash(git log:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Edit(src/**)",
-      "Edit(tests/**)",
-      "Edit(todo.md)",
-      "Edit(MEMORY.md)"
+      "Read(**)",
+      "Bash(pytest *)",
+      "Bash(python -m pytest *)",
+      "Bash(ruff check *)",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git log *)"
     ],
     "ask": [
-      "Bash(git push:*)",
-      "Bash(pip install:*)",
-      "Bash(python -m pip install:*)",
-      "Bash(uv add:*)",
-      "Bash(sqlcmd:*)",
-      "Edit(AGENTS.md)",
-      "Edit(.claude/**)",
-      "Edit(requirements*.txt)",
-      "Edit(pyproject.toml)"
+      "Edit(**)",
+      "Write(**)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(pip install *)",
+      "Bash(python -m pip install *)",
+      "Bash(sqlcmd *)"
     ],
     "deny": [
+      "Bash(rm -rf *)",
+      "Bash(del /s *)",
+      "Bash(DROP TABLE *)",
+      "Bash(SHUTDOWN *)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Bash(git reset --hard *)",
+      "Read(../**)",
+      "Edit(../**)",
       "Read(./.env)",
       "Read(./.env.*)",
-      "Read(./secrets/**)",
-      "Bash(rm -rf:*)",
-      "Bash(git push --force:*)",
-      "Bash(git push -f:*)",
-      "Bash(git reset --hard:*)",
-      "Bash(curl:*)",
-      "Bash(wget:*)"
+      "Read(./secrets/**)"
     ]
   }
 }
