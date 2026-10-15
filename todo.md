@@ -1,13 +1,12 @@
 # KẾ HOẠCH TÁC VỤ HIỆN TẠI (todo.md)
 
-## Mục tiêu: Thêm workflow CI chạy pytest và ruff
+## Mục tiêu: Ngừng nhân sự thì ngừng luôn PhanCong liên quan
 
 ### Các bước thực hiện (Think -> Act -> Observe)
-- [x] 1. `requirements-dev.txt`: ghim `pytest==9.1.1`, `ruff==0.16.8`.
-- [x] 2. `.github/workflows/ci.yml`: ruff (gồm luật bảo mật S) + pytest, ma trận Python 3.11 / 3.13, quyền `contents: read`.
-- [x] 3. Chạy thử đúng các bước CI trên máy: Python 3.11 và 3.13 đều 78/78 xanh, ruff sạch.
-- [ ] 4. Theo dõi lần chạy CI đầu tiên trên PR #4.
+- [x] 1. `src/db/nhan_su.py`: `deactivate` cập nhật thêm `PhanCong SET IsActive = 0 WHERE NhanSuId = ? AND IsActive = 1`, trả về `DeactivateResult(nhan_su_changed, phan_cong_count)`.
+- [x] 2. Nhân sự đã ngừng từ trước vẫn dọn PhanCong còn sót; mã không tồn tại thì báo lỗi, không đụng PhanCong.
+- [x] 3. `reactivate` không tự khôi phục PhanCong.
+- [x] 4. Test: `tests/db/test_nhan_su.py` (9 test). Nghiệm thu: `pytest -q` 80/80 xanh, `ruff check .` sạch.
 
-### Việc còn treo từ tác vụ trước
-- [ ] Đối chiếu schema thật của `NhanSu` (khóa `Id`? cờ `IsActive`?).
-- [ ] Nghiệp vụ: ngừng nhân sự có ngừng luôn `PhanCong` liên quan?
+### Việc còn treo
+- [ ] Đối chiếu schema thật: khóa `NhanSu.Id`, cột liên kết `PhanCong.NhanSuId`, cờ `IsActive` ở cả hai bảng.

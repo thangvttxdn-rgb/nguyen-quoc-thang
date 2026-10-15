@@ -14,4 +14,5 @@
 
 ## 2. Đặc thù Cơ sở dữ liệu & Nghiệp vụ
 - Bảng `NhanSu` và `PhanCong` liên kết qua mã định danh nội bộ, tuyệt đối không xóa cứng (hard delete) mà chỉ cập nhật cờ `IsActive = 0`.
+- `[2026-10-15]` **Ngừng nhân sự thì ngừng luôn PhanCong liên quan** (chủ dự án xác nhận), trong cùng giao dịch - xem `src/db/nhan_su.py` hàm `deactivate`. Kích hoạt lại nhân sự KHÔNG tự khôi phục PhanCong.
 - Các truy vấn báo cáo tổng hợp bắt buộc phải có `WITH (NOLOCK)` hoặc tối ưu index để tránh khóa bảng trong giờ cao điểm.
