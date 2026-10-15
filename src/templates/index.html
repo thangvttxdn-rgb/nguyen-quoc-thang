@@ -10,15 +10,36 @@
 <link rel="stylesheet" href="/static/app.css">
 </head>
 <body>
-<div id="app">
+<section class="login" id="login" hidden>
+  <div class="login-card">
+    <p class="org">Chi nhánh Toa xe Đà Nẵng</p>
+    <h1>Phân công nhân sự</h1>
+    <form id="l-form" class="l-form">
+      <label for="l-user">Tên đăng nhập</label>
+      <input id="l-user" name="username" autocomplete="username" autocapitalize="none" required>
+      <label for="l-pass">Mật khẩu</label>
+      <input id="l-pass" name="current-password" type="password" autocomplete="current-password" required>
+      <p class="l-err" id="l-err" role="alert"></p>
+      <button class="btn primary" id="l-btn" type="submit">Đăng nhập</button>
+    </form>
+    <p class="l-note" id="l-demo" hidden>Bản chạy thử dữ liệu mẫu.</p>
+    <p class="l-note">Quên mật khẩu? Liên hệ quản trị hệ thống của chi nhánh.</p>
+  </div>
+</section>
+
+<div id="app" hidden>
   <header class="top">
     <div class="top-inner">
       <div>
         <p class="org">Chi nhánh Toa xe Đà Nẵng</p>
         <h1>Phân công nhân sự</h1>
       </div>
-      <p class="counts" id="counts" aria-live="polite">Đang tải…</p>
+      <div class="who">
+        <span class="who-text"><b id="who-name"></b><span id="who-role"></span></span>
+        <button class="logout" id="logout" type="button">Đăng xuất</button>
+      </div>
     </div>
+    <p class="counts" id="counts" aria-live="polite">Đang tải…</p>
     <div class="tools">
       <label class="search">
         <span class="sr">Tìm nhân sự</span>
