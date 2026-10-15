@@ -31,9 +31,10 @@ SQL_ASK = re.compile(
 
 # Mật khẩu hardcode, bỏ qua giá trị lấy từ biến ({...}, $..., %...%) hoặc placeholder <...>.
 HARDCODED_PWD = [
-    # Trong chuỗi kết nối: "...;UID=sa;PWD=abc123"
+    # Trong chuỗi kết nối: khóa PWD/Password theo sau là giá trị viết thẳng.
     re.compile(r"(?:^|[;\"'])\s*(PWD|Password)=(?![{$%<])[^;\"'{}\s]+", re.IGNORECASE),
-    # Gán literal: DB_PASSWORD = "abc123", "password": "abc123", password="abc123"
+    # Gán chuỗi literal cho biến, khóa dict hoặc tham số có tên chứa password/passwd/pwd.
+    # Ví dụ cụ thể nằm trong tests/harness/test_guard.py.
     re.compile(r"\b\w*(password|passwd|pwd)\w*[\"']?\s*[:=]\s*[\"'](?![{$%<])[^\"']{3,}[\"']",
                re.IGNORECASE),
 ]
