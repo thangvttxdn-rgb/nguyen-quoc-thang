@@ -1,0 +1,102 @@
+{
+ "repo_khao_sat": "https://github.com/anthropics/knowledge-work-plugins",
+ "commit_khao_sat": "e050c2ec856373787143d7057663a6ebd1277df3",
+ "so_tep": 19,
+ "tep": [
+  {
+   "path": "00-README-VI.md",
+   "sha256": "fe9025a7b1f3530ed36d88ba94d7c3ea7c85c53555430c7a4c6fd04fd1390d78",
+   "bytes": 1638
+  },
+  {
+   "path": "01-BAO-CAO-KHAO-SAT-G0.md",
+   "sha256": "1581f534a86097411ca8a7adc4f63d43c9f11820f38218165699a380c431e12b",
+   "bytes": 5530
+  },
+  {
+   "path": "02-DANH-MUC-SKILLS.csv",
+   "sha256": "e5598b062f6c00f2fff2502ed7cb682178709742cdfd6131ce96f6d03b4d7c23",
+   "bytes": 92306
+  },
+  {
+   "path": "02b-THANH-PHAN-KHAC.csv",
+   "sha256": "8cc1859d9b6fa5079e693de0ad3078a189d601fa8d01c5ce7b2e523e97c860a6",
+   "bytes": 45365
+  },
+  {
+   "path": "03-DOI-CHIEU-REGISTRY.csv",
+   "sha256": "18e843f7900a7065136e7c87c99cbd2d3daf208f7e9b98058a9cd8780239d442",
+   "bytes": 2211
+  },
+  {
+   "path": "04-BAO-CAO-LUA-CHON-G1.md",
+   "sha256": "1e50832f317028d22384d62310be6105fc1189dbe1025e818537a3c3fde9383b",
+   "bytes": 4493
+  },
+  {
+   "path": "05-UNG-VIEN-VIET-HOA/UV-02-process-doc-SOP.vi.md",
+   "sha256": "80826218f7acc57d6a98ff71722738ad9b9154e0c68ba3a5543b4240b669f659",
+   "bytes": 4530
+  },
+  {
+   "path": "06-KE-HOACH-VA-KET-QUA-TEST-G2.md",
+   "sha256": "6fd6fc1f4e065c0562a73cf5960ab4280d297eeb53c2a6b46ae8d65b6d0a628f",
+   "bytes": 4551
+  },
+  {
+   "path": "07-BAO-CAO-BAO-MAT.md",
+   "sha256": "11d328728b5d19c07144010134ba4ceedaa5c7238e80942dcc31f48efe457241",
+   "bytes": 2780
+  },
+  {
+   "path": "08-SO-CHI-PHI-TOKEN.csv",
+   "sha256": "fd7f138797b708f348c48d157f81e59732689dd8c565a70310a7a03a32d40a46",
+   "bytes": 1103
+  },
+  {
+   "path": "09-PHAN-BIEN-DOC-LAP-G3.md",
+   "sha256": "acd91b294bde6f5ad525be62971f8b26c6ad61272e3ed57d1f3468b9062820c0",
+   "bytes": 2558
+  },
+  {
+   "path": "10-BAO-CAO-NGHIEM-THU.md",
+   "sha256": "440779b4c8b303ff076686018a4bdc937571324851bec132d4dd624415508fea",
+   "bytes": 3268
+  },
+  {
+   "path": "11-DE-XUAT-CHO-PHEP.md",
+   "sha256": "56b18739a24d71cecd5454cf071999bf2199911e750689ca38ddca439f5b8560",
+   "bytes": 3288
+  },
+  {
+   "path": "EVIDENCE/inventory/inv.json",
+   "sha256": "9e109b3d248da5183f91555c9b6b708cfaadb5826d18a491ab03bbeb7b65150c",
+   "bytes": 199034
+  },
+  {
+   "path": "EVIDENCE/inventory/tom-tat-kiem-thu.json",
+   "sha256": "46729105a482f299be7c51faa7ece44d8aaa688c21bc8101c826fb33aaaa0415",
+   "bytes": 3061
+  },
+  {
+   "path": "EVIDENCE/scripts/build_manifest.py",
+   "sha256": "24d1a2d40bf4d444d57f787563c2b6ba70e08094730761ee003bbf285722854f",
+   "bytes": 1013
+  },
+  {
+   "path": "EVIDENCE/scripts/build_outputs.py",
+   "sha256": "ed1c9ca6c9d15a9c64f1240f45333209dcad2605ecc17f941f8441d9c1540340",
+   "bytes": 5738
+  },
+  {
+   "path": "EVIDENCE/scripts/inventory.py",
+   "sha256": "b5fba145c52c01bc72defd5cd43daffe71c57e047e7b02ea06dc328fa25663e7",
+   "bytes": 4507
+  },
+  {
+   "path": "XEM-TRUOC-TOAN-BO.html",
+   "sha256": "b053772f513389aac7530515358398e55138624d436732a7f9aab63d6abb3cd6",
+   "bytes": 11391
+  }
+ ]
+}

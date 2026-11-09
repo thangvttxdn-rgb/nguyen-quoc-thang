@@ -1,0 +1,13 @@
+Muc,Noi_dung,Gia_tri,Loai,Nguon_don_gia,Ghi_chu
+1,Tac vu,Khao sat kho Anthropic + kiem ke + HTML xem truoc (luot G0-G1 offline),,,
+2,Model/cong cu,Cong cu offline: git clone, python3 script, Read/Glob/Grep. Khong goi API model nao co chu dich,,,
+3,Token dau vao (do duoc),Khong do duoc: cong cu khong xuat so token,KHONG CO SO DO,,
+4,Token dau ra (do duoc),Khong do duoc,KHONG CO SO DO,,
+5,Chi phi thuc te (VND),Khong co du lieu hoa don/bang ke,KHONG CO SO DO,,Khong ghi so gia
+6,Chi phi uoc tinh (VND),Chua xac dinh don gia da xac minh; khong tinh,CHUA UOC TINH,,Theo AGENTS va bo quy tac: khong dung gia suy doan
+7,Tong cong da chi,0 luot goi API co phi do Tong chi huy khoi tao (chi tiet can kiem tra tu nen tang),,,
+8,Ngan sach con lai,Khong xac dinh duoc (thieu so lieu thuc te),,,
+9,Nguon don gia,Chua co bang gia da xac minh trong lượt này,,,
+10,Ly do phat sinh,Pytest khong duoc cai (BLOCKED); cac tac vu doc tap tin; khong co lam goi model,,,
+11,Du phong,Chua tinh du phong vi khong co don gia,,,
+12,Ghi chu nguyen tac,Khong gop so do voi so uoc tinh; khong doi ten tac vu; khong xoa so,,,

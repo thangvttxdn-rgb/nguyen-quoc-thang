@@ -1,0 +1,126 @@
+{
+ "tong_skill": 252,
+ "tong_command": 15,
+ "tong_agent": 5,
+ "tong_plugin": 22,
+ "tong_mcp_entries": 186,
+ "tests": {
+  "T-S1 có trường name": 252,
+  "T-S2 có trường description": 252,
+  "T-S3 name khớp tên thư mục": 211,
+  "T-S4 SKILL.md đọc được (có dòng)": 252
+ },
+ "so_loi_cau_truc": 41,
+ "loi": [
+  [
+   "T-S3",
+   "partner-built/zoom-plugin/skills/oauth/SKILL.md (name=zoom-oauth)"
+  ],
+  [
+   "T-S3",
+   "partner-built/zoom-plugin/skills/rtms/SKILL.md (name=zoom-rtms)"
+  ],
+  [
+   "T-S3",
+   "partner-built/zoom-plugin/skills/rest-api/SKILL.md (name=build-zoom-rest-api-app)"
+  ],
+  [
+   "T-S3",
+   "partner-built/zoom-plugin/skills/websockets/SKILL.md (name=setup-zoom-websockets)"
+  ],
+  [
+   "T-S3",
+   "partner-built/zoom-plugin/skills/cobrowse-sdk/SKILL.md (name=zoom-cobrowse-sdk)"
+  ],
+  [
+   "T-S3",
+   "partner-built/zoom-plugin/skills/team-chat/SKILL.md (name=build-zoom-team-chat-app)"
+  ],
+  [
+   "T-S3",
+   "partner-built/zoom-plugin/skills/general/SKILL.md (name=zoom-general)"
+  ],
+  [
+   "T-S3",
+   "partner-built/zoom-plugin/skills/meeting-sdk/SKILL.md (name=build-zoom-meeting-sdk-app)"
+  ],
+  [
+   "T-S3",
+   "partner-built/zoom-plugin/skills/meeting-sdk/web/SKILL.md (name=zoom-meeting-sdk-web)"
+  ],
+  [
+   "T-S3",
+   "partner-built/zoom-plugin/skills/meeting-sdk/web/client-view/SKILL.md (name=zoom-meeting-sdk-web-client-view)"
+  ],
+  [
+   "T-S3",
+   "partner-built/zoom-plugin/skills/meeting-sdk/web/component-view/SKILL.md (name=zoom-meeting-sdk-web-component-view)"
+  ],
+  [
+   "T-S3",
+   "partner-built/zoom-plugin/skills/meeting-sdk/linux/SKILL.md (name=meeting-sdk/linux)"
+  ],
+  [
+   "T-S3",
+   "partner-built/zoom-plugin/skills/meeting-sdk/electron/SKILL.md (name=zoom-meeting-sdk-electron)"
+  ],
+  [
+   "T-S3",
+   "partner-built/zoom-plugin/skills/meeting-sdk/unreal/SKILL.md (name=zoom-meeting-sdk-unreal)"
+  ],
+  [
+   "T-S3",
+   "partner-built/zoom-plugin/skills/meeting-sdk/android/SKILL.md (name=zoom-meeting-sdk-android)"
+  ],
+  [
+   "T-S3",
+   "partner-built/zoom-plugin/skills/meeting-sdk/windows/SKILL.md (name=zoom-meeting-sdk-windows)"
+  ],
+  [
+   "T-S3",
+   "partner-built/zoom-plugin/skills/meeting-sdk/react-native/SKILL.md (name=zoom-meeting-sdk-react-native)"
+  ],
+  [
+   "T-S3",
+   "partner-built/zoom-plugin/skills/meeting-sdk/macos/SKILL.md (name=zoom-meeting-sdk-macos)"
+  ],
+  [
+   "T-S3",
+   "partner-built/zoom-plugin/skills/meeting-sdk/ios/SKILL.md (name=zoom-meeting-sdk-ios)"
+  ],
+  [
+   "T-S3",
+   "partner-built/zoom-plugin/skills/contact-center/SKILL.md (name=build-zoom-contact-center-app)"
+  ]
+ ],
+ "trung_ten_noi_bo": {
+  "start": [
+   "bio-research",
+   "productivity",
+   "partner-built"
+  ],
+  "lead-triage": [
+   "sales",
+   "small-business"
+  ],
+  "account-research": [
+   "sales",
+   "partner-built"
+  ],
+  "call-prep": [
+   "sales",
+   "partner-built"
+  ],
+  "competitive-brief": [
+   "product-management",
+   "marketing"
+  ],
+  "prospect": [
+   "partner-built",
+   "partner-built"
+  ]
+ },
+ "so_nhom_trung_ten": 6,
+ "co_scripts": 5,
+ "co_rui_ro_tu_khoa": 71
+}

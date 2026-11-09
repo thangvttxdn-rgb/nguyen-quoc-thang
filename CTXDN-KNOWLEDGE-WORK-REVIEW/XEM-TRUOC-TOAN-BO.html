@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Xem trước rà soát Knowledge Work Plugins</title>
+<style>
+:root{--bg:#f7f7f5;--fg:#1d1d1b;--mute:#5a5a55;--card:#fff;--line:#dcdcd6;--that:#1b6e3a;--demo:#8a5a00;--blk:#a1262b;--acc:#2b4c7e}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171716;--fg:#ededea;--mute:#b5b5ae;--card:#22221f;--line:#3a3a35;--that:#6fcf8b;--demo:#f0c060;--blk:#ff8a8f;--acc:#9bb8e6}}
+:root[data-theme="dark"]{--bg:#171716;--fg:#ededea;--mute:#b5b5ae;--card:#22221f;--line:#3a3a35;--that:#6fcf8b;--demo:#f0c060;--blk:#ff8a8f;--acc:#9bb8e6}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;overflow-x:hidden}
+main{max-width:1100px;margin:0 auto;padding:16px}
+h1{font-size:1.5rem;margin:.4em 0}
+h2{font-size:1.2rem;margin:1.6em 0 .5em;border-bottom:2px solid var(--line);padding-bottom:.25em;color:var(--acc)}
+p,li{word-wrap:break-word}
+.badge{display:inline-block;font-size:.75rem;font-weight:700;padding:2px 8px;border-radius:4px;color:#fff;margin-right:4px;vertical-align:middle}
+.THAT{background:var(--that)}.DEMO{background:var(--demo)}.BLOCKED{background:var(--blk)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:10px 0}
+.grid{display:grid;gap:10px;grid-template-columns:1fr}
+@media (min-width:768px){.grid{grid-template-columns:1fr 1fr}}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:8px;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--card)}
+code,pre{font-family:ui-monospace,Consolas,monospace;font-size:.85rem}
+pre{white-space:pre-wrap;word-break:break-word;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:10px}
+.note{font-size:.9rem;color:var(--mute)}
+footer{color:var(--mute);font-size:.85rem;margin:24px 0}
+</style>
+</head>
+<body>
+<main>
+
+<h1>Rà soát Anthropic Knowledge Work Plugins cho CTXĐN</h1>
+<p class="note">Trang xem trước tĩnh, mở trực tiếp trên Windows hoặc iPhone. Không cần mạng, không đăng nhập, không có nút thao tác vào hệ thống.</p>
+
+<div class="card">
+<strong>Trạng thái:</strong> CHƯA PHÊ DUYỆT CÀI ĐẶT HOẶC TRIỂN KHAI. Không nghiệm thu thay chủ đầu tư.<br>
+<span class="badge THAT">THẬT</span> dữ liệu đo từ kho và kiểm kê &nbsp;
+<span class="badge DEMO">DEMO</span> mô phỏng, không phải nghiệp vụ thật &nbsp;
+<span class="badge BLOCKED">BLOCKED</span> chưa thực hiện được
+</div>
+
+<h2>1. Tổng quan nhiệm vụ</h2>
+<p>Rà soát kho <code>anthropics/knowledge-work-plugins</code> để chọn Skill có giá trị bổ sung cho hệ thống CTXĐN AI Skills Command Center. Phạm vi lượt này: khảo sát, kiểm kê, đối chiếu, chọn sơ bộ, Việt hóa mẫu, kiểm thử cấu trúc, phản biện, và hồ sơ.</p>
+
+<h2>2. Phiên bản repo đã khảo sát</h2>
+<div class="card">
+<span class="badge THAT">THẬT</span><br>
+Kho: https://github.com/anthropics/knowledge-work-plugins<br>
+Nhánh: <code>main</code><br>
+Commit: <code>e050c2ec856373787143d7057663a6ebd1277df3</code><br>
+Ngày commit: 2026-11-06<br>
+Giấy phép gốc: Apache-2.0 (tệp LICENSE ở gốc). Thành phần bên thứ ba có giấy phép riêng, chưa xác minh hết.
+</div>
+
+<h2>3–4. Kiểm kê và trùng lặp</h2>
+<div class="tablewrap"><table>
+<tr><th>Loại</th><th>Số lượng</th><th></th></tr>
+<tr><td>Skill (SKILL.md)</td><td>252</td><td><span class="badge THAT">THẬT</span></td></tr>
+<tr><td>Command</td><td>15</td><td><span class="badge THAT">THẬT</span></td></tr>
+<tr><td>Agent</td><td>5</td><td><span class="badge THAT">THẬT</span></td></tr>
+<tr><td>Plugin</td><td>22</td><td><span class="badge THAT">THẬT</span></td></tr>
+<tr><td>Mục máy chủ MCP (21 tệp .mcp.json)</td><td>186</td><td><span class="badge THAT">THẬT</span></td></tr>
+<tr><td>Trùng tên nội bộ (6 nhóm)</td><td>6</td><td><span class="badge THAT">THẬT</span></td></tr>
+<tr><td>Trùng chức năng với repo CTXĐN (memory, todo)</td><td>2</td><td><span class="badge THAT">THẬT</span></td></tr>
+<tr><td>Trùng với Registry CTXĐN</td><td>—</td><td><span class="badge BLOCKED">BLOCKED</span> không tiếp cận được Registry</td></tr>
+</table></div>
+
+<h2>5. Ứng viên đề xuất giữ lại</h2>
+<div class="grid">
+<div class="card"><strong>UV-02 · process-doc (SOP, RACI)</strong><br>76/100 điểm (Tổ 1). <span class="badge BLOCKED">BLOCKED</span> chờ đối chiếu Registry.</div>
+<div class="card"><strong>risk-assessment (ma trận rủi ro)</strong><br>78/100 điểm (Tổ 1). <span class="badge BLOCKED">BLOCKED</span> chờ đối chiếu Registry; khung chung, không thay tiêu chuẩn nội bộ.</div>
+</div>
+<p class="note">Các ứng viên Nhóm 2 (write-spec, deploy-checklist, testing-strategy) và Nhóm 4 (onboarding) <span class="badge BLOCKED">BLOCKED</span> — chưa đọc toàn văn.</p>
+
+<h2>6. Loại và lý do</h2>
+<div class="tablewrap"><table>
+<tr><th>Thành phần</th><th>Quyết định</th><th>Lý do</th></tr>
+<tr><td>memory-management, task-management (productivity)</td><td>LOẠI</td><td>Trùng MEMORY.md / todo.md đã có — <span class="badge THAT">THẬT</span></td></tr>
+<tr><td>sales (36), small-business (44)</td><td>LOẠI</td><td>Ngoài nghiệp vụ CTXĐN</td></tr>
+<tr><td>finance: financial-statements, sox-testing, audit-support</td><td><span class="badge BLOCKED">BLOCKED</span></td><td>Chưa có căn cứ chuẩn kế toán / kiểm soát nội bộ của CTXĐN</td></tr>
+<tr><td>build-dashboard (data)</td><td><span class="badge BLOCKED">BLOCKED</span></td><td>Tải Chart.js từ CDN, mâu thuẫn yêu cầu offline</td></tr>
+<tr><td>partner-built (71)</td><td><span class="badge BLOCKED">BLOCKED</span></td><td>Bên thứ ba; giấy phép từng plugin chưa xác minh</td></tr>
+<tr><td>Mục MCP (186)</td><td><span class="badge BLOCKED">BLOCKED</span></td><td>Kết nối SaaS ra ngoài; cần phê duyệt riêng</td></tr>
+</table></div>
+
+<h2>7. Bảng so sánh Registry</h2>
+<div class="card"><span class="badge BLOCKED">BLOCKED</span> Repo nguyen-quoc-thang không có file Registry Skills. Không dựng Registry giả. Chi tiết: <code>03-DOI-CHIEU-REGISTRY.csv</code>.</div>
+
+<h2>8. Mẫu Skill đã Việt hóa</h2>
+<div class="card"><span class="badge DEMO">DEMO</span> UV-02 · Lập tài liệu quy trình (SOP). Bản đầy đủ: <code>05-UNG-VIEN-VIET-HOA/UV-02-process-doc-SOP.vi.md</code>.<br>
+Thay đổi có chủ đích: thêm nhãn <code>CẦN CĂN CỨ</code> cho nội dung an toàn/pháp lý, không tự điền.<br>
+<span class="badge BLOCKED">BLOCKED</span> chưa đối chiếu thuật ngữ với tài liệu CTXĐN.</div>
+
+<h2>9. Ví dụ đầu vào/đầu ra</h2>
+<div class="card"><span class="badge DEMO">DEMO</span> Đầu vào mô phỏng: "Khi toa xe về xưởng, tổ điều phối ghi sổ rồi giao cho tổ kiểm tra. Đôi khi phải chờ vật tư."</div>
+<pre>## Tài liệu quy trình: Tiếp nhận toa xe về xưởng (DEMO)
+**Đơn vị phụ trách:** [CẦN CĂN CỨ: đơn vị phụ trách theo quy định nội bộ]
+#### Bước 1: Ghi sổ tiếp nhận
+- Người thực hiện: Tổ điều phối (DEMO)
+- Cách làm: [CẦN CĂN CỨ: mẫu sổ và các trường bắt buộc]
+| Thiếu vật tư, phải chờ | [CẦN CĂN CỨ: quy định xử lý chờ vật tư] |</pre>
+
+<h2>10. Kết quả kiểm thử trước–sau</h2>
+<div class="tablewrap"><table>
+<tr><th>Kiểm thử</th><th>Kết quả</th><th></th></tr>
+<tr><td>T-S1, T-S2, T-S4 — cấu trúc skill</td><td>PASS 252/252</td><td><span class="badge THAT">THẬT</span></td></tr>
+<tr><td>T-S3 — tên khớp thư mục</td><td>41/252 không khớp (ghi nhận)</td><td><span class="badge THAT">THẬT</span></td></tr>
+<tr><td>Kiểm thử repo: pytest</td><td>Chưa cài pytest</td><td><span class="badge BLOCKED">BLOCKED</span></td></tr>
+<tr><td>Hành vi model (nhóm 1–5, 10, 17)</td><td>Chưa chạy</td><td><span class="badge BLOCKED">BLOCKED</span></td></tr>
+<tr><td>So sánh trước–sau</td><td>Không có baseline</td><td><span class="badge BLOCKED">BLOCKED</span></td></tr>
+</table></div>
+
+<h2>11. Bảng kiểm tra bảo mật</h2>
+<div class="tablewrap"><table>
+<tr><th>Hạng mục</th><th>Trạng thái</th></tr>
+<tr><td>Quét từ khóa rủi ro (71 skill)</td><td><span class="badge THAT">THẬT</span> chỉ là sàng lọc; đã rà 2 mục</td></tr>
+<tr><td>Prompt injection toàn kho</td><td><span class="badge BLOCKED">BLOCKED</span> chưa rà đủ</td></tr>
+<tr><td>Script (19 tệp .py)</td><td><span class="badge BLOCKED">BLOCKED</span> chưa đọc, chưa chạy</td></tr>
+<tr><td>Kết nối MCP ra ngoài (186)</td><td>Rủi ro cao; không bật</td></tr>
+<tr><td>Giấy phép từng plugin</td><td><span class="badge BLOCKED">BLOCKED</span> chưa xác minh hết</td></tr>
+</table></div>
+
+<h2>12. Bảng chi phí token</h2>
+<div class="card"><span class="badge BLOCKED">BLOCKED</span> Không có số đo token hoặc hóa đơn. Không ước tính VNĐ khi chưa có đơn giá đã xác minh. Ngân sách 10.000 VNĐ/lượt chưa được xác nhận là không vượt.<br>
+Chi tiết: <code>08-SO-CHI-PHI-TOKEN.csv</code>.</div>
+
+<h2>13. Kết luận phản biện độc lập</h2>
+<div class="card"><strong>FAIL / BLOCKED</strong> — chưa đủ bằng chứng để đề xuất sử dụng. Lưu ý: cùng một tác tử thực hiện cả hai tổ; đây là rà soát lại có chủ đích, không phải đánh giá của người thứ ba.</div>
+
+<h2>14. Các vấn đề BLOCKED</h2>
+<ul>
+<li>Không tiếp cận Registry CTXĐN.</li>
+<li>pytest và ruff chưa được cài (cần phê duyệt).</li>
+<li>Kiểm thử hành vi model (cần ngân sách và đơn giá đã xác minh).</li>
+<li>Sandbox mạng và kiểm thử mất mạng.</li>
+<li>Giấy phép và rà bảo mật đầy đủ từng plugin.</li>
+<li>Tài chính: thiếu căn cứ chuẩn kế toán.</li>
+<li>build-dashboard: CDN.</li>
+</ul>
+<p class="note">Một lệnh shell tổng hợp bị bộ phân loại tự động từ chối; không thử lại theo cách khác.</p>
+
+<h2>15. Điều kiện cần chủ đầu tư phê duyệt</h2>
+<ol>
+<li>Cấp quyền đọc Registry CTXĐN.</li>
+<li>Phê duyệt cài <code>pytest</code>/<code>ruff</code> theo <code>requirements-dev.txt</code>.</li>
+<li>Ngân sách và mô hình cho kiểm thử hành vi, kèm đơn giá đã xác minh.</li>
+<li>Cho phép đọc toàn văn và rà bảo mật ứng viên Nhóm 1–2.</li>
+<li>Xác nhận: không bật kết nối MCP/SaaS trong giai đoạn này.</li>
+<li>Quyết định vendoring Chart.js nếu muốn dùng build-dashboard.</li>
+<li>Quyết định nơi lưu hồ sơ (nhánh hiện tại, chưa merge).</li>
+</ol>
+
+<footer>Tạo bởi Tổng chỉ huy AI CTXĐN · Hồ sơ đầy đủ và manifest SHA-256 trong thư mục này.</footer>
+</main>
+</body>
+</html>
