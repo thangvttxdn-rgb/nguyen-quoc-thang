@@ -16,6 +16,15 @@
 - `[2026-10-15]` **Logger tự tạo không ra log dưới uvicorn**: uvicorn chỉ cấu hình logger của nó, nên `ems.nhat_ky` ở mức INFO bị nuốt. Đã gắn StreamHandler riêng trong `src/api/app.py`.
 - `[2026-10-15]` **Triển khai IIS**: HttpPlatformHandler khởi động uvicorn (`--app-dir`), site IIS chỉ trỏ vào `deploy/iis` (chỉ chứa web.config). web.config thật chứa mật khẩu CSDL - đã gitignore, chỉ commit `web.config.mau`. Xem `docs/TRIEN-KHAI-IIS.md`.
 
+- `[2026-11-12]` **Hook điều phối so từ khóa có dấu**: bỏ dấu làm "trả lời" khớp "lỗi", "hãm" khớp "hàm". `dieu_phoi.py` so có dấu, chỉ bỏ dấu khi người dùng gõ toàn ASCII; việc kèm phải khớp ≥ 2 từ khóa. Hook không lặp lại nguyên văn yêu cầu (chống tiêm lệnh) và luôn exit 0.
+- `[2026-11-12]` **`pytest` trần trong container web không thấy thư viện** (bản cài riêng ở ~/.local/bin). Dùng `python -m pytest`.
+
+- `[2026-11-12]` **Từ khóa định tuyến quá rộng gây giao nhầm**: "gửi" bắt cả "em gửi các bác" (chia sẻ link); "spec" khớp vào URL `github.com/github/spec-kit`. Từ khóa cảnh báo phải là cụm có nghĩa hành động ("gửi cho", "gửi email"); câu gây lỗi được thêm vào `tests/harness/test_dieu_phoi.py`.
+- `[2026-11-12]` **Cài công cụ bên ngoài: thử trên bản sao trước** (`git clone` kho vào scratchpad, chạy lệnh cài, xem `git status`/`git diff`). `guard.py` chặn cả `rm -rf` trong scratchpad - dùng thư mục mới thay vì xóa.
+
+- `[2026-11-12]` **Kỹ năng bên thứ ba thường gọi `npx <goi>` không ghim** (HyperFrames: 273 chỗ). Không sửa file của họ (bị ghi đè khi nâng cấp); ghim bằng cảnh báo trong `registry.json` + `tong-chi-huy`. Phiên đám mây: chạy `npx` gói ngoài bị bộ phân loại tự động chặn - cần người dùng cho phép.
+- `[2026-11-12]` **Tổ 2 (`to-phan-bien`) bắt được lỗi Tổ 1 bỏ sót**: luật chỉ đặt ở lớp điều phối thì kỹ năng nạp vào vẫn dặn ngược lại; phải cưỡng chế bằng `guard.py` + sửa chính file kỹ năng (`lop_phu_hyperframes.py`). Rà bảo mật kỹ năng ngoài phải tìm cả đo lường/feedback trong luồng mặc định, không chỉ `curl|sh`. Mẫu regex chặn lệnh phải neo đầu đoạn lệnh, nếu không sẽ chặn cả heredoc/grep chứa chữ đó.
+
 ## 2. Đặc thù Cơ sở dữ liệu & Nghiệp vụ
 - Bảng `NhanSu` và `PhanCong` liên kết qua mã định danh nội bộ, tuyệt đối không xóa cứng (hard delete) mà chỉ cập nhật cờ `IsActive = 0`.
 - `[2026-10-15]` **Ngừng nhân sự thì ngừng luôn PhanCong liên quan** (chủ dự án xác nhận), trong cùng giao dịch - xem `src/db/nhan_su.py` hàm `deactivate`. Kích hoạt lại nhân sự KHÔNG tự khôi phục PhanCong.
