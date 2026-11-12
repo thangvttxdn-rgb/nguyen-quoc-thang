@@ -10,9 +10,15 @@
 - [x] 5. Sửa lỗi: nhật ký thao tác (`ems.nhat_ky`) không ra log khi chạy uvicorn - gắn handler riêng; thêm test.
 - [x] 6. Nghiệm thu: `pytest -q` 121/121, `ruff` sạch, XML web.config hợp lệ.
 
-## Mục tiêu phụ: CTXĐN AI Skills Command Center
-- [x] `docs/ai-command-center.html`: bảng tra cứu 39 mục (17 kỹ năng, 5 tác tử, 10 lệnh, 2 rào chắn/bộ nhớ - chi tiết dẫn sang `so-do-agent.html`, 5 kết nối; đã gỡ trùng lặp), tìm kiếm không dấu, lọc theo nguồn, ngăn chi tiết có nút sao chép lệnh, 3 quy trình mẫu.
-- [ ] (Đề xuất, chờ duyệt) Tạo `.claude/agents/kiem-tra-sql.md`, `.claude/commands/nghiem-thu.md` - trang đang gắn nhãn "đề xuất".
+## Mục tiêu phụ: Tổng chỉ huy + AI Skills Command Center (hợp nhất)
+- [x] Phân tích trùng lặp (7 cặp) - kết quả trong `registry.json` mục `trung_lap` và trên trang.
+- [x] `.claude/tong-chi-huy/registry.json`: nguồn duy nhất (39 mục, 14 tuyến, 5 cảnh báo); mở khóa "Registry CTXĐN: BLOCKED" của hồ sơ rà soát.
+- [x] Hook `UserPromptSubmit` `.claude/hooks/dieu_phoi.py` - tự phân tích và giao việc mỗi lần gõ chat; đăng ký trong `.claude/settings.local.json`.
+- [x] Kỹ năng `.claude/skills/tong-chi-huy`, tác tử `.claude/agents/to-phan-bien.md`.
+- [x] Trang `docs/ai-command-center.html` sinh từ registry (`build_page.py`); bảng định tuyến, bảng trùng lặp.
+- [x] Nghiệm thu: `python -m pytest -q` 145/145, `ruff check .` sạch.
+- [ ] Hồ sơ rà soát Knowledge Work (nhánh `claude/anthropic-knowledge-work-review-em31y1`) chưa gộp vào nhánh này - chờ chủ đầu tư quyết (Đề xuất 7).
+- [ ] Chạy thử hook trên máy Windows: lệnh `python3` có thể không có, cần đổi thành `py -3` hoặc `python`.
 
 ### Việc còn treo
 - [ ] Làm theo tài liệu trên máy chủ thật (người quản trị).

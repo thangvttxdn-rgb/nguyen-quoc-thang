@@ -125,16 +125,21 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .state { font-family: var(--f-mono); font-size: 12px; }
 .state.ok { color: var(--ok); } .state.plan { color: var(--plan); }
 
-/* Quy trình mẫu */
-.flows { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
-.flow { border: 1px solid var(--line); border-radius: 8px; padding: 16px; background: var(--panel); min-width: 0; }
-.flow h3 { font-size: 16px; font-weight: 800; }
-.flow p { color: var(--muted); font-size: 13.5px; margin: 6px 0 12px; }
-.flow ol { margin: 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 0; }
-.flow li { counter-increment: s; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; position: relative; padding-bottom: 12px; font-size: 14px; }
-.flow li::before { content: counter(s); font: 600 12px var(--f-mono); width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--accent); display: grid; place-items: center; background: var(--panel); z-index: 1; }
-.flow li:not(:last-child)::after { content: ""; position: absolute; left: 10px; top: 22px; bottom: 0; border-left: 2px dashed var(--line); }
-.flow code { font-family: var(--f-mono); font-size: 12.5px; color: var(--accent); }
+/* Tổng chỉ huy: luồng và bảng */
+.pipe { list-style: none; margin: 0 0 18px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; counter-reset: s; }
+.pipe li { counter-increment: s; display: flex; align-items: center; gap: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 7px 12px 7px 8px; font-size: 13.5px; }
+.pipe li::before { content: counter(s); font: 600 11px var(--f-mono); width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--on-accent); flex: none; }
+.pipe li.gate::before { background: var(--panel-2); color: var(--ink); border: 1px solid var(--accent); }
+.pipe code { font-family: var(--f-mono); font-size: 12px; color: var(--accent); }
+.tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+.tbl table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 13.5px; }
+.tbl th, .tbl td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+.tbl tr:last-child td { border-bottom: 0; }
+.tbl th { font: 400 11px var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); background: var(--panel-2); }
+.tbl td.k { font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.tbl td.m { font-family: var(--f-mono); font-size: 12.5px; }
+.tbl td.q { font-weight: 600; white-space: nowrap; }
+section { min-width: 0; }
 section > h2 { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
 section > .lead { color: var(--muted); margin: 0 0 14px; max-width: 70ch; }
 footer { color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--line); padding-top: 14px; font-family: var(--f-mono); }
@@ -162,7 +167,7 @@ footer { color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--lin
     <div>
       <div class="label">AI Skills Command Center</div>
       <h1 style="margin-top:8px">Trung tâm điều hành <em>kỹ năng AI</em> của chi nhánh</h1>
-      <p>Một bảng duy nhất liệt kê mọi kỹ năng, tác tử, lệnh, rào chắn an toàn và kết nối mà trợ lý AI đang dùng cho công việc chi nhánh: báo cáo an toàn chạy tàu, phân tích sự cố toa xe, văn bản NĐ 30, hệ thống EMS. Chọn một mục để xem khi nào dùng và câu lệnh gọi.</p>
+      <p>Mỗi lần bạn gõ chat, Tổng chỉ huy tự phân tích yêu cầu và giao việc cho đúng kỹ năng, tác tử, lệnh trên bảng này: báo cáo an toàn chạy tàu, phân tích sự cố toa xe, văn bản NĐ 30, hệ thống EMS. Chọn một mục để xem khi nào dùng và câu lệnh gọi.</p>
       <div class="runs"><span class="label" style="margin-right:4px">Chạy trên</span><span class="chip">Claude Code</span><span class="chip">Claude.ai</span><span class="chip">Cowork</span></div>
     </div>
   </div>
@@ -178,44 +183,34 @@ footer { color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--lin
   <div class="tracks" id="tracks"></div>
 
   <section>
-    <h2>Quy trình mẫu</h2>
-    <p class="lead">Ba việc lặp lại hằng tuần, nối các mục trên bảng thành một chuỗi. Thứ tự các bước là thứ tự thực hiện.</p>
-    <div class="flows">
-      <article class="flow">
-        <h3>Báo cáo giao ban an toàn tuần</h3>
-        <p>Từ email văn thư đến báo cáo Word theo NĐ 30 gửi đi.</p>
-        <ol>
-          <li><span>Gmail tìm thư báo cáo của 3 trạm, 3 tổ khám chữa trong tuần</span></li>
-          <li><span>Gọi <code>bao-cao-an-toan-van-dung-ctxdn</code> tổng hợp số liệu</span></li>
-          <li><span>Xuất Word bằng <code>docx</code>, đúng thể thức NĐ 30</span></li>
-          <li><span>Phó giám đốc duyệt, rồi tạo thư nháp gửi lãnh đạo</span></li>
-        </ol>
-      </article>
-      <article class="flow">
-        <h3>Phân tích trở ngại chạy tàu</h3>
-        <p>Dựng diễn biến, tìm nguyên nhân gốc, đề xuất biện pháp.</p>
-        <ol>
-          <li><span>Thu thập biên bản, ảnh hiện trường lên Google Drive</span></li>
-          <li><span>Gọi <code>phan-tich-su-co-toa-xe</code>: 5 Why, xương cá</span></li>
-          <li><span>Soạn báo cáo bằng <code>tro-ly-22-ky-nang-ctxdn</code></span></li>
-          <li><span>Đưa biện pháp vào kế hoạch với <code>task-management</code></span></li>
-        </ol>
-      </article>
-      <article class="flow">
-        <h3>Sửa và phát hành EMS</h3>
-        <p>Đổi mã trong kho này đến khi lên máy chủ IIS.</p>
-        <ol>
-          <li><span>Tác tử <code>Explore</code> tìm vị trí cần sửa</span></li>
-          <li><span>Sửa mã; hook <code>guard.py</code> chặn lệnh nguy hiểm</span></li>
-          <li><span><code>/code-review</code> rồi chạy <code>pytest -q</code> và <code>ruff</code></span></li>
-          <li><span>Cập nhật <code>todo.md</code>, <code>MEMORY.md</code></span></li>
-          <li><span>Gọi <code>phat-hanh-ems</code>, triển khai theo TRIEN-KHAI-IIS.md</span></li>
-        </ol>
-      </article>
-    </div>
+    <h2>Tổng chỉ huy</h2>
+    <p class="lead">Hook điều phối chạy mỗi lần bạn gõ chat (trừ lệnh bắt đầu bằng / hoặc có #khong-dieu-phoi). Nó đối chiếu yêu cầu với bảng định tuyến, rồi trợ lý làm theo các cổng.</p>
+    <ol class="pipe">
+      <li>Bạn gõ chat</li>
+      <li><code>dieu_phoi.py</code> phân tích</li>
+      <li>Giao việc chính và hỗ trợ</li>
+      <li class="gate">G0 khảo sát</li>
+      <li class="gate">G1 thực hiện</li>
+      <li class="gate">G2 kiểm tra</li>
+      <li class="gate">G3 phản biện</li>
+      <li class="gate">Nghiệm thu</li>
+    </ol>
+    <div class="tbl"><table>
+      <thead><tr><th>Loại việc</th><th>Từ khóa kích hoạt</th><th>Giao cho</th><th>Hỗ trợ</th></tr></thead>
+      <tbody id="routes"></tbody>
+    </table></div>
   </section>
 
-  <footer>Nguồn: kỹ năng tổ chức và plugin bật trong tài khoản Claude; .claude/ trong kho nguyen-quoc-thang; AGENTS.md. Mục gắn nhãn "đề xuất" chưa được cài. Chi tiết các lớp an toàn: docs/so-do-agent.html.</footer>
+  <section>
+    <h2>Phân tích trùng lặp</h2>
+    <p class="lead">Kết quả gộp Tổng chỉ huy với Command Center: mỗi việc chỉ còn một nơi định nghĩa.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Mục</th><th>Trùng với</th><th>Quyết định</th><th>Lý do</th></tr></thead>
+      <tbody id="dups"></tbody>
+    </table></div>
+  </section>
+
+  <footer>Dữ liệu: .claude/tong-chi-huy/registry.json (sinh trang bằng build_page.py). Hook: .claude/hooks/dieu_phoi.py. Quy trình: .claude/skills/tong-chi-huy. Chi tiết các lớp an toàn: docs/so-do-agent.html.</footer>
 </div>
 
 <aside class="drawer" id="drawer" hidden aria-labelledby="d-name">
@@ -234,64 +229,15 @@ footer { color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--lin
   </dl>
 </aside>
 
+<script id="registry" type="application/json">{"phien_ban":"1.0","cap_nhat":"2026-11-12","ghi_chu":"Nguồn dữ liệu duy nhất cho hook điều phối (.claude/hooks/dieu_phoi.py) và trang docs/ai-command-center.html. Sửa ở đây rồi chạy: python .claude/tong-chi-huy/build_page.py","nhom":{"skill":{"ten":"Kỹ năng","pham_vi":"Kiến thức nghiệp vụ"},"agent":{"ten":"Tác tử","pham_vi":"Ngữ cảnh độc lập"},"cmd":{"ten":"Lệnh","pham_vi":"Quy trình gọi bằng /"},"guard":{"ten":"Rào chắn","pham_vi":"Điều phối, an toàn, bộ nhớ"},"link":{"ten":"Kết nối","pham_vi":"Dịch vụ ngoài"}},"nguon":{"ctx":"Riêng CTXĐN","repo":"Kho EMS","plugin":"Plugin","core":"Có sẵn"},"muc":[{"id":"tong-chi-huy","nhom":"skill","phan_muc":"Điều phối","nguon":"repo","mo_ta":"Quy trình Tổng chỉ huy: phân tích yêu cầu, giao việc theo bảng định tuyến, đi qua cổng G0 khảo sát → G1 thực hiện → G2 kiểm tra → G3 phản biện → nghiệm thu.","khi_dung":"Tự động mỗi lần gõ chat (hook điều phối nạp kế hoạch).","goi":"/tong-chi-huy","vi_du":"","duong_dan":".claude/skills/tong-chi-huy/SKILL.md"},{"id":"tro-ly-22-ky-nang-ctxdn","nhom":"skill","phan_muc":"Nghiệp vụ CTXĐN","nguon":"ctx","mo_ta":"Trợ lý 22 kỹ năng văn phòng: văn bản NĐ 30, báo cáo, biên bản họp, email, quy trình kỹ thuật, đề thi, truyền thông nội bộ.","khi_dung":"Soạn hoặc rà soát văn bản hành chính, kỹ thuật của chi nhánh.","goi":"/tro-ly-22-ky-nang-ctxdn","vi_du":"Soạn biên bản họp giao ban kỹ thuật sáng thứ Hai theo NĐ 30","duong_dan":"Kỹ năng tổ chức (anthropic-skills)"},{"id":"bao-cao-an-toan-van-dung-ctxdn","nhom":"skill","phan_muc":"Nghiệp vụ CTXĐN","nguon":"ctx","mo_ta":"Báo cáo giao ban tuần, tháng, quý, năm về an toàn chạy tàu, vận dụng toa xe từ email văn thư; xuất Word theo NĐ 30 và gửi email.","khi_dung":"Đến kỳ báo cáo giao ban an toàn.","goi":"/bao-cao-an-toan-van-dung-ctxdn","vi_du":"Lập báo cáo an toàn vận dụng tuần 46/2026 từ thư của các trạm","duong_dan":"Kỹ năng tổ chức (anthropic-skills)"},{"id":"phan-tich-su-co-toa-xe","nhom":"skill","phan_muc":"Nghiệp vụ CTXĐN","nguon":"ctx","mo_ta":"Phân tích sự cố, trở ngại chạy tàu, hư hỏng toa xe: dựng diễn biến, 5 Why, xương cá, biện pháp, báo cáo.","khi_dung":"Sau khi có biên bản sự cố hoặc hư hỏng toa xe.","goi":"/phan-tich-su-co-toa-xe","vi_du":"Phân tích nguyên nhân hãm bó toa xe tại ga Diêu Trì","duong_dan":"Kỹ năng tổ chức (anthropic-skills)"},{"id":"phat-hanh-ems","nhom":"skill","phan_muc":"Nghiệp vụ CTXĐN","nguon":"repo","mo_ta":"Phát hành EMS: chốt phiên bản, CHANGELOG, build/test, gắn tag, staging rồi production trên IIS, rollback.","khi_dung":"Đưa bản EMS mới lên máy chủ nội bộ.","goi":"/phat-hanh-ems","vi_du":"Phát hành EMS bản 1.4.0","duong_dan":".claude/skills/phat-hanh-ems/SKILL.md"},{"id":"karpathy-guidelines","nhom":"skill","phan_muc":"Nghiệp vụ CTXĐN","nguon":"ctx","mo_ta":"Nguyên tắc viết, sửa, review code (ưu tiên C++): không giả định sai, không rườm rà, không sửa lan.","khi_dung":"Mọi việc lập trình.","goi":"/karpathy-guidelines","vi_du":"Review hàm tính hạn khám định kỳ toa xe trong module C++","duong_dan":"Kỹ năng tổ chức (anthropic-skills)"},{"id":"docx","nhom":"skill","phan_muc":"Văn phòng","nguon":"core","mo_ta":"Tạo, đọc, sửa Word: định dạng, bảng, theo dõi thay đổi, mẫu .dotx.","khi_dung":"Cần file .docx để in, ký, gửi.","goi":"/docx","vi_du":"Chuyển báo cáo này sang Word khổ A4, lề NĐ 30","duong_dan":"anthropic-skills"},{"id":"xlsx","nhom":"skill","phan_muc":"Văn phòng","nguon":"core","mo_ta":"Đọc, làm sạch, tính toán, lập biểu đồ trên Excel/CSV.","khi_dung":"Bảng thống kê toa xe, kế hoạch sửa chữa dạng Excel.","goi":"/xlsx","vi_du":"Tổng hợp số toa xe sửa chữa cấp theo tháng từ file này","duong_dan":"anthropic-skills"},{"id":"pptx","nhom":"skill","phan_muc":"Văn phòng","nguon":"core","mo_ta":"Tạo, sửa bài trình chiếu PowerPoint.","khi_dung":"Báo cáo hội nghị sơ kết, tổng kết.","goi":"/pptx","vi_du":"Làm 10 slide sơ kết 6 tháng công tác an toàn","duong_dan":"anthropic-skills"},{"id":"pdf","nhom":"skill","phan_muc":"Văn phòng","nguon":"core","mo_ta":"Gộp, tách, OCR, điền form, trích bảng từ PDF.","khi_dung":"Văn bản scan, biểu mẫu PDF.","goi":"/pdf","vi_du":"OCR công văn scan rồi trích nội dung chỉ đạo","duong_dan":"anthropic-skills"},{"id":"deep-research","nhom":"skill","phan_muc":"Văn phòng","nguon":"core","mo_ta":"Nghiên cứu nhiều nguồn, tổng hợp báo cáo có dẫn nguồn.","khi_dung":"Tìm hiểu quy chuẩn, công nghệ toa xe, kinh nghiệm ngành.","goi":"/deep-research","vi_du":"Tổng hợp tiêu chuẩn kiểm tra giá chuyển hướng toa xe khách","duong_dan":"anthropic-skills"},{"id":"write-query","nhom":"skill","phan_muc":"Dữ liệu","nguon":"plugin","mo_ta":"Viết câu SQL tối ưu cho SQL Server.","khi_dung":"Truy vấn số liệu EMS; chỉ SELECT tham số hóa.","goi":"/data:write-query","vi_du":"Viết truy vấn đếm phân công đang hiệu lực theo tổ","duong_dan":"plugin data"},{"id":"analyze","nhom":"skill","phan_muc":"Dữ liệu","nguon":"plugin","mo_ta":"Trả lời câu hỏi dữ liệu, từ tra nhanh đến phân tích đầy đủ.","khi_dung":"Tìm nguyên nhân số liệu tăng giảm bất thường.","goi":"/data:analyze","vi_du":"Vì sao số trở ngại tháng 10 tăng so với tháng 9?","duong_dan":"plugin data"},{"id":"validate-data","nhom":"skill","phan_muc":"Dữ liệu","nguon":"plugin","mo_ta":"Rà phương pháp, số liệu, cách tổng hợp trước khi gửi.","khi_dung":"Trước khi nộp báo cáo số liệu lên công ty.","goi":"/data:validate-data","vi_du":"Kiểm tra lại các con số trong báo cáo quý III","duong_dan":"plugin data"},{"id":"build-dashboard","nhom":"skill","phan_muc":"Dữ liệu","nguon":"plugin","mo_ta":"Bảng điều khiển HTML có biểu đồ, bộ lọc.","khi_dung":"Theo dõi chỉ tiêu an toàn theo trạm.","goi":"/data:build-dashboard","vi_du":"","duong_dan":"plugin data","trang_thai":"blocked","ly_do":"Tải thư viện qua CDN, trái yêu cầu chạy offline (rà soát G1, Đề xuất 6)."},{"id":"stakeholder-update","nhom":"skill","phan_muc":"Làm việc","nguon":"plugin","mo_ta":"Viết cập nhật tiến độ theo người nhận và chu kỳ.","khi_dung":"Báo cáo nhanh lên giám đốc, công ty.","goi":"/product-management:stakeholder-update","vi_du":"Viết cập nhật tuần về dự án EMS cho giám đốc","duong_dan":"plugin product-management"},{"id":"process-doc","nhom":"skill","phan_muc":"Ứng viên (rà soát G1)","nguon":"plugin","mo_ta":"Soạn quy trình (SOP). Đã Việt hóa mẫu UV-02, thêm nhãn CẦN CĂN CỨ. 76 điểm.","khi_dung":"Chưa dùng.","goi":"—","vi_du":"","duong_dan":"knowledge-work-plugins · hồ sơ rà soát G0–G3","trang_thai":"blocked","ly_do":"Có thể trùng tro-ly-22-ky-nang-ctxdn (quy trình kỹ thuật); chờ đọc toàn văn và kiểm thử hành vi."},{"id":"risk-assessment","nhom":"skill","phan_muc":"Ứng viên (rà soát G1)","nguon":"plugin","mo_ta":"Đánh giá rủi ro. 78 điểm.","khi_dung":"Chưa dùng.","goi":"—","vi_du":"","duong_dan":"knowledge-work-plugins · hồ sơ rà soát G0–G3","trang_thai":"blocked","ly_do":"Chờ kiểm thử hành vi và phản biện G3."},{"id":"to-phan-bien","nhom":"agent","phan_muc":"Riêng kho","nguon":"repo","mo_ta":"Tổ 2: phản biện độc lập ở cổng G3, chỉ đọc, kết luận PASS / FAIL / BLOCKED kèm căn cứ.","khi_dung":"Văn bản gửi ra ngoài, báo cáo số liệu, đề xuất chọn công cụ.","goi":"Agent(to-phan-bien)","vi_du":"Phản biện báo cáo an toàn quý III trước khi trình ký","duong_dan":".claude/agents/to-phan-bien.md"},{"id":"general-purpose","nhom":"agent","phan_muc":"Có sẵn","nguon":"core","mo_ta":"Tác tử đa năng cho việc nhiều bước trong ngữ cảnh riêng.","khi_dung":"Việc nhiều bước, không muốn làm đầy ngữ cảnh chính.","goi":"Agent(general-purpose)","vi_du":"Dùng tác tử phụ rà mọi nơi gọi fetch_all","duong_dan":"Claude Code"},{"id":"Explore","nhom":"agent","phan_muc":"Có sẵn","nguon":"core","mo_ta":"Tìm kiếm chỉ đọc trên nhiều file, trả kết luận ngắn.","khi_dung":"Tìm vị trí dùng hàm, biến trên cả dự án (AGENTS.md mục 4).","goi":"Agent(Explore)","vi_du":"Tìm mọi chỗ cập nhật IsActive trong src/","duong_dan":"Claude Code"},{"id":"Plan","nhom":"agent","phan_muc":"Có sẵn","nguon":"core","mo_ta":"Lập kế hoạch triển khai, chỉ ra file then chốt và đánh đổi.","khi_dung":"Trước khi làm tính năng lớn.","goi":"Agent(Plan)","vi_du":"Lập kế hoạch đăng nhập SQL bằng Windows Authentication","duong_dan":"Claude Code"},{"id":"claude-code-guide","nhom":"agent","phan_muc":"Có sẵn","nguon":"core","mo_ta":"Giải đáp về Claude Code, hook, lệnh, MCP, Agent SDK.","khi_dung":"Hỏi cách cấu hình công cụ AI.","goi":"Agent(claude-code-guide)","vi_du":"Hook UserPromptSubmit trả ngữ cảnh thế nào?","duong_dan":"Claude Code"},{"id":"code-review","nhom":"cmd","phan_muc":"Kiểm tra mã","nguon":"core","mo_ta":"Rà lỗi đúng sai trên diff hoặc PR. Là cổng G3 cho thay đổi mã.","khi_dung":"Trước khi commit hoặc mở PR.","goi":"/code-review medium","vi_du":"/code-review high --fix","duong_dan":"Claude Code"},{"id":"security-review","nhom":"cmd","phan_muc":"Kiểm tra mã","nguon":"core","mo_ta":"Rà bảo mật thay đổi trên nhánh hiện tại.","khi_dung":"Đổi phần đăng nhập, CSDL, triển khai.","goi":"/security-review","vi_du":"","duong_dan":"Claude Code"},{"id":"simplify","nhom":"cmd","phan_muc":"Kiểm tra mã","nguon":"core","mo_ta":"Tìm chỗ dùng lại, rút gọn, hiệu năng rồi sửa.","khi_dung":"Dọn mã sau khi tính năng đã chạy.","goi":"/simplify","vi_du":"","duong_dan":"Claude Code"},{"id":"run","nhom":"cmd","phan_muc":"Vận hành","nguon":"core","mo_ta":"Khởi động web app để xem thay đổi chạy thật.","khi_dung":"Kiểm tra giao diện sau khi sửa.","goi":"/run","vi_du":"/run giao diện EMS với dữ liệu mẫu","duong_dan":"Claude Code"},{"id":"loop","nhom":"cmd","phan_muc":"Vận hành","nguon":"core","mo_ta":"Chạy một việc lặp theo chu kỳ.","khi_dung":"Theo dõi CI hoặc hộp thư định kỳ.","goi":"/loop 30m","vi_du":"/loop 1h kiểm tra thư báo cáo mới","duong_dan":"Claude Code"},{"id":"update-config","nhom":"cmd","phan_muc":"Cấu hình","nguon":"core","mo_ta":"Sửa settings.json: quyền, hook, biến môi trường.","khi_dung":"Thêm luật chặn hoặc hook mới (phải xin phép).","goi":"/update-config","vi_du":"Thêm luật deny cho .env.uat","duong_dan":"Claude Code"},{"id":"fewer-permission-prompts","nhom":"cmd","phan_muc":"Cấu hình","nguon":"core","mo_ta":"Đề xuất thêm lệnh chỉ đọc hay dùng vào danh sách cho phép.","khi_dung":"Bị hỏi quyền quá nhiều.","goi":"/fewer-permission-prompts","vi_du":"","duong_dan":"Claude Code"},{"id":"skill-creator","nhom":"cmd","phan_muc":"Cấu hình","nguon":"core","mo_ta":"Tạo, sửa, đo hiệu quả kỹ năng.","khi_dung":"Đóng gói quy trình lặp lại thành kỹ năng (sau khi Tổng chỉ huy xác nhận không trùng).","goi":"/skill-creator","vi_du":"Tạo kỹ năng lập kế hoạch sửa chữa toa xe cấp","duong_dan":"anthropic-skills"},{"id":"dieu-phoi","nhom":"guard","phan_muc":"Điều phối","nguon":"repo","mo_ta":"Hook UserPromptSubmit: mỗi lần gõ chat, đối chiếu yêu cầu với bảng định tuyến và nạp kế hoạch giao việc cho trợ lý.","khi_dung":"Tự chạy. Bỏ qua: bắt đầu bằng / hoặc chứa #khong-dieu-phoi.","goi":"python3 .claude/hooks/dieu_phoi.py","vi_du":"python -m pytest tests/harness/test_dieu_phoi.py -q","duong_dan":".claude/hooks/dieu_phoi.py"},{"id":"lop-an-toan","nhom":"guard","phan_muc":"An toàn & bộ nhớ","nguon":"repo","mo_ta":"Permissions, hook guard.py, Ruff S, tài khoản db_datareader, CI. Sơ đồ từng lớp ở so-do-agent.html.","khi_dung":"Luôn bật; không cần gọi.","goi":"python -m pytest tests/harness/ -q","vi_du":"","duong_dan":"docs/so-do-agent.html"},{"id":"bo-nho","nhom":"guard","phan_muc":"An toàn & bộ nhớ","nguon":"repo","mo_ta":"AGENTS.md (quy chuẩn), MEMORY.md (bài học), todo.md (việc đang làm), nạp tự động qua CLAUDE.md. Thay cho memory-management, task-management.","khi_dung":"Cập nhật trước khi nghiệm thu.","goi":"@AGENTS.md @MEMORY.md @todo.md","vi_du":"","duong_dan":"CLAUDE.md"},{"id":"gmail","nhom":"link","phan_muc":"Đang kết nối","nguon":"core","mo_ta":"Đọc, tìm thư; tạo thư nháp, trả lời, gắn nhãn.","khi_dung":"Lấy email văn thư; gửi báo cáo đã duyệt.","goi":"Gmail (MCP)","vi_du":"Tìm thư báo cáo an toàn từ trạm Nha Trang tuần này","duong_dan":"Connector claude.ai"},{"id":"google-drive","nhom":"link","phan_muc":"Đang kết nối","nguon":"core","mo_ta":"Tìm, đọc, tạo, chia sẻ file trên Drive.","khi_dung":"Lưu biên bản, ảnh hiện trường, báo cáo.","goi":"Google Drive (MCP)","vi_du":"Tìm biên bản sự cố tháng 10 trong Drive","duong_dan":"Connector claude.ai"},{"id":"github","nhom":"link","phan_muc":"Đang kết nối","nguon":"core","mo_ta":"Nhánh, PR, CI, review cho kho nguyen-quoc-thang.","khi_dung":"Mọi thay đổi mã EMS.","goi":"GitHub (MCP)","vi_du":"Xem kết quả CI của PR mới nhất","duong_dan":"Connector claude.ai"},{"id":"claude-docs","nhom":"link","phan_muc":"Đang kết nối","nguon":"core","mo_ta":"Tài liệu sống để cùng sửa, xuất Word/PDF.","khi_dung":"Dự thảo văn bản cần nhiều người góp ý.","goi":"Claude Docs","vi_du":"Tạo dự thảo quy trình khám xe đi đường","duong_dan":"Connector claude.ai"},{"id":"canva","nhom":"link","phan_muc":"Đang kết nối","nguon":"core","mo_ta":"Thiết kế ấn phẩm, poster, slide.","khi_dung":"Truyền thông nội bộ, khẩu hiệu an toàn.","goi":"Canva (MCP)","vi_du":"Làm poster tháng an toàn giao thông đường sắt","duong_dan":"Connector claude.ai"}],"tuyen":[{"id":"bao-cao-an-toan","ten":"Báo cáo an toàn, vận dụng","tu_khoa":["giao ban","an toàn chạy tàu","vận dụng","báo cáo tuần","báo cáo tháng","báo cáo quý","báo cáo năm"],"chinh":"bao-cao-an-toan-van-dung-ctxdn","ho_tro":["gmail","docx","to-phan-bien"]},{"id":"su-co","ten":"Phân tích sự cố toa xe","tu_khoa":["sự cố","trở ngại","hư hỏng","nguyên nhân","5 why","xương cá","hãm bó","trật bánh"],"chinh":"phan-tich-su-co-toa-xe","ho_tro":["google-drive","tro-ly-22-ky-nang-ctxdn","to-phan-bien"]},{"id":"van-ban","ten":"Văn bản hành chính, kỹ thuật","tu_khoa":["công văn","tờ trình","biên bản","nđ 30","nghị định 30","quyết định","thông báo","kế hoạch","quy trình","đề thi","soạn","email"],"chinh":"tro-ly-22-ky-nang-ctxdn","ho_tro":["docx","to-phan-bien"]},{"id":"phat-hanh","ten":"Phát hành, triển khai EMS","tu_khoa":["phát hành","release","deploy","triển khai","iis","rollback","lên phiên bản"],"chinh":"phat-hanh-ems","ho_tro":["code-review","security-review"]},{"id":"ma-nguon","ten":"Sửa mã nguồn EMS","tu_khoa":["sửa lỗi","lỗi","bug","code","mã nguồn","hàm","api","pytest","test","giao diện","refactor","c++","python"],"chinh":"karpathy-guidelines","ho_tro":["Explore","code-review"]},{"id":"du-lieu","ten":"Truy vấn, phân tích số liệu","tu_khoa":["sql","truy vấn","csdl","cơ sở dữ liệu","số liệu","thống kê","nhân sự","phân công"],"chinh":"write-query","ho_tro":["analyze","validate-data"]},{"id":"excel","ten":"Bảng tính","tu_khoa":["excel","xlsx","csv","bảng tính"],"chinh":"xlsx","ho_tro":["validate-data"]},{"id":"trinh-chieu","ten":"Trình chiếu","tu_khoa":["slide","trình chiếu","powerpoint","pptx","thuyết trình"],"chinh":"pptx","ho_tro":["tro-ly-22-ky-nang-ctxdn"]},{"id":"pdf","ten":"Xử lý PDF","tu_khoa":["pdf","scan","ocr"],"chinh":"pdf","ho_tro":[]},{"id":"nghien-cuu","ten":"Nghiên cứu, tìm hiểu","tu_khoa":["nghiên cứu","tìm hiểu","tiêu chuẩn","quy chuẩn","so sánh"],"chinh":"deep-research","ho_tro":["to-phan-bien"]},{"id":"danh-gia-cong-cu","ten":"Rà soát, chọn công cụ AI","tu_khoa":["skill","kỹ năng","plugin","rà soát","trùng lặp","registry","đánh giá","tác tử","agent"],"chinh":"tong-chi-huy","ho_tro":["Explore","to-phan-bien"]},{"id":"cau-hinh","ten":"Cấu hình trợ lý","tu_khoa":["hook","permission","quyền","settings","cấu hình"],"chinh":"update-config","ho_tro":["claude-code-guide"]},{"id":"ke-hoach","ten":"Thiết kế tính năng mới","tu_khoa":["tính năng mới","thiết kế","kiến trúc","lập kế hoạch"],"chinh":"Plan","ho_tro":["Explore"]},{"id":"truyen-thong","ten":"Truyền thông nội bộ","tu_khoa":["poster","truyền thông","khẩu hiệu","ấn phẩm","băng rôn"],"chinh":"canva","ho_tro":["tro-ly-22-ky-nang-ctxdn"]}],"canh_bao":[{"tu_khoa":["xóa","delete","drop","truncate"],"noi_dung":"Không xóa cứng (IsActive = 0); đổi cấu trúc bảng chỉ qua migration có người duyệt."},{"tu_khoa":["gửi","send","đăng lên","đăng bài"],"noi_dung":"Gửi hoặc đăng ra ngoài: tạo bản nháp, chờ người duyệt."},{"tu_khoa":["push","merge","nhánh chính","main"],"noi_dung":"Đẩy lên nhánh chính phải xin phép."},{"tu_khoa":["cài","install","pip"],"noi_dung":"Cài thư viện mới phải xin phép."},{"tu_khoa":["mật khẩu","password","chuỗi kết nối",".env","secrets"],"noi_dung":"Không đọc secrets/ hay .env; không hardcode mật khẩu."}],"trung_lap":[{"a":"Tác tử nghiem-thu, lệnh /nghiem-thu (đề xuất trước)","b":"Cổng nghiệm thu của Tổng chỉ huy + AGENTS.md mục 5","quyet_dinh":"Gộp vào tong-chi-huy","ly_do":"Ba nơi cùng định nghĩa điều kiện DONE."},{"a":"Tác tử kiem-tra-sql (đề xuất trước)","b":"guard.py + Ruff S608 + /code-review","quyet_dinh":"Bỏ","ly_do":"Luật SQL đã được cưỡng chế bằng máy, review chung đã rà SQL."},{"a":"memory-management, task-management","b":"MEMORY.md, todo.md","quyet_dinh":"Bỏ khỏi danh mục","ly_do":"Rà soát G1 xếp loại C - trùng lặp."},{"a":"Danh mục nhúng trong trang HTML","b":"Registry CTXĐN (BLOCKED trong rà soát)","quyet_dinh":"Gộp thành registry.json","ly_do":"Một nguồn dữ liệu cho cả trang và bộ điều phối."},{"a":"Tổ 2 phản biện","b":"/code-review","quyet_dinh":"Giữ cả hai, chia phạm vi","ly_do":"to-phan-bien cho văn bản, số liệu, quyết định; /code-review cho mã."},{"a":"incident-response (plugin)","b":"phan-tich-su-co-toa-xe","quyet_dinh":"Giữ kỹ năng CTXĐN","ly_do":"Đã sát nghiệp vụ toa xe; plugin là khung chung."},{"a":"3 quy trình mẫu trên trang","b":"Bảng định tuyến","quyet_dinh":"Thay bằng bảng định tuyến","ly_do":"Bảng sinh từ registry, luôn khớp với hook."}]}</script><!-- /REGISTRY -->
 <script>
-const GROUPS = {
-  skill: { name: "Kỹ năng", scope: "Kiến thức nghiệp vụ", color: "--g-skill" },
-  agent: { name: "Tác tử", scope: "Ngữ cảnh độc lập", color: "--g-agent" },
-  cmd:   { name: "Lệnh", scope: "Quy trình gọi bằng /", color: "--g-cmd" },
-  guard: { name: "Rào chắn", scope: "An toàn & bộ nhớ", color: "--g-guard" },
-  link:  { name: "Kết nối", scope: "Dịch vụ ngoài", color: "--g-link" },
-};
-const SOURCES = { ctx: "Riêng CTXĐN", repo: "Kho EMS", plugin: "Plugin", core: "Có sẵn" };
-
-// [nhóm, phân mục, tên, nguồn, mô tả, khi nào dùng, gọi bằng, ví dụ, đường dẫn, trạng thái]
-const RAW = [
-  ["skill","Nghiệp vụ CTXĐN","tro-ly-22-ky-nang-ctxdn","ctx","Trợ lý 22 kỹ năng văn phòng của chi nhánh: văn bản NĐ 30, báo cáo, biên bản họp, email, quy trình kỹ thuật, đề thi, truyền thông nội bộ.","Soạn hoặc rà soát bất kỳ văn bản hành chính, kỹ thuật nào của chi nhánh.","/tro-ly-22-ky-nang-ctxdn","Soạn biên bản họp giao ban kỹ thuật sáng thứ Hai theo NĐ 30","Kỹ năng tổ chức (anthropic-skills)"],
-  ["skill","Nghiệp vụ CTXĐN","bao-cao-an-toan-van-dung-ctxdn","ctx","Lập báo cáo giao ban tuần, tháng, quý, năm về an toàn chạy tàu và vận dụng toa xe từ email văn thư; xuất Word theo NĐ 30 và gửi email.","Đến kỳ báo cáo giao ban an toàn.","/bao-cao-an-toan-van-dung-ctxdn","Lập báo cáo an toàn vận dụng tuần 46/2026 từ thư của các trạm","Kỹ năng tổ chức (anthropic-skills)"],
-  ["skill","Nghiệp vụ CTXĐN","phan-tich-su-co-toa-xe","ctx","Phân tích sự cố, trở ngại chạy tàu, hư hỏng toa xe: dựng diễn biến, 5 Why, sơ đồ xương cá, biện pháp khắc phục, báo cáo.","Sau khi có biên bản sự cố hoặc hư hỏng toa xe trên tuyến.","/phan-tich-su-co-toa-xe","Phân tích nguyên nhân hãm bó toa xe tại ga Diêu Trì","Kỹ năng tổ chức (anthropic-skills)"],
-  ["skill","Nghiệp vụ CTXĐN","phat-hanh-ems","repo","Quy trình phát hành hệ thống EMS: chốt phiên bản, CHANGELOG, build/test, gắn tag, staging rồi production trên IIS, rollback.","Khi đưa bản EMS mới lên máy chủ nội bộ.","/phat-hanh-ems","Phát hành EMS bản 1.4.0",".claude/skills/phat-hanh-ems/SKILL.md"],
-  ["skill","Nghiệp vụ CTXĐN","karpathy-guidelines","ctx","Nguyên tắc viết, sửa, review code (ưu tiên C++): tránh giả định sai, code rườm rà, sửa lan ngoài phạm vi.","Mọi việc lập trình, nhất là C++.","/karpathy-guidelines","Review hàm tính hạn khám định kỳ toa xe trong module C++","Kỹ năng tổ chức (anthropic-skills)"],
-  ["skill","Văn phòng","docx","core","Tạo, đọc, sửa tài liệu Word: định dạng, bảng, theo dõi thay đổi, mẫu .dotx.","Cần file .docx để in, ký, gửi đi.","/docx","Chuyển báo cáo này sang Word khổ A4, lề NĐ 30","anthropic-skills"],
-  ["skill","Văn phòng","xlsx","core","Đọc, làm sạch, tính toán, lập biểu đồ trên Excel/CSV.","Bảng thống kê toa xe, kế hoạch sửa chữa dạng Excel.","/xlsx","Tổng hợp số toa xe sửa chữa cấp theo tháng từ file này","anthropic-skills"],
-  ["skill","Văn phòng","pptx","core","Tạo, sửa bài trình chiếu PowerPoint.","Báo cáo hội nghị sơ kết, tổng kết.","/pptx","Làm 10 slide sơ kết 6 tháng công tác an toàn","anthropic-skills"],
-  ["skill","Văn phòng","pdf","core","Gộp, tách, OCR, điền form, trích bảng từ PDF.","Văn bản scan từ công ty, biểu mẫu PDF.","/pdf","OCR công văn scan rồi trích nội dung chỉ đạo","anthropic-skills"],
-  ["skill","Văn phòng","deep-research","core","Nghiên cứu nhiều nguồn, tổng hợp thành báo cáo có dẫn nguồn.","Tìm hiểu quy chuẩn, công nghệ toa xe, kinh nghiệm ngành.","/deep-research","Tổng hợp tiêu chuẩn kiểm tra giá chuyển hướng toa xe khách","anthropic-skills"],
-  ["skill","Dữ liệu","write-query","plugin","Viết câu SQL tối ưu theo phương ngữ (SQL Server).","Truy vấn số liệu EMS; chỉ SELECT tham số hóa.","/data:write-query","Viết truy vấn đếm phân công đang hiệu lực theo tổ","plugin data"],
-  ["skill","Dữ liệu","analyze","plugin","Trả lời câu hỏi dữ liệu, từ tra nhanh đến phân tích đầy đủ.","Tìm nguyên nhân số liệu tăng giảm bất thường.","/data:analyze","Vì sao số trở ngại tháng 10 tăng so với tháng 9?","plugin data"],
-  ["skill","Dữ liệu","build-dashboard","plugin","Bảng điều khiển HTML có biểu đồ, bộ lọc, bảng.","Theo dõi chỉ tiêu an toàn theo trạm.","/data:build-dashboard","Dashboard trở ngại chạy tàu theo 6 đơn vị khám chữa","plugin data"],
-  ["skill","Dữ liệu","validate-data","plugin","Rà phương pháp, số liệu, cách tổng hợp trước khi gửi.","Trước khi nộp báo cáo số liệu lên công ty.","/data:validate-data","Kiểm tra lại các con số trong báo cáo quý III","plugin data"],
-  ["skill","Làm việc","task-management","plugin","Quản lý việc trong file TASKS.md dùng chung.","Theo dõi biện pháp khắc phục, việc giao.","/productivity:task-management","Thêm việc: kiểm tra hãm toàn đoàn tàu SE1 trước 20/11","plugin productivity"],
-  ["skill","Làm việc","memory-management","plugin","Nhớ thuật ngữ, viết tắt nội bộ (CTXĐN, PĐT, KCTX…).","Dạy trợ lý cách gọi tên đơn vị, người, dự án.","/productivity:memory-management","Ghi nhớ: KCTX là khám chữa toa xe","plugin productivity"],
-  ["skill","Làm việc","stakeholder-update","plugin","Viết cập nhật tiến độ theo người nhận và chu kỳ.","Báo cáo nhanh lên giám đốc, công ty.","/product-management:stakeholder-update","Viết cập nhật tuần về dự án EMS cho giám đốc","plugin product-management"],
-
-  ["agent","Có sẵn","general-purpose","core","Tác tử đa năng: nghiên cứu, tìm mã, làm việc nhiều bước trong ngữ cảnh riêng.","Việc nhiều bước mà không muốn làm đầy ngữ cảnh chính.","Agent(general-purpose)","Dùng tác tử phụ rà toàn bộ các nơi gọi fetch_all","Claude Code"],
-  ["agent","Có sẵn","Explore","core","Tìm kiếm chỉ đọc trên nhiều file, trả về kết luận ngắn.","Tìm vị trí dùng hàm, biến trên cả dự án (AGENTS.md mục 4).","Agent(Explore)","Tìm mọi chỗ cập nhật IsActive trong src/","Claude Code"],
-  ["agent","Có sẵn","Plan","core","Kiến trúc sư: lập kế hoạch triển khai, chỉ ra file then chốt và đánh đổi.","Trước khi làm tính năng lớn.","Agent(Plan)","Lập kế hoạch đăng nhập SQL bằng Windows Authentication","Claude Code"],
-  ["agent","Có sẵn","claude-code-guide","core","Giải đáp về Claude Code, hook, lệnh, MCP, Agent SDK, Claude API.","Hỏi cách cấu hình công cụ AI.","Agent(claude-code-guide)","Hook PreToolUse trả JSON ask thế nào?","Claude Code"],
-  ["agent","Đề xuất cho kho","kiem-tra-sql","repo","Rà câu SQL mới theo AGENTS.md mục 3a: tham số hóa, NOLOCK cho báo cáo, không xóa cứng, DECIMAL.","Trước mỗi PR có đổi src/db/.","Agent(kiem-tra-sql)","Rà các thay đổi SQL trên nhánh hiện tại",".claude/agents/kiem-tra-sql.md","plan"],
-
-  ["cmd","Kiểm tra mã","/code-review","core","Rà lỗi đúng sai trên diff hoặc PR theo mức độ low…max.","Trước khi commit hoặc mở PR.","/code-review medium","/code-review high --fix","Claude Code"],
-  ["cmd","Kiểm tra mã","/security-review","core","Rà bảo mật các thay đổi trên nhánh hiện tại.","Khi đổi phần đăng nhập, CSDL, triển khai.","/security-review","","Claude Code"],
-  ["cmd","Kiểm tra mã","/simplify","core","Tìm chỗ dùng lại, rút gọn, hiệu năng rồi sửa.","Dọn mã sau khi tính năng đã chạy.","/simplify","","Claude Code"],
-  ["cmd","Vận hành","/run","core","Khởi động web app để xem thay đổi chạy thật.","Kiểm tra giao diện điện thoại sau khi sửa.","/run","/run giao diện EMS với dữ liệu mẫu","Claude Code"],
-  ["cmd","Vận hành","/loop","core","Chạy một việc lặp theo chu kỳ.","Theo dõi CI hoặc hộp thư định kỳ.","/loop 30m","/loop 1h kiểm tra thư báo cáo mới","Claude Code"],
-  ["cmd","Vận hành","/init","core","Tạo CLAUDE.md mô tả kho mã.","Mở kho mới cho trợ lý.","/init","","Claude Code"],
-  ["cmd","Cấu hình","/fewer-permission-prompts","core","Quét lệnh chỉ đọc hay dùng, đề xuất thêm vào danh sách cho phép.","Bị hỏi quyền quá nhiều lần.","/fewer-permission-prompts","","Claude Code"],
-  ["cmd","Cấu hình","/update-config","core","Sửa settings.json: quyền, hook, biến môi trường.","Thêm luật chặn hoặc hook mới.","/update-config","Thêm luật deny cho .env.uat","Claude Code"],
-  ["cmd","Cấu hình","/skill-creator","core","Tạo, sửa, đo hiệu quả kỹ năng.","Đóng gói một quy trình lặp lại thành kỹ năng.","/skill-creator","Tạo kỹ năng lập kế hoạch sửa chữa toa xe cấp","anthropic-skills"],
-  ["cmd","Đề xuất cho kho","/nghiem-thu","repo","Kiểm 3 điều kiện DONE (AGENTS.md mục 5): pytest -q xanh, ruff không lỗi mới, đã cập nhật todo.md/MEMORY.md.","Kết thúc mỗi tác vụ.","/nghiem-thu","/nghiem-thu",".claude/commands/nghiem-thu.md","plan"],
-
-  ["guard","An toàn & bộ nhớ","Lớp an toàn (5 lớp)","repo","Permissions, hook guard.py, Ruff S, tài khoản db_datareader, CI. Sơ đồ và giải thích từng lớp nằm ở so-do-agent.html.","Luôn bật; không cần gọi.","python -m pytest tests/harness/ -q","","docs/so-do-agent.html"],
-  ["guard","An toàn & bộ nhớ","Bộ nhớ dự án","repo","AGENTS.md (quy chuẩn), MEMORY.md (bài học), todo.md (việc đang làm), nạp tự động qua CLAUDE.md.","Cập nhật trước khi báo xong một tác vụ.","@AGENTS.md @MEMORY.md @todo.md","","CLAUDE.md · docs/so-do-agent.html"],
-
-  ["link","Đang kết nối","Gmail","core","Đọc, tìm thư; tạo thư nháp, trả lời, gắn nhãn.","Lấy email văn thư cho báo cáo; gửi báo cáo đã duyệt.","Gmail (MCP)","Tìm thư báo cáo an toàn từ trạm Nha Trang tuần này","Connector claude.ai"],
-  ["link","Đang kết nối","Google Drive","core","Tìm, đọc, tạo, chia sẻ file trên Drive.","Lưu biên bản, ảnh hiện trường, báo cáo.","Google Drive (MCP)","Tìm biên bản sự cố tháng 10 trong Drive","Connector claude.ai"],
-  ["link","Đang kết nối","GitHub","core","Nhánh, PR, CI, review cho kho nguyen-quoc-thang.","Mọi thay đổi mã EMS.","GitHub (MCP)","Xem kết quả CI của PR mới nhất","Connector claude.ai"],
-  ["link","Đang kết nối","Claude Docs","core","Tài liệu sống để cùng sửa, xuất Word/PDF.","Dự thảo văn bản cần nhiều người góp ý.","Claude Docs","Tạo dự thảo quy trình khám xe đi đường","Connector claude.ai"],
-  ["link","Đang kết nối","Canva","core","Thiết kế ấn phẩm, poster, slide.","Truyền thông nội bộ, khẩu hiệu an toàn.","Canva (MCP)","Làm poster tháng an toàn giao thông đường sắt","Connector claude.ai"],
-];
-
-const ITEMS = RAW.map((r, i) => ({ id: "i" + i, g: r[0], sub: r[1], name: r[2], src: r[3], desc: r[4], when: r[5], cmd: r[6], ex: r[7], path: r[8], plan: r[9] === "plan" }));
+const REG = JSON.parse(document.getElementById("registry").textContent);
+const COLORS = { skill: "--g-skill", agent: "--g-agent", cmd: "--g-cmd", guard: "--g-guard", link: "--g-link" };
+const GROUPS = Object.fromEntries(Object.entries(REG.nhom).map(([k, g]) => [k, { name: g.ten, scope: g.pham_vi, color: COLORS[k] }]));
+const SOURCES = REG.nguon;
+const label = (m) => (m.nhom === "cmd" ? "/" : "") + m.id;
+const ITEMS = REG.muc.map((m, i) => ({ id: "k" + i, g: m.nhom, sub: m.phan_muc, name: label(m), src: m.nguon, desc: m.mo_ta, when: m.khi_dung, cmd: m.goi, ex: m.vi_du, path: m.duong_dan, blocked: m.trang_thai === "blocked", why: m.ly_do || "" }));
+const BY_ID = Object.fromEntries(REG.muc.map((m) => [m.id, m]));
 
 const $ = (s) => document.querySelector(s);
 const tracks = $("#tracks"), q = $("#q"), drawer = $("#drawer");
@@ -324,7 +270,7 @@ function render() {
   tracks.textContent = "";
   for (const [k, g] of Object.entries(GROUPS)) {
     const list = ITEMS.filter(x => x.g === k && (srcFilter === "all" || x.src === srcFilter) &&
-      (!term || norm([x.name, x.desc, x.when, x.ex, x.sub].join(" ")).includes(term)));
+      (!term || norm([x.name, x.desc, x.when, x.ex, x.sub, x.why].join(" ")).includes(term)));
     const box = el("div", { class: "track", style: `--gc:var(${g.color})` });
     const head = el("header"); const ttl = el("div"); ttl.append(el("h2", {}, g.name), el("div", { class: "scope" }, g.scope));
     head.append(ttl, el("span", { class: "cnt" }, String(list.length)));
@@ -334,7 +280,7 @@ function render() {
       if (it.sub !== lastSub && new Set(list.map(x => x.sub)).size > 1) { box.append(el("div", { class: "sub" }, it.sub)); lastSub = it.sub; }
       const b = el("button", { class: "item" + (current === it.id ? " on" : ""), type: "button", "data-id": it.id, title: it.name });
       b.append(el("span", { class: "pip" }), el("span", { class: "nm" }, it.name));
-      if (it.plan) b.append(el("span", { class: "tag" }, "đề xuất"));
+      if (it.blocked) b.append(el("span", { class: "tag" }, "blocked"));
       b.addEventListener("click", () => open(it));
       box.append(b);
     }
@@ -350,8 +296,8 @@ function open(it) {
   $("#d-grp").textContent = `● ${g.name} · ${it.sub} · ${SOURCES[it.src]}`;
   $("#d-name").textContent = it.name;
   const st = $("#d-state");
-  st.textContent = it.plan ? "Đề xuất: chưa cài trong kho" : "Đang dùng";
-  st.className = "state " + (it.plan ? "plan" : "ok");
+  st.textContent = it.blocked ? "BLOCKED: " + it.why : "Đang dùng";
+  st.className = "state " + (it.blocked ? "plan" : "ok");
   $("#d-desc").textContent = it.desc;
   $("#d-when").textContent = it.when;
   $("#d-cmd").textContent = it.cmd;
@@ -378,6 +324,14 @@ $("#d-copy").addEventListener("click", () => {
   const fallback = () => { const r = document.createRange(); r.selectNodeContents(code); const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = "Đã chọn, nhấn Ctrl+C"; };
   try { navigator.clipboard.writeText(code.textContent).then(done, fallback); } catch { fallback(); }
 });
+function row(tbody, cells) {
+  const tr = el("tr");
+  for (const [cls, text] of cells) tr.append(el("td", cls ? { class: cls } : {}, text));
+  tbody.append(tr);
+}
+const nm = (id) => (BY_ID[id] ? label(BY_ID[id]) : id);
+for (const t of REG.tuyen) row($("#routes"), [["q", t.ten], ["k", t.tu_khoa.join(", ")], ["m", nm(t.chinh)], ["m", t.ho_tro.map(nm).join(", ") || "—"]]);
+for (const d of REG.trung_lap) row($("#dups"), [["", d.a], ["", d.b], ["q", d.quyet_dinh], ["", d.ly_do]]);
 q.addEventListener("input", render);
 render();
 </script>

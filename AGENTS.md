@@ -45,6 +45,11 @@ Sửa `guard.py` phải kèm test tại `tests/harness/test_guard.py`.
 ## 4. Điều phối Tác tử phụ (Subagents)
 - Khi cần tìm kiếm vị trí sử dụng của một biến/hàm trên toàn bộ dự án hoặc đọc tài liệu quy chuẩn dài, hãy tách **Subagent** với vùng ngữ cảnh độc lập để rà soát và chỉ trả về bản tóm tắt ngắn gọn cho Agent chính.
 
+## 4a. Tổng chỉ huy (điều phối tự động)
+- Mỗi lần người dùng gõ chat, hook `UserPromptSubmit` (`.claude/hooks/dieu_phoi.py`) đối chiếu yêu cầu với `.claude/tong-chi-huy/registry.json` và nạp kế hoạch giao việc. Làm theo kỹ năng `tong-chi-huy` (cổng G0 → G1 → G2 → G3 → nghiệm thu). Bỏ qua: lệnh bắt đầu bằng `/` hoặc có `#khong-dieu-phoi`.
+- `registry.json` là nguồn duy nhất cho danh mục kỹ năng/tác tử/lệnh, bảng định tuyến và trang `docs/ai-command-center.html`. Thêm công cụ mới: kiểm tra trùng trước, sửa registry, chạy `python .claude/tong-chi-huy/build_page.py`, rồi `pytest tests/harness/ -q`.
+- Cổng G3: văn bản/số liệu/quyết định dùng tác tử `to-phan-bien` (chỉ đọc); mã dùng `/code-review`.
+
 ## 5. Tiêu chuẩn Nghiệm thu (Verifier - Định nghĩa "DONE")
 Một tác vụ CHỈ được phép đánh dấu hoàn thành khi thỏa mãn đồng thời 3 điều kiện thực tế:
 1. Chạy `pytest -q` báo xanh 100% (tests pass).
