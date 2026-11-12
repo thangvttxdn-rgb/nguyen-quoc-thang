@@ -6,6 +6,15 @@ pythonpath = ["."]
 [tool.ruff]
 target-version = "py311"
 line-length = 100
+# Skills chép nguyên bản từ anthropics/skills (Apache 2.0) - giữ nguyên mã gốc, không lint.
+extend-exclude = [
+    ".claude/skills/frontend-design",
+    ".claude/skills/mcp-builder",
+    ".claude/skills/slack-gif-creator",
+    ".claude/skills/theme-factory",
+    ".claude/skills/web-artifacts-builder",
+    ".claude/skills/webapp-testing",
+]
 
 [tool.ruff.lint]
 # S: bandit - bắt mật khẩu hardcode (S105/S106) và SQL ghép chuỗi (S608).

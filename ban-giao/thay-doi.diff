@@ -1,0 +1,149 @@
+diff --git a/.claude/skills/phat-hanh-ems/SKILL.md b/.claude/skills/phat-hanh-ems/SKILL.md
+index 14e23ab..7e97e13 100644
+--- a/.claude/skills/phat-hanh-ems/SKILL.md
++++ b/.claude/skills/phat-hanh-ems/SKILL.md
+@@ -7,6 +7,8 @@ description: Quy trình phát hành (release) hệ thống EMS của Chi nhánh
+ 
+ Skill này chuẩn hoá các bước phát hành hệ thống EMS. Luôn làm theo thứ tự, **không bỏ bước**, và dừng lại hỏi người dùng nếu một bước không đạt.
+ 
++> **Chọn đúng nhánh quy trình trước khi làm.** Mục 0–8 dưới đây viết cho EMS bản **Node.js** (có `package.json`). Nếu repo hiện tại là web app **Python/FastAPI** (có `pyproject.toml`, `src/api/app.py`, không có `package.json` - ví dụ repo `nguyen-quoc-thang`, site IIS `PhanCong`) thì làm theo **mục 9**; các mục khác chỉ dùng phần không phụ thuộc Node (SemVer, CHANGELOG, thông báo, danh mục kiểm tra).
++
+ ## 0. Cấu hình dự án
+ 
+ EMS là ứng dụng web **Node.js**, triển khai trên **máy chủ Windows nội bộ chạy IIS**, có môi trường **staging riêng**.
+@@ -192,3 +194,41 @@ Remove-Item <đường dẫn site>\app_offline.htm
+ - [ ] Đã sao lưu site và CSDL production
+ - [ ] Production chạy đúng phiên bản, log sạch sau 15 phút
+ - [ ] Đã gửi thông báo phát hành
++
++## 9. Áp dụng cho web app Python/FastAPI (site IIS `PhanCong`)
++
++Nguồn: `AGENTS.md`, `docs/TRIEN-KHAI-IIS.md`, `.github/workflows/ci.yml`. Không có `package.json` nên bỏ mọi lệnh `npm`; không có nhánh `develop` - phát triển trên nhánh tính năng rồi PR vào `main`.
++
++| Mục | Giá trị |
++|---|---|
++| Nhánh phát hành | `main` (CI chạy ruff + pytest trên Python 3.11 và 3.13) |
++| Cài phụ thuộc (máy dev/CI) | `python -m pip install -r requirements-dev.txt` |
++| Lint | `python -m ruff check .` |
++| Test | `python -m pytest -q --tb=short` (dùng `python -m` để chạy đúng môi trường đã cài thư viện) |
++| Build | Không có bước build; mã nguồn chạy trực tiếp |
++| Ghi số phiên bản | Tag Git `vX.Y.Z` + mục mới trong `CHANGELOG.md` (tạo tệp nếu chưa có) |
++| Thư mục ứng dụng trên máy chủ | `D:\Apps\phan-cong` (mặc định theo tài liệu triển khai) |
++| App Pool / Site IIS | `PhanCong` |
++| Cài phụ thuộc trên máy chủ | `.\.venv\Scripts\pip install -r requirements-prod.txt` |
++| Máy chủ staging / production, thư mục sao lưu | `<điền>` - hỏi người dùng, không đoán |
++
++Các bước:
++1. Kiểm tra trước phát hành như mục 1 (bỏ điều kiện `npm ci`).
++2. Chốt phiên bản (mục 2) - không sửa `package.json`; số phiên bản nằm ở tag.
++3. Cập nhật `CHANGELOG.md` (mục 3). Ghi rõ migration trong `src/db/migrations/` nếu có.
++4. Lint + test phải xanh 100% (lệnh ở bảng trên). Đỏ → dừng, không tắt test.
++5. Commit, tag, push như mục 5 nhưng `git add CHANGELOG.md`. Đẩy lên `main` phải có người duyệt (AGENTS.md mục 3).
++6. Triển khai theo `docs/TRIEN-KHAI-IIS.md` bước 9, staging trước:
++   ```powershell
++   $App = "D:\Apps\phan-cong"
++   $ts  = Get-Date -Format "yyyyMMdd-HHmmss"
++   cd $App; git rev-parse HEAD > "<thư mục sao lưu>\phan-cong-$ts.commit.txt"   # để quay lại
++   git fetch --tags
++   git checkout vX.Y.Z
++   .\.venv\Scripts\pip install -r requirements-prod.txt
++   Restart-WebAppPool -Name "PhanCong"     # mọi người phải đăng nhập lại (phiên lưu trong bộ nhớ)
++   ```
++   Không đè `deploy\iis\web.config` và `secrets\` (không nằm trong Git). Sao lưu CSDL theo quy trình quản trị CSDL trước khi chạy migration.
++7. Kiểm tra khói theo `docs/TRIEN-KHAI-IIS.md` bước 8 (trang mở qua HTTPS, đăng nhập, danh sách nhân sự, nhật ký trong `logs\`). Không đạt → không lên production.
++8. Production: chỉ sau khi người duyệt phát hành xác nhận. **Tác tử không tự triển khai production.**
++9. Rollback: `git checkout <tag/commit cũ đã ghi ở bước 6>`, cài lại `requirements-prod.txt`, `Restart-WebAppPool -Name "PhanCong"`; có migration thì chạy script hoàn tác hoặc phục hồi CSDL trước khi mở lại.
+diff --git a/AGENTS.md b/AGENTS.md
+index 38cc0da..b21cc37 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -1,20 +1,25 @@
+ # QUY CHUẨN KIẾN TRÚC & VẬN HÀNH AGENT (AGENTS.md)
+ 
++> **Phạm vi.** Mục 3 (an toàn, xin phép), mục 5 (định nghĩa DONE) và yêu cầu trả lời tiếng Việt là **quy định dùng chung CTXĐN**. Các mục còn lại là **riêng dự án này** (web app EMS phân công nhân sự, Python). Skills dùng chung CTXĐN cài ở cấp tài khoản, không nằm trong repo. Nạp vào Claude Code qua `@AGENTS.md` trong `CLAUDE.md`.
++
+ ## 1. Tổng quan Kiến trúc & Công nghệ
+-- **Backend:** Python (FastAPI / Flask)
+-- **Cơ sở dữ liệu:** SQL Server (truy vấn qua pyodbc / SQLAlchemy)
++- **Backend:** Python ≥ 3.11 (`target-version` trong `pyproject.toml`), FastAPI (`src/api/app.py:22`). Không dùng Flask.
++- **Cơ sở dữ liệu:** SQL Server qua pyodbc (`src/db/connection.py:117`, import trễ); chế độ demo `EMS_DEMO=1` dùng SQLite có sẵn. Hiện chưa dùng SQLAlchemy.
+ - **Frontend:** HTML5, CSS3, JavaScript thuần (Vanilla JS)
+ - **Thư mục chính:**
+   - `src/api/`: Các route xử lý nghiệp vụ và API.
+   - `src/db/`: Kết nối CSDL, stored procedures và schema.
+   - `src/static/` & `src/templates/`: Giao diện người dùng.
+-  - `tests/`: Toàn bộ bài kiểm thử tự động (pytest).
++  - `tests/`: Toàn bộ bài kiểm thử tự động (pytest), chia `api/`, `db/`, `examples/`, `harness/`.
++  - `src/db/migrations/`: script đổi cấu trúc bảng (hiện trống, chỉ có `.gitkeep`).
++  - `deploy/` (IIS, SQL tạo tài khoản), `docs/` (hướng dẫn, bản xem trước), `examples/` (ví dụ chạy trên SQLite).
++  - `.claude/`: `settings.local.json` (permissions + hook), `hooks/guard.py`, `skills/phat-hanh-ems/`.
+ 
+ ## 2. Lệnh Thực thi & Lọc nhiễu (Observe & Trim)
+ Luôn sử dụng cờ rút gọn (quiet/short) khi chạy lệnh để cắt giảm log thừa, tránh làm tràn cửa sổ ngữ cảnh:
+-- **Chạy toàn bộ test:** `pytest -q --tb=short`
++- **Chạy toàn bộ test:** `pytest -q --tb=short` (nếu `pytest` trong PATH là bản cô lập, ví dụ cài qua uv/pipx, thì dùng `python -m pytest` để thấy thư viện đã cài)
+ - **Chạy test theo phân hệ:** `pytest tests/<ten_phan_he>/ -q`
+-- **Kiểm tra lỗi cú pháp/quy chuẩn (Lint):** `ruff check src/ --quiet`
++- **Kiểm tra lỗi cú pháp/quy chuẩn (Lint):** `ruff check . --quiet` (cùng phạm vi với CI; `ruff check src/` chỉ là kiểm tra nhanh, bỏ sót `tests/`, `examples/`, `.claude/hooks/`).
+ - **Cài công cụ:** `pip install -r requirements-dev.txt` (phiên bản ghim, trùng với CI; đã gồm `requirements.txt`).
+ - **Chạy web app (dữ liệu mẫu):** `EMS_DEMO=1 uvicorn src.api.app:app --host 0.0.0.0 --port 8000` (1 worker). Cần file tài khoản `secrets/users.json`; tạo chuỗi băm mật khẩu bằng `python -m src.api.auth`. Tác tử không được đọc `secrets/`. Sửa giao diện (`src/templates`, `src/static`) thì sinh lại bản xem trước `docs/giao-dien-mobile.html`.
+ - **Triển khai IIS:** làm theo `docs/TRIEN-KHAI-IIS.md`; máy chủ cài `requirements-prod.txt`. Không bao giờ commit `deploy/iis/web.config` (chỉ commit file `.mau`).
+@@ -43,10 +48,15 @@ Sửa `guard.py` phải kèm test tại `tests/harness/test_guard.py`.
+ - **Kiểu dữ liệu**: `DECIMAL` -> `decimal.Decimal`, không ép sang `float` khi tính toán; `DATETIME` lưu và so sánh theo một múi giờ thống nhất.
+ 
+ ## 4. Điều phối Tác tử phụ (Subagents)
++- Repo chưa định nghĩa subagent riêng (không có `.claude/agents/`); dùng subagent có sẵn của Claude Code.
+ - Khi cần tìm kiếm vị trí sử dụng của một biến/hàm trên toàn bộ dự án hoặc đọc tài liệu quy chuẩn dài, hãy tách **Subagent** với vùng ngữ cảnh độc lập để rà soát và chỉ trả về bản tóm tắt ngắn gọn cho Agent chính.
+ 
++## 4a. Skills trong repo
++- `.claude/skills/phat-hanh-ems/SKILL.md`: quy trình phát hành EMS. Mục 0–8 viết cho EMS bản Node.js (giữ nguyên); với repo Python/FastAPI này dùng **mục 9** của skill (lệnh `python -m pytest`, `python -m ruff`, tag Git, site IIS `PhanCong`). Tác tử không tự triển khai production.
++- Quy trình G0–G1 chỉ áp dụng cho công việc tạo/sửa Skills, không áp dụng cho việc sửa mã nguồn thông thường.
++
+ ## 5. Tiêu chuẩn Nghiệm thu (Verifier - Định nghĩa "DONE")
+ Một tác vụ CHỈ được phép đánh dấu hoàn thành khi thỏa mãn đồng thời 3 điều kiện thực tế:
+-1. Chạy `pytest -q` báo xanh 100% (tests pass).
+-2. Chạy `ruff check` không phát sinh lỗi mới (no new lint errors).
++1. Chạy `pytest -q` báo xanh 100% (tests pass). Cần cài `requirements-dev.txt` trước; thiếu `fastapi`/`httpx` thì `tests/api/` lỗi thu thập - khi đó báo BLOCKED, không báo PASS.
++2. Chạy `ruff check .` không phát sinh lỗi mới (no new lint errors).
+ 3. Đã cập nhật trạng thái vào `todo.md` và ghi chú phát hiện quan trọng (nếu có) vào `MEMORY.md`.
+diff --git a/MEMORY.md b/MEMORY.md
+index 94ac1cd..5199bf8 100644
+--- a/MEMORY.md
++++ b/MEMORY.md
+@@ -3,8 +3,8 @@
+ *Chỉ ghi lại các quyết định kiến trúc quan trọng, đặc thù hệ thống và các lỗi hóc búa đã xử lý (Kèm tên file và số dòng).*
+ 
+ ## 1. Lỗi điển hình & Bài học xương máu (Bug Patterns)
+-- `[2026-10-15]` **Lỗi sai lệch số liệu / kiểu dữ liệu**: Khi xử lý dữ liệu từ SQL Server lên Python, các trường `DECIMAL` cần ép kiểu rõ ràng trước khi serialize sang JSON (Xem cách xử lý tại `src/utils/formatter.py:42`).
+-- `[Mẫu từ sơ đồ]` `"currency bug: tax.py:88"` — Luôn kiểm tra đơn vị tiền tệ trước khi áp thuế.
++- `[2026-10-15]` **Lỗi sai lệch số liệu / kiểu dữ liệu**: Khi xử lý dữ liệu từ SQL Server lên Python, các trường `DECIMAL` cần ép kiểu rõ ràng trước khi serialize sang JSON (Xem cách xử lý tại `src/utils/formatter.py:42`). *[2026-11-12: file này KHÔNG có trong repo; quy tắc giữ `Decimal` hiện nằm ở `src/db/connection.py:9`.]*
++- `[Mẫu từ sơ đồ]` `"currency bug: tax.py:88"` — Luôn kiểm tra đơn vị tiền tệ trước khi áp thuế. *[2026-11-12: ví dụ minh họa, không có `tax.py` trong repo.]*
+ - `[2026-10-15]` **Luật permissions chỉ khớp mẫu chữ**: `Bash(DROP TABLE *)` không bao giờ khớp vì SQL nằm trong `sqlcmd -Q "..."`; `Bash(rm -rf *)` để lọt `rm -r -f`. Đã chuyển phần chặn này sang hook `.claude/hooks/guard.py`.
+ - `[2026-10-15]` **Hook soi cả nội dung lệnh**: lệnh có `python`/`sqlcmd` kèm chữ SQL (kể cả trong commit message, heredoc) sẽ bị hỏi/chặn. Viết commit message ra file rồi `git commit -F <file>` trong lệnh riêng.
+ - `[2026-10-15]` **Test có mật khẩu giả cũng bị hook chặn**: viết `"DB_PASSWORD_READONLY": "abc"` trong test sẽ bị deny. Khai báo giá trị giả thành hằng (`FAKE_SECRET = "..."`) rồi dùng biến (xem `tests/db/test_connection.py:17`).
+@@ -15,6 +15,8 @@
+ - `[2026-10-15]` **Đăng nhập web app** (`src/api/auth.py`): tài khoản ở `secrets/users.json`, băm scrypt; phiên trong bộ nhớ nên **chỉ chạy 1 worker** uvicorn, khởi động lại thì phải đăng nhập lại. Vai trò `quan_ly` (sửa) / `xem` (chỉ đọc). Trong code tránh đặt tên biến chứa "password" gán chuỗi literal (hook chặn) - dùng tên tiếng Việt `mat_khau`, `bam`.
+ - `[2026-10-15]` **Logger tự tạo không ra log dưới uvicorn**: uvicorn chỉ cấu hình logger của nó, nên `ems.nhat_ky` ở mức INFO bị nuốt. Đã gắn StreamHandler riêng trong `src/api/app.py`.
+ - `[2026-10-15]` **Triển khai IIS**: HttpPlatformHandler khởi động uvicorn (`--app-dir`), site IIS chỉ trỏ vào `deploy/iis` (chỉ chứa web.config). web.config thật chứa mật khẩu CSDL - đã gitignore, chỉ commit `web.config.mau`. Xem `docs/TRIEN-KHAI-IIS.md`.
++- `[2026-11-12]` **Skill `phat-hanh-ems` mô tả Node.js/npm** trong khi repo là Python/FastAPI. Đã giữ nguyên phần Node (có thể là hệ EMS khác: tra cứu toa xe, phiếu sửa chữa) và thêm mục 9 cho repo này. Xem `ban-giao/BAO-CAO-DOI-CHIEU.md`.
++- `[2026-11-12]` **`pytest` trong PATH có thể là bản cô lập (uv tool)** nên không thấy `fastapi` dù đã `pip install -r requirements-dev.txt` → `tests/api/` lỗi thu thập. Chạy `python -m pytest`, `python -m ruff` (đúng bản ghim 0.16.8).
+ 
+ ## 2. Đặc thù Cơ sở dữ liệu & Nghiệp vụ
+ - Bảng `NhanSu` và `PhanCong` liên kết qua mã định danh nội bộ, tuyệt đối không xóa cứng (hard delete) mà chỉ cập nhật cờ `IsActive = 0`.
+diff --git a/todo.md b/todo.md
+index b2a6575..be9c3f0 100644
+--- a/todo.md
++++ b/todo.md
+@@ -14,3 +14,12 @@
+ - [ ] Làm theo tài liệu trên máy chủ thật (người quản trị).
+ - [ ] (Tùy chọn) Đăng nhập SQL bằng Windows Authentication thay mật khẩu trong web.config - cần sửa code kết nối.
+ - [ ] Đối chiếu schema thật; thử với SQL Server thật.
++
++## Mục tiêu (2026-11-12): Tích hợp & kiểm chứng AGENTS.md / CLAUDE.md
++- [x] Kiểm kê: AGENTS.md, CLAUDE.md (`@AGENTS.md @MEMORY.md @todo.md`), `.claude/` (settings, hook, 1 skill); không có CLAUDE.local.md, `.claude/agents/`.
++- [x] Đối chiếu với mã nguồn, sửa 8 điểm thiếu/sai trong AGENTS.md; chú thích 2 tham chiếu không tồn tại trong MEMORY.md.
++- [x] Không đổi mã nguồn, hook, permissions; skill chỉ được bổ sung (không xóa dòng nào).
++- [x] Cài `requirements-dev.txt` (được ủy quyền); `python -m pytest -q` 121/121 xanh, `python -m ruff check .` (0.16.8) sạch.
++- [x] Skill `phat-hanh-ems`: giữ phần Node.js, thêm mục 9 cho repo Python/FastAPI (site `PhanCong`).
++- [x] Commit, push nhánh `claude/integrate-agents-claude-md-tsvkvq`, mở PR vào `main` (không tự merge, không triển khai).
++- [ ] Thử với SQL Server thật: BLOCKED - môi trường không có SQL Server (đã có ở mục treo phía trên).

@@ -1,0 +1,92 @@
+== T1
+vm
+/home/user/nguyen-quoc-thang
+/home/user/nguyen-quoc-thang
+6a57a7f91a2e683b1918924731699cce188fb560
+claude/integrate-agents-claude-md-tsvkvq
+== T2
+-rw-r--r-- 1 root root 6630 Nov 12 02:18 AGENTS.md
+-rw-r--r-- 1 root root  140 Nov  9 04:28 CLAUDE.md
+ls: cannot access 'CLAUDE.local.md': No such file or directory
+ls: cannot access '.claude/agents': No such file or directory
+== T3
+OK dòng 5 -> AGENTS.md (62 dòng)
+OK dòng 6 -> MEMORY.md (25 dòng)
+OK dòng 7 -> todo.md (24 dòng)
+Import lồng:
+không có
+== T5
+6:- **Backend:** Python ≥ 3.11 (`target-version` trong `pyproject.toml`), FastAPI (`src/api/app.py:22`). Không dùng Flask.
+== T6
+22:from fastapi import Cookie, Depends, FastAPI, HTTPException, Response
+23:from fastapi.responses import FileResponse
+24:from fastapi.staticfiles import StaticFiles
+    import pyodbc  # Import trễ: test và lint không cần cài driver ODBC.
+7:target-version = "py311"
+.
+..
+.gitkeep
+hooks
+settings.local.json
+skills
+ls: cannot access 'src/utils': No such file or directory
+ls: cannot access 'package.json': No such file or directory
+nhánh develop: 0
+== T7
+AGENTS.md
+MEMORY.md
+todo.md
+ M AGENTS.md
+ M MEMORY.md
+ M todo.md
+== T8
+./.claude/hooks/guard.py: OK
+./.claude/settings.local.json: OK
+./.claude/skills/phat-hanh-ems/SKILL.md: OK
+./AGENTS.md: OK
+./CLAUDE.md: OK
+./MEMORY.md: OK
+./todo.md: OK
+sha256sum: WARNING: 1 computed checksum did NOT match
+f2d587659b600253aa67306388fd533b76b1c0d25d3e312a42183efafa246cac  .claude/skills/phat-hanh-ems/SKILL.md
+e7c14ea710ab6536bf3ec4d98565b9a8a420cfc6b9ffb2845b4bbf5eb5c7f991  .claude/hooks/guard.py
+9011b8d2b0eeba7dedcfb799d57052555bf5e1695d916df063289bd43001ef5c  .claude/settings.local.json
+b8b779aadce3d7266c288080a2e0f767aac666965ef9399776bb1888630aa13c  CLAUDE.md
+== T9
+ AGENTS.md | 22 ++++++++++++++++------
+ MEMORY.md |  6 ++++--
+ todo.md   |  8 ++++++++
+ 3 files changed, 28 insertions(+), 8 deletions(-)
+sao lưu AGENTS.md == HEAD: khôi phục được
+sao lưu MEMORY.md == HEAD: khôi phục được
+sao lưu todo.md == HEAD: khôi phục được
+== T10
+ERROR tests/api/test_app.py
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+.......................                                                  [100%]
+All checks passed!
+ruff exit=0
+Hook guard.py chặn Write ra /tmp (ngoài dự án) lúc tạo báo cáo -> gói bàn giao đặt trong ban-giao/.
+== T4 (sau khởi động lại phiên): Claude Code báo 'Instruction files were re-read when this session started; these differ from their earlier copies' và nạp AGENTS.md/MEMORY.md/todo.md bản sau sửa qua CLAUDE.md.
+
+===== ĐỢT 2 (được ủy quyền toàn bộ) =====
+== Cài: python3 -m pip install -r requirements-dev.txt
+fastapi                   0.143.1
+httpx                     0.28.1
+pytest                    9.1.1
+ruff                      0.16.8
+uvicorn                   0.54.0
+== Lưu ý: /root/.local/bin/pytest -> #!/root/.local/share/uv/tools/pytest/bin/python (bản cô lập, không thấy fastapi)
+== T10c python3 -m pytest -q
+121 PASSED
+0 dòng failed/error
+== ruff (bản ghim CI)
+ruff 0.16.8
+All checks passed!
+== T8 skill: chỉ thêm, không xóa
+40	0	.claude/skills/phat-hanh-ems/SKILL.md
+== T8 hook/settings không đổi
+e7c14ea710ab6536
+9011b8d2b0eeba7d
+== T7 mã nguồn không đổi
+(rỗng = không đổi)
