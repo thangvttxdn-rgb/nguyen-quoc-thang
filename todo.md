@@ -18,7 +18,8 @@
 ## Mục tiêu (2026-11-12): Tích hợp & kiểm chứng AGENTS.md / CLAUDE.md
 - [x] Kiểm kê: AGENTS.md, CLAUDE.md (`@AGENTS.md @MEMORY.md @todo.md`), `.claude/` (settings, hook, 1 skill); không có CLAUDE.local.md, `.claude/agents/`.
 - [x] Đối chiếu với mã nguồn, sửa 8 điểm thiếu/sai trong AGENTS.md; chú thích 2 tham chiếu không tồn tại trong MEMORY.md.
-- [x] Không đổi mã nguồn, hook, permissions, skill.
-- [ ] `pytest -q` đầy đủ: BLOCKED - cần duyệt `pip install -r requirements-dev.txt` (95/95 test ngoài `tests/api/` xanh).
-- [ ] Người duyệt quyết định sửa skill `phat-hanh-ems` (Node.js ↔ Python).
-- [ ] Người duyệt commit/push (tác tử không tự commit theo lệnh).
+- [x] Không đổi mã nguồn, hook, permissions; skill chỉ được bổ sung (không xóa dòng nào).
+- [x] Cài `requirements-dev.txt` (được ủy quyền); `python -m pytest -q` 121/121 xanh, `python -m ruff check .` (0.16.8) sạch.
+- [x] Skill `phat-hanh-ems`: giữ phần Node.js, thêm mục 9 cho repo Python/FastAPI (site `PhanCong`).
+- [x] Commit, push nhánh `claude/integrate-agents-claude-md-tsvkvq`, mở PR vào `main` (không tự merge, không triển khai).
+- [ ] Thử với SQL Server thật: BLOCKED - môi trường không có SQL Server (đã có ở mục treo phía trên).

@@ -29,13 +29,13 @@
 | 5 | Lint `ruff check src/` | `ruff check .` (trùng CI) | `.github/workflows/ci.yml` |
 | 6 | Không nói về subagent riêng | Ghi rõ chưa có `.claude/agents/` | `ls .claude` |
 | 7 | Không có mục Skills | Thêm mục 4a + cảnh báo mâu thuẫn skill | `.claude/skills/phat-hanh-ems/SKILL.md:15-22` |
-| 8 | DONE không nói điều kiện cài đặt | Phải cài `requirements-dev.txt`, thiếu thì BLOCKED | `pytest` lỗi thu thập `tests/api/test_app.py:6` |
+| 8 | DONE không nói điều kiện cài đặt | Phải cài `requirements-dev.txt`, thiếu thì BLOCKED; dùng `python -m pytest` nếu `pytest` là bản cô lập | `pytest` lỗi thu thập `tests/api/test_app.py:6`; `/root/.local/bin/pytest` là uv tool |
 
 ## 3. Mâu thuẫn phát hiện
 
 | Mức | Nội dung | Xử lý |
 |---|---|---|
-| **Nghiêm trọng** | Skill `phat-hanh-ems` mô tả EMS là **Node.js** (`npm ci`, `package.json`, nhánh `develop`), repo thực là **Python/FastAPI**, không có `package.json`, không có nhánh `develop`. Skill có bước triển khai production. | **Không sửa skill** (cần người duyệt). Ghi cảnh báo vào AGENTS.md mục 4a và MEMORY.md. |
+| **Nghiêm trọng** | Skill `phat-hanh-ems` mô tả EMS là **Node.js** (`npm ci`, `package.json`, nhánh `develop`), repo thực là **Python/FastAPI**, không có `package.json`, không có nhánh `develop`. Skill có bước triển khai production. | **Đã xử lý (đợt 2, được ủy quyền):** giữ nguyên mục 0–8 (có thể phục vụ hệ EMS Node.js khác – skill nhắc tra cứu toa xe, phiếu sửa chữa, không có trong repo này); thêm ghi chú chọn quy trình và **mục 9** cho repo Python/FastAPI, số liệu lấy từ `docs/TRIEN-KHAI-IIS.md` (site/App Pool `PhanCong`, `D:\Apps\phan-cong`). Máy chủ staging/production, thư mục sao lưu vẫn để `<điền>`. |
 | Trung bình | MEMORY.md dẫn `src/utils/formatter.py:42` – tệp không tồn tại | Giữ nguyên dòng cũ, thêm chú thích chỉ sang `src/db/connection.py:9` |
 | Nhẹ | MEMORY.md dẫn `tax.py:88` – chỉ là ví dụ | Thêm chú thích |
 | Nhẹ | Lint `src/` (AGENTS) ≠ `.` (CI) | Thống nhất `ruff check .` |

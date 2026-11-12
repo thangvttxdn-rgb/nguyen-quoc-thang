@@ -17,7 +17,7 @@
 
 ## 2. Lệnh Thực thi & Lọc nhiễu (Observe & Trim)
 Luôn sử dụng cờ rút gọn (quiet/short) khi chạy lệnh để cắt giảm log thừa, tránh làm tràn cửa sổ ngữ cảnh:
-- **Chạy toàn bộ test:** `pytest -q --tb=short`
+- **Chạy toàn bộ test:** `pytest -q --tb=short` (nếu `pytest` trong PATH là bản cô lập, ví dụ cài qua uv/pipx, thì dùng `python -m pytest` để thấy thư viện đã cài)
 - **Chạy test theo phân hệ:** `pytest tests/<ten_phan_he>/ -q`
 - **Kiểm tra lỗi cú pháp/quy chuẩn (Lint):** `ruff check . --quiet` (cùng phạm vi với CI; `ruff check src/` chỉ là kiểm tra nhanh, bỏ sót `tests/`, `examples/`, `.claude/hooks/`).
 - **Cài công cụ:** `pip install -r requirements-dev.txt` (phiên bản ghim, trùng với CI; đã gồm `requirements.txt`).
@@ -52,7 +52,7 @@ Sửa `guard.py` phải kèm test tại `tests/harness/test_guard.py`.
 - Khi cần tìm kiếm vị trí sử dụng của một biến/hàm trên toàn bộ dự án hoặc đọc tài liệu quy chuẩn dài, hãy tách **Subagent** với vùng ngữ cảnh độc lập để rà soát và chỉ trả về bản tóm tắt ngắn gọn cho Agent chính.
 
 ## 4a. Skills trong repo
-- `.claude/skills/phat-hanh-ems/SKILL.md`: quy trình phát hành EMS. **Lưu ý mâu thuẫn chưa xử lý:** skill mô tả EMS là Node.js (`npm ci`, `npm test`, `package.json`, nhánh `develop`), trong khi repo này là Python/FastAPI, không có `package.json`, không có nhánh `develop`. Chưa dùng skill này cho repo này cho đến khi người duyệt xác nhận và sửa. Tác tử không tự triển khai production.
+- `.claude/skills/phat-hanh-ems/SKILL.md`: quy trình phát hành EMS. Mục 0–8 viết cho EMS bản Node.js (giữ nguyên); với repo Python/FastAPI này dùng **mục 9** của skill (lệnh `python -m pytest`, `python -m ruff`, tag Git, site IIS `PhanCong`). Tác tử không tự triển khai production.
 - Quy trình G0–G1 chỉ áp dụng cho công việc tạo/sửa Skills, không áp dụng cho việc sửa mã nguồn thông thường.
 
 ## 5. Tiêu chuẩn Nghiệm thu (Verifier - Định nghĩa "DONE")

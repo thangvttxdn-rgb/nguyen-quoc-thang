@@ -7,6 +7,8 @@ description: Quy trình phát hành (release) hệ thống EMS của Chi nhánh 
 
 Skill này chuẩn hoá các bước phát hành hệ thống EMS. Luôn làm theo thứ tự, **không bỏ bước**, và dừng lại hỏi người dùng nếu một bước không đạt.
 
+> **Chọn đúng nhánh quy trình trước khi làm.** Mục 0–8 dưới đây viết cho EMS bản **Node.js** (có `package.json`). Nếu repo hiện tại là web app **Python/FastAPI** (có `pyproject.toml`, `src/api/app.py`, không có `package.json` - ví dụ repo `nguyen-quoc-thang`, site IIS `PhanCong`) thì làm theo **mục 9**; các mục khác chỉ dùng phần không phụ thuộc Node (SemVer, CHANGELOG, thông báo, danh mục kiểm tra).
+
 ## 0. Cấu hình dự án
 
 EMS là ứng dụng web **Node.js**, triển khai trên **máy chủ Windows nội bộ chạy IIS**, có môi trường **staging riêng**.
@@ -192,3 +194,41 @@ Remove-Item <đường dẫn site>\app_offline.htm
 - [ ] Đã sao lưu site và CSDL production
 - [ ] Production chạy đúng phiên bản, log sạch sau 15 phút
 - [ ] Đã gửi thông báo phát hành
+
+## 9. Áp dụng cho web app Python/FastAPI (site IIS `PhanCong`)
+
+Nguồn: `AGENTS.md`, `docs/TRIEN-KHAI-IIS.md`, `.github/workflows/ci.yml`. Không có `package.json` nên bỏ mọi lệnh `npm`; không có nhánh `develop` - phát triển trên nhánh tính năng rồi PR vào `main`.
+
+| Mục | Giá trị |
+|---|---|
+| Nhánh phát hành | `main` (CI chạy ruff + pytest trên Python 3.11 và 3.13) |
+| Cài phụ thuộc (máy dev/CI) | `python -m pip install -r requirements-dev.txt` |
+| Lint | `python -m ruff check .` |
+| Test | `python -m pytest -q --tb=short` (dùng `python -m` để chạy đúng môi trường đã cài thư viện) |
+| Build | Không có bước build; mã nguồn chạy trực tiếp |
+| Ghi số phiên bản | Tag Git `vX.Y.Z` + mục mới trong `CHANGELOG.md` (tạo tệp nếu chưa có) |
+| Thư mục ứng dụng trên máy chủ | `D:\Apps\phan-cong` (mặc định theo tài liệu triển khai) |
+| App Pool / Site IIS | `PhanCong` |
+| Cài phụ thuộc trên máy chủ | `.\.venv\Scripts\pip install -r requirements-prod.txt` |
+| Máy chủ staging / production, thư mục sao lưu | `<điền>` - hỏi người dùng, không đoán |
+
+Các bước:
+1. Kiểm tra trước phát hành như mục 1 (bỏ điều kiện `npm ci`).
+2. Chốt phiên bản (mục 2) - không sửa `package.json`; số phiên bản nằm ở tag.
+3. Cập nhật `CHANGELOG.md` (mục 3). Ghi rõ migration trong `src/db/migrations/` nếu có.
+4. Lint + test phải xanh 100% (lệnh ở bảng trên). Đỏ → dừng, không tắt test.
+5. Commit, tag, push như mục 5 nhưng `git add CHANGELOG.md`. Đẩy lên `main` phải có người duyệt (AGENTS.md mục 3).
+6. Triển khai theo `docs/TRIEN-KHAI-IIS.md` bước 9, staging trước:
+   ```powershell
+   $App = "D:\Apps\phan-cong"
+   $ts  = Get-Date -Format "yyyyMMdd-HHmmss"
+   cd $App; git rev-parse HEAD > "<thư mục sao lưu>\phan-cong-$ts.commit.txt"   # để quay lại
+   git fetch --tags
+   git checkout vX.Y.Z
+   .\.venv\Scripts\pip install -r requirements-prod.txt
+   Restart-WebAppPool -Name "PhanCong"     # mọi người phải đăng nhập lại (phiên lưu trong bộ nhớ)
+   ```
+   Không đè `deploy\iis\web.config` và `secrets\` (không nằm trong Git). Sao lưu CSDL theo quy trình quản trị CSDL trước khi chạy migration.
+7. Kiểm tra khói theo `docs/TRIEN-KHAI-IIS.md` bước 8 (trang mở qua HTTPS, đăng nhập, danh sách nhân sự, nhật ký trong `logs\`). Không đạt → không lên production.
+8. Production: chỉ sau khi người duyệt phát hành xác nhận. **Tác tử không tự triển khai production.**
+9. Rollback: `git checkout <tag/commit cũ đã ghi ở bước 6>`, cài lại `requirements-prod.txt`, `Restart-WebAppPool -Name "PhanCong"`; có migration thì chạy script hoàn tác hoặc phục hồi CSDL trước khi mở lại.

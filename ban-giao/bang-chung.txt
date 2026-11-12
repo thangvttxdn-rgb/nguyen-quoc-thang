@@ -68,3 +68,25 @@ All checks passed!
 ruff exit=0
 Hook guard.py chặn Write ra /tmp (ngoài dự án) lúc tạo báo cáo -> gói bàn giao đặt trong ban-giao/.
 == T4 (sau khởi động lại phiên): Claude Code báo 'Instruction files were re-read when this session started; these differ from their earlier copies' và nạp AGENTS.md/MEMORY.md/todo.md bản sau sửa qua CLAUDE.md.
+
+===== ĐỢT 2 (được ủy quyền toàn bộ) =====
+== Cài: python3 -m pip install -r requirements-dev.txt
+fastapi                   0.143.1
+httpx                     0.28.1
+pytest                    9.1.1
+ruff                      0.16.8
+uvicorn                   0.54.0
+== Lưu ý: /root/.local/bin/pytest -> #!/root/.local/share/uv/tools/pytest/bin/python (bản cô lập, không thấy fastapi)
+== T10c python3 -m pytest -q
+121 PASSED
+0 dòng failed/error
+== ruff (bản ghim CI)
+ruff 0.16.8
+All checks passed!
+== T8 skill: chỉ thêm, không xóa
+40	0	.claude/skills/phat-hanh-ems/SKILL.md
+== T8 hook/settings không đổi
+e7c14ea710ab6536
+9011b8d2b0eeba7d
+== T7 mã nguồn không đổi
+(rỗng = không đổi)
