@@ -41,6 +41,16 @@ HARDCODED_PWD = [
 
 SEGMENT_SPLIT = re.compile(r"&&|\|\||[;|\n]")
 
+# HyperFrames (kỹ năng video): xem registry.json "nguon_ngoai" và docs/G0-cong-cu-video.md.
+HF_VERSION = "0.9.37"
+# Chỉ khớp khi npx là lệnh đứng đầu đoạn (cho phép biến môi trường phía trước), để chữ
+# "npx hyperframes" nằm trong grep, heredoc hay commit message không bị chặn nhầm.
+HF_CALL = re.compile(r"^\s*(?:[A-Za-z_]\w*=\S*\s+)*(?:npx|bunx|pnpm\s+dlx)\s+(?:-y\s+|--yes\s+)?"
+                     r"hyperframes(?:@(\S+))?(?:\s+([a-z][a-z-]*))?")
+HF_DENY = {"events", "feedback", "usage", "auth", "share", "publish", "cloud", "lambda",
+           "cloudrun", "capture"}
+HF_ASK = {"browser", "upgrade", "doctor"}
+
 
 def _is_force_recursive_rm(segment: str) -> bool:
     tokens = segment.split()
@@ -61,10 +71,30 @@ def _is_force_recursive_rm(segment: str) -> bool:
     return "r" in flags and "f" in flags
 
 
+def check_hyperframes(command: str) -> tuple[str, str] | None:
+    """HyperFrames: chỉ bản ghim, cấm lệnh gửi dữ liệu/đẩy lên đám mây, hỏi trước khi tải thêm."""
+    for segment in SEGMENT_SPLIT.split(command):
+        match = HF_CALL.search(segment)
+        if not match:
+            continue
+        if match.group(1) != HF_VERSION:
+            return "deny", f"HyperFrames phải gọi bản ghim: npx hyperframes@{HF_VERSION} <lệnh>."
+        sub = match.group(2) or ""
+        if sub in HF_DENY or (sub == "telemetry" and "enable" in segment):
+            return "deny", (f"Cấm 'hyperframes {sub}': gửi dữ liệu ra HeyGen hoặc đám mây "
+                            "khi chưa được chủ đầu tư duyệt.")
+        if sub in HF_ASK or "--on-device" in segment:
+            return "ask", f"'hyperframes {sub}' tải thêm phần mềm/tài nguyên từ Internet."
+    return None
+
+
 def check_bash(command: str) -> tuple[str, str] | None:
     for segment in SEGMENT_SPLIT.split(command):
         if _is_force_recursive_rm(segment.strip()):
             return "deny", "Cấm xóa đệ quy cưỡng bức (rm -rf và các biến thể)."
+    hf = check_hyperframes(command)
+    if hf:
+        return hf
     if not DB_CLIENT.search(command):
         return None
     for pattern, label in SQL_DENY:

@@ -22,6 +22,9 @@
 - `[2026-11-12]` **Từ khóa định tuyến quá rộng gây giao nhầm**: "gửi" bắt cả "em gửi các bác" (chia sẻ link); "spec" khớp vào URL `github.com/github/spec-kit`. Từ khóa cảnh báo phải là cụm có nghĩa hành động ("gửi cho", "gửi email"); câu gây lỗi được thêm vào `tests/harness/test_dieu_phoi.py`.
 - `[2026-11-12]` **Cài công cụ bên ngoài: thử trên bản sao trước** (`git clone` kho vào scratchpad, chạy lệnh cài, xem `git status`/`git diff`). `guard.py` chặn cả `rm -rf` trong scratchpad - dùng thư mục mới thay vì xóa.
 
+- `[2026-11-12]` **Kỹ năng bên thứ ba thường gọi `npx <goi>` không ghim** (HyperFrames: 273 chỗ). Không sửa file của họ (bị ghi đè khi nâng cấp); ghim bằng cảnh báo trong `registry.json` + `tong-chi-huy`. Phiên đám mây: chạy `npx` gói ngoài bị bộ phân loại tự động chặn - cần người dùng cho phép.
+- `[2026-11-12]` **Tổ 2 (`to-phan-bien`) bắt được lỗi Tổ 1 bỏ sót**: luật chỉ đặt ở lớp điều phối thì kỹ năng nạp vào vẫn dặn ngược lại; phải cưỡng chế bằng `guard.py` + sửa chính file kỹ năng (`lop_phu_hyperframes.py`). Rà bảo mật kỹ năng ngoài phải tìm cả đo lường/feedback trong luồng mặc định, không chỉ `curl|sh`. Mẫu regex chặn lệnh phải neo đầu đoạn lệnh, nếu không sẽ chặn cả heredoc/grep chứa chữ đó.
+
 ## 2. Đặc thù Cơ sở dữ liệu & Nghiệp vụ
 - Bảng `NhanSu` và `PhanCong` liên kết qua mã định danh nội bộ, tuyệt đối không xóa cứng (hard delete) mà chỉ cập nhật cờ `IsActive = 0`.
 - `[2026-10-15]` **Ngừng nhân sự thì ngừng luôn PhanCong liên quan** (chủ dự án xác nhận), trong cùng giao dịch - xem `src/db/nhan_su.py` hàm `deactivate`. Kích hoạt lại nhân sự KHÔNG tự khôi phục PhanCong.

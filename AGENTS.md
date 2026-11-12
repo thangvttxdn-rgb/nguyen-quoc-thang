@@ -50,6 +50,7 @@ Sửa `guard.py` phải kèm test tại `tests/harness/test_guard.py`.
 - `registry.json` là nguồn duy nhất cho danh mục kỹ năng/tác tử/lệnh, bảng định tuyến và trang `docs/ai-command-center.html`. Thêm công cụ mới: kiểm tra trùng trước, sửa registry, chạy `python .claude/tong-chi-huy/build_page.py`, rồi `pytest tests/harness/ -q`.
 - Cổng G3: văn bản/số liệu/quyết định dùng tác tử `to-phan-bien` (chỉ đọc); mã dùng `/code-review`.
 - **Tính năng mới đi theo GitHub Spec Kit v1.4.0** (`.specify/`, kỹ năng `/speckit-*`): đặc tả → làm rõ → kế hoạch → việc → thực hiện, lưu ở `specs/NNN-ten/`. Hiến pháp `.specify/memory/constitution.md` chỉ trỏ về file này. Nâng cấp: `uvx --from git+https://github.com/github/spec-kit.git@vX.Y.Z specify init --here --force --integration claude --script py` (phải xin phép, chạy thử trên bản sao trước). `.specify/` loại khỏi ruff vì là mã bên ngoài.
+- **Video dùng HyperFrames v0.9.37** (Apache-2.0; `.claude/skills/hyperframes*`; chưa kiểm thử - `docs/G0-cong-cu-video.md`): `guard.py` chặn bản không ghim và lệnh gửi dữ liệu (`events`, `feedback`, `auth`, `cloud`…); sau khi nâng cấp chạy `python .claude/tong-chi-huy/lop_phu_hyperframes.py`; dự án trong `video/`, không commit file render. Remotion, Manim, GSAP/three.js riêng, lemo-opuscar không cài (xem `trung_lap` trong registry). `media-use`, Blender MCP: BLOCKED chờ duyệt.
 
 ## 5. Tiêu chuẩn Nghiệm thu (Verifier - Định nghĩa "DONE")
 Một tác vụ CHỈ được phép đánh dấu hoàn thành khi thỏa mãn đồng thời 3 điều kiện thực tế:

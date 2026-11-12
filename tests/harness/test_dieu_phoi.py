@@ -41,6 +41,8 @@ def tuyen_chinh(prompt):
     ("EM GỬI CÁC BÁC Ạ: https://github.com/github/spec-kit Thêm cái này vào luôn",
      "danh-gia-cong-cu"),
     ("Làm tính năng mới xem lịch sử phân công, viết đặc tả trước", "ke-hoach"),
+    ("Dựng phim 45 giây hướng dẫn khám hãm, có phụ đề", "video"),
+    ("lam video huong dan an toan", "video"),  # gõ không dấu
 ])
 def test_dinh_tuyen(prompt, tuyen):
     assert tuyen_chinh(prompt) == tuyen
@@ -58,6 +60,21 @@ def test_go_co_dau_khong_khop_nham_khi_khac_dau():
     assert tuyen_chinh("Trả lời giúp tôi câu này") is None
 
 
+@pytest.mark.parametrize("prompt", [
+    "Sửa hàm render bảng phân công trong app.js",   # "render" của giao diện web, không phải video
+    "Chạy npx ruff để kiểm tra",
+])
+def test_khong_giao_nham_sang_video(prompt):
+    kq = dieu_phoi.phan_tich(prompt, REG)
+    assert all(t["id"] != "video" for t, _ in kq["tuyen"])
+    assert not any("hyperframes" in c for c in kq["canh_bao"])
+
+
+def test_lop_phu_hyperframes_da_ap():
+    lop_phu = nap("lop_phu", GOC / ".claude" / "tong-chi-huy" / "lop_phu_hyperframes.py")
+    assert lop_phu.main(["--check"]) == 0, "Chạy lại lop_phu_hyperframes.py"
+
+
 def test_viec_kem_can_it_nhat_hai_tu_khoa():
     kq = dieu_phoi.phan_tich("Sửa lỗi API phân công", REG)
     assert [t["id"] for t, _ in kq["tuyen"]] == ["ma-nguon"]
@@ -66,6 +83,11 @@ def test_viec_kem_can_it_nhat_hai_tu_khoa():
 @pytest.mark.parametrize("prompt", ["/code-review", "ok", "   ", "báo cáo #khong-dieu-phoi"])
 def test_bo_qua(prompt):
     assert dieu_phoi.phan_tich(prompt, REG) is None
+
+
+def test_canh_bao_video_ghim_phien_ban():
+    kq = dieu_phoi.phan_tich("Làm video giới thiệu chi nhánh", REG)
+    assert any("hyperframes@0.9.37" in c for c in kq["canh_bao"])
 
 
 def test_canh_bao_hanh_dong_can_duyet():
@@ -112,9 +134,10 @@ def test_tuyen_chi_tro_toi_muc_dang_dung():
             assert muc[mid].get("trang_thai") != "blocked", f"{t['id']} giao cho mục BLOCKED: {mid}"
 
 
-def test_muc_blocked_co_ly_do():
+def test_trang_thai_hop_le_va_co_ly_do():
     for m in REG["muc"]:
-        if m.get("trang_thai") == "blocked":
+        if "trang_thai" in m:
+            assert m["trang_thai"] in {"blocked", "chua-kiem-thu"}, m["id"]
             assert m.get("ly_do"), m["id"]
 
 

@@ -28,7 +28,8 @@
     "ctx": "Riêng CTXĐN",
     "repo": "Kho EMS",
     "plugin": "Plugin",
-    "core": "Có sẵn"
+    "core": "Có sẵn",
+    "ngoai": "Bên ngoài (chưa cài)"
   },
   "muc": [
     {
@@ -234,6 +235,71 @@
       "duong_dan": "knowledge-work-plugins · hồ sơ rà soát G0–G3",
       "trang_thai": "blocked",
       "ly_do": "Chờ kiểm thử hành vi và phản biện G3."
+    },
+    {
+      "id": "hyperframes",
+      "nhom": "skill",
+      "phan_muc": "Video",
+      "nguon": "repo",
+      "mo_ta": "HyperFrames v0.9.37: viết HTML + GSAP, render thành MP4 bằng Chrome không giao diện và FFmpeg. Gồm cả 3D (three.js) và hiệu ứng chữ.",
+      "khi_dung": "Video kỹ thuật, đào tạo, truyền thông nội bộ ngắn.",
+      "goi": "/hyperframes",
+      "vi_du": "Làm video 45 giây hướng dẫn 4 bước khám hãm toa xe, có phụ đề tiếng Việt",
+      "duong_dan": ".claude/skills/hyperframes/SKILL.md",
+      "trang_thai": "chua-kiem-thu",
+      "ly_do": "Chưa render thử lần nào: chạy npx bị chặn trong phiên đám mây, chờ chủ đầu tư cho phép (G2)."
+    },
+    {
+      "id": "hyperframes-registry",
+      "nhom": "skill",
+      "phan_muc": "Video",
+      "nguon": "repo",
+      "mo_ta": "Khối dựng sẵn (upstream ghi khoảng 450 - CẦN CĂN CỨ, chưa đếm): chuyển cảnh, tiêu đề, phụ đề, biểu đồ, bản đồ, 3D, chuyển động camera.",
+      "khi_dung": "Trước khi tự dựng một hiệu ứng.",
+      "goi": "/hyperframes-registry",
+      "vi_du": "Tìm khối biểu đồ cột cho số trở ngại theo trạm",
+      "duong_dan": ".claude/skills/hyperframes-registry/SKILL.md",
+      "trang_thai": "chua-kiem-thu",
+      "ly_do": "Chưa render thử lần nào: chạy npx bị chặn trong phiên đám mây, chờ chủ đầu tư cho phép (G2)."
+    },
+    {
+      "id": "hyperframes-cli",
+      "nhom": "skill",
+      "phan_muc": "Video",
+      "nguon": "repo",
+      "mo_ta": "Lệnh khởi tạo, kiểm tra khung hình, xem trước, render. Luôn gọi npx hyperframes@0.9.37.",
+      "khi_dung": "Khi render hoặc gỡ lỗi dự án video.",
+      "goi": "/hyperframes-cli",
+      "vi_du": "",
+      "duong_dan": ".claude/skills/hyperframes-cli/SKILL.md",
+      "trang_thai": "chua-kiem-thu",
+      "ly_do": "Chưa render thử lần nào: chạy npx bị chặn trong phiên đám mây, chờ chủ đầu tư cho phép (G2)."
+    },
+    {
+      "id": "media-use",
+      "nhom": "skill",
+      "phan_muc": "Video",
+      "nguon": "ngoai",
+      "mo_ta": "Nhạc, giọng đọc, ảnh, avatar cho HyperFrames qua HeyGen, ElevenLabs, OpenAI, Gemini…",
+      "khi_dung": "Chưa dùng.",
+      "goi": "—",
+      "vi_du": "",
+      "duong_dan": "heygen-com/hyperframes skills/media-use",
+      "trang_thai": "blocked",
+      "ly_do": "Gửi kịch bản, hình ảnh ra dịch vụ bên ngoài, cần khóa API (giống rủi ro R5 của G0 lemo-opuscar). Chờ chủ đầu tư duyệt."
+    },
+    {
+      "id": "blender-mcp",
+      "nhom": "skill",
+      "phan_muc": "Video",
+      "nguon": "ngoai",
+      "mo_ta": "Nối AI vào Blender để dựng mô hình 3D (ahujasid/mcp-for-blender, MIT).",
+      "khi_dung": "Chưa dùng.",
+      "goi": "—",
+      "vi_du": "",
+      "duong_dan": "github.com/ahujasid/mcp-for-blender",
+      "trang_thai": "blocked",
+      "ly_do": "Cho AI chạy mã Python tùy ý trong Blender; cần Blender và GPU trên máy trạm (phương án B của G0). Chờ duyệt máy trạm cô lập."
     },
     {
       "id": "to-phan-bien",
@@ -816,6 +882,28 @@
       "ho_tro": [
         "tro-ly-22-ky-nang-ctxdn"
       ]
+    },
+    {
+      "id": "video",
+      "ten": "Làm video",
+      "tu_khoa": [
+        "video",
+        "dựng phim",
+        "làm phim",
+        "phim hướng dẫn",
+        "phim hoạt hình",
+        "hoạt hình",
+        "animation",
+        "phụ đề",
+        "mp4",
+        "hyperframes"
+      ],
+      "chinh": "hyperframes",
+      "ho_tro": [
+        "hyperframes-registry",
+        "hyperframes-cli",
+        "to-phan-bien"
+      ]
     }
   ],
   "canh_bao": [
@@ -867,6 +955,16 @@
         "secrets"
       ],
       "noi_dung": "Không đọc secrets/ hay .env; không hardcode mật khẩu."
+    },
+    {
+      "tu_khoa": [
+        "video",
+        "hyperframes",
+        "dựng phim",
+        "làm phim",
+        "mp4"
+      ],
+      "noi_dung": "Video: chưa render thử (G2 BLOCKED). Gọi npx hyperframes@0.9.37 (guard.py chặn bản không ghim và lệnh events/feedback/usage/auth/share/publish/cloud/lambda/capture); đặt HYPERFRAMES_NO_TELEMETRY=1; bỏ qua Usage beacon; media-use BLOCKED; locate.mjs auto bị cấm (khóa Gemini trong URL); bake-basemap.mjs, browser ensure, CDN phải xin phép; dự án trong video/, không commit file render."
     }
   ],
   "trung_lap": [
@@ -941,6 +1039,54 @@
       "b": "Cổng G0 \"hỏi một lần\"",
       "quyet_dinh": "Trong luồng đặc tả dùng clarify",
       "ly_do": "Hỏi có cấu trúc (tối đa 5 câu), ghi thẳng vào spec."
+    },
+    {
+      "a": "Remotion (72k sao)",
+      "b": "HyperFrames",
+      "quyet_dinh": "Không cài",
+      "ly_do": "Cùng việc dựng video bằng mã; LICENSE.md (commit eeb428f) chỉ miễn phí cho cá nhân, tổ chức vì lợi nhuận tối đa 3 nhân viên, phi lợi nhuận. Xem docs/G0-cong-cu-video.md."
+    },
+    {
+      "a": "GSAP, three.js",
+      "b": "HyperFrames",
+      "quyet_dinh": "Không cài riêng",
+      "ly_do": "HyperFrames đã dùng GSAP cho chuyển động và có khối 3D three.js; nạp theo dự án khi cần."
+    },
+    {
+      "a": "FFmpeg",
+      "b": "Có sẵn trên máy (/usr/bin/ffmpeg)",
+      "quyet_dinh": "Không cài thêm",
+      "ly_do": "HyperFrames và lemo-opuscar đều gọi FFmpeg ở bước cuối."
+    },
+    {
+      "a": "Manim (3b1b)",
+      "b": "HyperFrames",
+      "quyet_dinh": "Không cài",
+      "ly_do": "Chuyên video toán học; cần LaTeX, Cairo; nhu cầu 2D của chi nhánh HyperFrames đã đáp ứng."
+    },
+    {
+      "a": "lemo-opuscar (G0, chưa cài)",
+      "b": "HyperFrames",
+      "quyet_dinh": "HyperFrames làm công cụ chính",
+      "ly_do": "Apache-2.0, ghim được bản phát hành, không tự reset theo main, không dặn tác tử tự cài gói (căn cứ: G0 lemo-opuscar, nhánh docs/g0-lemo-opuscar, mục 4.2 R1-R4). HyperFrames còn đo lường và lệnh đám mây - đã chặn bằng guard.py. Chọn là tạm thời, chờ G2."
+    },
+    {
+      "a": "Kết nối HyperFrames (MCP HeyGen)",
+      "b": "Kỹ năng hyperframes cục bộ",
+      "quyet_dinh": "Dùng kỹ năng cục bộ",
+      "ly_do": "Từ Claude Code, kết nối chỉ đọc dự án; dựng và render chạy cục bộ, dữ liệu không rời máy."
+    },
+    {
+      "a": "Kỹ năng slideshow (HyperFrames)",
+      "b": "pptx",
+      "quyet_dinh": "Không cài",
+      "ly_do": "Trùng việc trình chiếu."
+    },
+    {
+      "a": "Canva (kết nối)",
+      "b": "HyperFrames",
+      "quyet_dinh": "Giữ cả hai, chia phạm vi",
+      "ly_do": "Canva cho ấn phẩm tĩnh, mẫu có sẵn; HyperFrames cho video dựng bằng mã."
     }
   ],
   "nguon_ngoai": [
@@ -954,6 +1100,18 @@
         ".specify/",
         ".claude/skills/speckit-*/"
       ]
+    },
+    {
+      "ten": "HyperFrames",
+      "phien_ban": "v0.9.37",
+      "commit": "e8e1177ad609127edc2de390369ceb9a38fd6ba5",
+      "giay_phep": "Apache-2.0",
+      "cai_bang": "chép skills/hyperframes, hyperframes-cli, hyperframes-registry",
+      "thu_muc": [
+        ".claude/skills/hyperframes*/"
+      ],
+      "sua_doi": "Lớp phủ CTXĐN: ghim 278 lệnh npx về @0.9.37 + khối luật đầu mỗi SKILL.md. Áp lại sau nâng cấp: python .claude/tong-chi-huy/lop_phu_hyperframes.py",
+      "bien_ban": "docs/G0-cong-cu-video.md"
     }
   ]
 }

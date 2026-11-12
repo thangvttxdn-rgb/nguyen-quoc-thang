@@ -53,6 +53,13 @@ Hiến pháp `.specify/memory/constitution.md` chỉ tóm tắt `AGENTS.md`; s�
 `todo.md` chỉ ghi trạng thái và đường dẫn `specs/NNN-ten/tasks.md`, không chép danh sách việc.
 Không tự tạo nhánh git cho tính năng; làm trên nhánh được giao.
 
+### Video: HyperFrames v0.9.37
+
+Kỹ năng `hyperframes` (đọc trước), `hyperframes-registry` (khối dựng sẵn), `hyperframes-cli` (render).
+Luôn gọi `npx hyperframes@0.9.37`, không gọi bản không ghim; lần chạy đầu xin phép. Dự án để trong
+`video/<ten>/`. Không dùng `media-use`, đăng nhập HeyGen, `locate.mjs auto` khi chưa duyệt (gửi dữ
+liệu ra ngoài). G3: `to-phan-bien` rà nội dung kỹ thuật (thao tác, số liệu, an toàn) trước khi phát.
+
 ## 4. Nhãn dữ liệu
 
 `THẬT` (đo, đọc từ nguồn) · `DEMO` (ví dụ mô phỏng) · `BLOCKED` (không tiếp cận được) ·
