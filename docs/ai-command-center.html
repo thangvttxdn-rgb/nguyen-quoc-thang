@@ -69,21 +69,13 @@ h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-
 .status b { color: var(--ok); font-weight: 600; }
 
 /* Hero */
-.hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px; align-items: end; }
+.hero { display: grid; gap: 0; }
 .hero h1 { font-size: clamp(30px, 4.6vw, 52px); font-weight: 800; letter-spacing: -.025em; }
 .hero h1 em { font-style: normal; color: var(--accent); }
 .hero p { color: var(--muted); max-width: 60ch; margin: 12px 0 0; }
 .runs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; align-items: center; }
 .chip { font-family: var(--f-mono); font-size: 12px; border: 1px solid var(--line); border-radius: 4px; padding: 3px 8px; color: var(--ink); background: var(--panel); }
 
-/* Bảng tổng: giống bảng giờ tàu */
-.board { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
-.board table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
-.board th, .board td { text-align: left; padding: 8px 14px; border-bottom: 1px solid var(--line); font-size: 13.5px; }
-.board tr:last-child td { border-bottom: 0; }
-.board th { font-family: var(--f-mono); font-weight: 400; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); background: var(--panel-2); }
-.board td.n { font-family: var(--f-mono); font-weight: 600; font-size: 18px; text-align: right; }
-.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 8px; vertical-align: 1px; }
 
 /* Thanh công cụ */
 .tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; position: sticky; top: env(safe-area-inset-top, 0px);
@@ -101,6 +93,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .tracks { display: grid; grid-template-columns: repeat(auto-fill, minmax(228px, 1fr)); gap: 14px; align-items: start; }
 .track { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: grid; gap: 6px; min-width: 0; }
 .track header { display: flex; align-items: baseline; justify-content: space-between; padding: 2px 4px 8px; border-bottom: 2px solid var(--gc); margin-bottom: 4px; }
+.track header .scope { font-size: 12px; color: var(--muted); margin-top: 2px; }
 .track header h2 { font-size: 13px; font-family: var(--f-mono); letter-spacing: .1em; text-transform: uppercase; font-weight: 600; }
 .track header .cnt { font-family: var(--f-mono); font-size: 22px; font-weight: 600; color: var(--gc); font-variant-numeric: tabular-nums; }
 .sub { font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding: 8px 4px 2px; }
@@ -147,7 +140,6 @@ section > .lead { color: var(--muted); margin: 0 0 14px; max-width: 70ch; }
 footer { color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--line); padding-top: 14px; font-family: var(--f-mono); }
 
 @media (max-width: 760px) {
-  .hero { grid-template-columns: 1fr; }
   .drawer { top: auto; height: 78%; width: 100%; border-left: 0; border-top: 1px solid var(--line); border-radius: 12px 12px 0 0;
     padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
 }
@@ -171,13 +163,7 @@ footer { color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--lin
       <div class="label">AI Skills Command Center</div>
       <h1 style="margin-top:8px">Trung tâm điều hành <em>kỹ năng AI</em> của chi nhánh</h1>
       <p>Một bảng duy nhất liệt kê mọi kỹ năng, tác tử, lệnh, rào chắn an toàn và kết nối mà trợ lý AI đang dùng cho công việc chi nhánh: báo cáo an toàn chạy tàu, phân tích sự cố toa xe, văn bản NĐ 30, hệ thống EMS. Chọn một mục để xem khi nào dùng và câu lệnh gọi.</p>
-      <div class="runs"><span class="label" style="margin-right:4px">Chạy trên</span><span class="chip">Claude Code</span><span class="chip">Claude.ai</span><span class="chip">Cowork</span><span class="chip">Claude Code Web</span></div>
-    </div>
-    <div class="board" aria-label="Tổng hợp theo nhóm">
-      <table>
-        <thead><tr><th>Nhóm</th><th>Phạm vi</th><th style="text-align:right">Số mục</th></tr></thead>
-        <tbody id="board"></tbody>
-      </table>
+      <div class="runs"><span class="label" style="margin-right:4px">Chạy trên</span><span class="chip">Claude Code</span><span class="chip">Claude.ai</span><span class="chip">Cowork</span></div>
     </div>
   </div>
 
@@ -229,7 +215,7 @@ footer { color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--lin
     </div>
   </section>
 
-  <footer>Nguồn: kỹ năng tổ chức và plugin bật trong tài khoản Claude; .claude/ trong kho nguyen-quoc-thang; AGENTS.md. Mục gắn nhãn "đề xuất" chưa được cài.</footer>
+  <footer>Nguồn: kỹ năng tổ chức và plugin bật trong tài khoản Claude; .claude/ trong kho nguyen-quoc-thang; AGENTS.md. Mục gắn nhãn "đề xuất" chưa được cài. Chi tiết các lớp an toàn: docs/so-do-agent.html.</footer>
 </div>
 
 <aside class="drawer" id="drawer" hidden aria-labelledby="d-name">
@@ -243,7 +229,7 @@ footer { color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--lin
   <dl>
     <div><dt>Khi nào dùng</dt><dd id="d-when"></dd></div>
     <div><dt>Gọi bằng</dt><dd><div class="cmdline"><code id="d-cmd"></code><button class="copy" id="d-copy" type="button">Sao chép</button></div></dd></div>
-    <div><dt>Ví dụ câu lệnh</dt><dd id="d-ex"></dd></div>
+    <div id="d-exrow"><dt>Ví dụ câu lệnh</dt><dd id="d-ex"></dd></div>
     <div><dt>Nguồn</dt><dd class="mono" id="d-src" style="font-size:13px"></dd></div>
   </dl>
 </aside>
@@ -283,27 +269,20 @@ const RAW = [
   ["agent","Có sẵn","Plan","core","Kiến trúc sư: lập kế hoạch triển khai, chỉ ra file then chốt và đánh đổi.","Trước khi làm tính năng lớn.","Agent(Plan)","Lập kế hoạch đăng nhập SQL bằng Windows Authentication","Claude Code"],
   ["agent","Có sẵn","claude-code-guide","core","Giải đáp về Claude Code, hook, lệnh, MCP, Agent SDK, Claude API.","Hỏi cách cấu hình công cụ AI.","Agent(claude-code-guide)","Hook PreToolUse trả JSON ask thế nào?","Claude Code"],
   ["agent","Đề xuất cho kho","kiem-tra-sql","repo","Rà câu SQL mới theo AGENTS.md mục 3a: tham số hóa, NOLOCK cho báo cáo, không xóa cứng, DECIMAL.","Trước mỗi PR có đổi src/db/.","Agent(kiem-tra-sql)","Rà các thay đổi SQL trên nhánh hiện tại",".claude/agents/kiem-tra-sql.md","plan"],
-  ["agent","Đề xuất cho kho","nghiem-thu","repo","Chạy 3 điều kiện DONE: pytest xanh, ruff không lỗi mới, todo.md/MEMORY.md đã cập nhật.","Trước khi báo hoàn thành một tác vụ.","Agent(nghiem-thu)","Nghiệm thu tác vụ triển khai IIS",".claude/agents/nghiem-thu.md","plan"],
 
   ["cmd","Kiểm tra mã","/code-review","core","Rà lỗi đúng sai trên diff hoặc PR theo mức độ low…max.","Trước khi commit hoặc mở PR.","/code-review medium","/code-review high --fix","Claude Code"],
-  ["cmd","Kiểm tra mã","/security-review","core","Rà bảo mật các thay đổi trên nhánh hiện tại.","Khi đổi phần đăng nhập, CSDL, triển khai.","/security-review","/security-review","Claude Code"],
-  ["cmd","Kiểm tra mã","/simplify","core","Tìm chỗ dùng lại, rút gọn, hiệu năng rồi sửa.","Dọn mã sau khi tính năng đã chạy.","/simplify","/simplify","Claude Code"],
+  ["cmd","Kiểm tra mã","/security-review","core","Rà bảo mật các thay đổi trên nhánh hiện tại.","Khi đổi phần đăng nhập, CSDL, triển khai.","/security-review","","Claude Code"],
+  ["cmd","Kiểm tra mã","/simplify","core","Tìm chỗ dùng lại, rút gọn, hiệu năng rồi sửa.","Dọn mã sau khi tính năng đã chạy.","/simplify","","Claude Code"],
   ["cmd","Vận hành","/run","core","Khởi động web app để xem thay đổi chạy thật.","Kiểm tra giao diện điện thoại sau khi sửa.","/run","/run giao diện EMS với dữ liệu mẫu","Claude Code"],
   ["cmd","Vận hành","/loop","core","Chạy một việc lặp theo chu kỳ.","Theo dõi CI hoặc hộp thư định kỳ.","/loop 30m","/loop 1h kiểm tra thư báo cáo mới","Claude Code"],
-  ["cmd","Vận hành","/init","core","Tạo CLAUDE.md mô tả kho mã.","Mở kho mới cho trợ lý.","/init","/init","Claude Code"],
-  ["cmd","Cấu hình","/fewer-permission-prompts","core","Quét lệnh chỉ đọc hay dùng, đề xuất thêm vào danh sách cho phép.","Bị hỏi quyền quá nhiều lần.","/fewer-permission-prompts","/fewer-permission-prompts","Claude Code"],
+  ["cmd","Vận hành","/init","core","Tạo CLAUDE.md mô tả kho mã.","Mở kho mới cho trợ lý.","/init","","Claude Code"],
+  ["cmd","Cấu hình","/fewer-permission-prompts","core","Quét lệnh chỉ đọc hay dùng, đề xuất thêm vào danh sách cho phép.","Bị hỏi quyền quá nhiều lần.","/fewer-permission-prompts","","Claude Code"],
   ["cmd","Cấu hình","/update-config","core","Sửa settings.json: quyền, hook, biến môi trường.","Thêm luật chặn hoặc hook mới.","/update-config","Thêm luật deny cho .env.uat","Claude Code"],
   ["cmd","Cấu hình","/skill-creator","core","Tạo, sửa, đo hiệu quả kỹ năng.","Đóng gói một quy trình lặp lại thành kỹ năng.","/skill-creator","Tạo kỹ năng lập kế hoạch sửa chữa toa xe cấp","anthropic-skills"],
-  ["cmd","Đề xuất cho kho","/nghiem-thu","repo","Lệnh tắt: pytest -q --tb=short, ruff check src/ --quiet, nhắc cập nhật todo.md.","Kết thúc mỗi tác vụ.","/nghiem-thu","/nghiem-thu",".claude/commands/nghiem-thu.md","plan"],
+  ["cmd","Đề xuất cho kho","/nghiem-thu","repo","Kiểm 3 điều kiện DONE (AGENTS.md mục 5): pytest -q xanh, ruff không lỗi mới, đã cập nhật todo.md/MEMORY.md.","Kết thúc mỗi tác vụ.","/nghiem-thu","/nghiem-thu",".claude/commands/nghiem-thu.md","plan"],
 
-  ["guard","Cưỡng chế","guard.py (PreToolUse)","repo","Chặn mọi biến thể rm -rf, SHUTDOWN/DROP DATABASE; hỏi lại câu SQL ghi; chặn ghi ngoài dự án và mật khẩu hardcode.","Luôn chạy trước mỗi lệnh Bash/Edit/Write.","python3 .claude/hooks/guard.py","pytest tests/harness/ -q",".claude/hooks/guard.py"],
-  ["guard","Cưỡng chế","Permissions","repo","7 luật cho phép, 7 luật hỏi, 16 luật cấm theo mẫu chữ (đọc secrets/, .env, force push…).","Lớp lọc đầu tiên, trước hook.","settings.local.json","Read(./secrets/**) → deny",".claude/settings.local.json"],
-  ["guard","Cưỡng chế","Ruff S","repo","Bắt mật khẩu hardcode (S105/S106) và SQL ghép chuỗi (S608) khi lint.","Mỗi lần chạy ruff và trên CI.","ruff check src/ --quiet","ruff check . ","pyproject.toml"],
-  ["guard","Cưỡng chế","db_datareader","repo","Tài khoản CSDL của tác tử chỉ có quyền đọc: lớp chắc chắn nhất.","Mọi truy vấn của tác tử.","DB_USER_READONLY (.env)","SELECT … WHERE Id = ?",".env.example"],
-  ["guard","Cưỡng chế","CI","repo","ruff và pytest trên Python 3.11, 3.13 cho mọi PR và push lên main.","Tự chạy trên GitHub.","git push","Xem tab Actions của PR",".github/workflows/ci.yml"],
-  ["guard","Bộ nhớ","AGENTS.md","repo","Quy chuẩn kiến trúc, lệnh, phân quyền, tiêu chuẩn DONE.","Đọc tự động mỗi phiên qua CLAUDE.md.","@AGENTS.md","—","AGENTS.md"],
-  ["guard","Bộ nhớ","MEMORY.md","repo","Bài học lỗi hóc búa, đặc thù CSDL và nghiệp vụ, kèm file và dòng.","Ghi sau mỗi phát hiện quan trọng.","@MEMORY.md","—","MEMORY.md"],
-  ["guard","Bộ nhớ","todo.md","repo","Kế hoạch tác vụ hiện tại và việc còn treo.","Cập nhật trạng thái trước khi báo xong.","@todo.md","—","todo.md"],
+  ["guard","An toàn & bộ nhớ","Lớp an toàn (5 lớp)","repo","Permissions, hook guard.py, Ruff S, tài khoản db_datareader, CI. Sơ đồ và giải thích từng lớp nằm ở so-do-agent.html.","Luôn bật; không cần gọi.","python -m pytest tests/harness/ -q","","docs/so-do-agent.html"],
+  ["guard","An toàn & bộ nhớ","Bộ nhớ dự án","repo","AGENTS.md (quy chuẩn), MEMORY.md (bài học), todo.md (việc đang làm), nạp tự động qua CLAUDE.md.","Cập nhật trước khi báo xong một tác vụ.","@AGENTS.md @MEMORY.md @todo.md","","CLAUDE.md · docs/so-do-agent.html"],
 
   ["link","Đang kết nối","Gmail","core","Đọc, tìm thư; tạo thư nháp, trả lời, gắn nhãn.","Lấy email văn thư cho báo cáo; gửi báo cáo đã duyệt.","Gmail (MCP)","Tìm thư báo cáo an toàn từ trạm Nha Trang tuần này","Connector claude.ai"],
   ["link","Đang kết nối","Google Drive","core","Tìm, đọc, tạo, chia sẻ file trên Drive.","Lưu biên bản, ảnh hiện trường, báo cáo.","Google Drive (MCP)","Tìm biên bản sự cố tháng 10 trong Drive","Connector claude.ai"],
@@ -325,14 +304,6 @@ function el(tag, attrs = {}, text) {
   return e;
 }
 
-// Bảng tổng
-const board = $("#board");
-for (const [k, g] of Object.entries(GROUPS)) {
-  const tr = el("tr");
-  const td = el("td"); const dot = el("span", { class: "dot", style: `background:var(${g.color})` }); td.append(dot, g.name);
-  tr.append(td, el("td", {}, g.scope), el("td", { class: "n" }, String(ITEMS.filter(x => x.g === k).length)));
-  board.append(tr);
-}
 
 // Bộ lọc nguồn
 const filters = $("#filters");
@@ -355,11 +326,12 @@ function render() {
     const list = ITEMS.filter(x => x.g === k && (srcFilter === "all" || x.src === srcFilter) &&
       (!term || norm([x.name, x.desc, x.when, x.ex, x.sub].join(" ")).includes(term)));
     const box = el("div", { class: "track", style: `--gc:var(${g.color})` });
-    const head = el("header"); head.append(el("h2", {}, g.name), el("span", { class: "cnt" }, String(list.length)));
+    const head = el("header"); const ttl = el("div"); ttl.append(el("h2", {}, g.name), el("div", { class: "scope" }, g.scope));
+    head.append(ttl, el("span", { class: "cnt" }, String(list.length)));
     box.append(head);
     let lastSub = null;
     for (const it of list) {
-      if (it.sub !== lastSub) { box.append(el("div", { class: "sub" }, it.sub)); lastSub = it.sub; }
+      if (it.sub !== lastSub && new Set(list.map(x => x.sub)).size > 1) { box.append(el("div", { class: "sub" }, it.sub)); lastSub = it.sub; }
       const b = el("button", { class: "item" + (current === it.id ? " on" : ""), type: "button", "data-id": it.id, title: it.name });
       b.append(el("span", { class: "pip" }), el("span", { class: "nm" }, it.name));
       if (it.plan) b.append(el("span", { class: "tag" }, "đề xuất"));
@@ -384,6 +356,7 @@ function open(it) {
   $("#d-when").textContent = it.when;
   $("#d-cmd").textContent = it.cmd;
   $("#d-ex").textContent = it.ex;
+  $("#d-exrow").hidden = !it.ex || it.ex.trim() === it.cmd.trim();
   $("#d-src").textContent = it.path;
   $("#d-copy").textContent = "Sao chép";
   drawer.hidden = false;

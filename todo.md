@@ -11,8 +11,8 @@
 - [x] 6. Nghiệm thu: `pytest -q` 121/121, `ruff` sạch, XML web.config hợp lệ.
 
 ## Mục tiêu phụ: CTXĐN AI Skills Command Center
-- [x] `docs/ai-command-center.html`: bảng tra cứu 46 mục (17 kỹ năng, 6 tác tử, 10 lệnh, 8 rào chắn/bộ nhớ, 5 kết nối), tìm kiếm không dấu, lọc theo nguồn, ngăn chi tiết có nút sao chép lệnh, 3 quy trình mẫu.
-- [ ] (Đề xuất, chờ duyệt) Tạo `.claude/agents/kiem-tra-sql.md`, `.claude/agents/nghiem-thu.md`, `.claude/commands/nghiem-thu.md` - trang đang gắn nhãn "đề xuất".
+- [x] `docs/ai-command-center.html`: bảng tra cứu 39 mục (17 kỹ năng, 5 tác tử, 10 lệnh, 2 rào chắn/bộ nhớ - chi tiết dẫn sang `so-do-agent.html`, 5 kết nối; đã gỡ trùng lặp), tìm kiếm không dấu, lọc theo nguồn, ngăn chi tiết có nút sao chép lệnh, 3 quy trình mẫu.
+- [ ] (Đề xuất, chờ duyệt) Tạo `.claude/agents/kiem-tra-sql.md`, `.claude/commands/nghiem-thu.md` - trang đang gắn nhãn "đề xuất".
 
 ### Việc còn treo
 - [ ] Làm theo tài liệu trên máy chủ thật (người quản trị).
