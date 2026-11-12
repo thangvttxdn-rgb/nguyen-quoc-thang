@@ -1,0 +1,410 @@
+<title>CTXĐN AI Skills Command Center</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: bảng chỉ thị phòng điều độ - dải trạng thái trên cùng, 5 "đường ray" (nhóm năng lực) song song, ngăn chi tiết trượt ra khi chọn một mục. */
+:root {
+  --bg: #f2f5f4;
+  --panel: #ffffff;
+  --panel-2: #e7eeec;
+  --ink: #0f1d1b;
+  --muted: #4c605c;
+  --line: #c8d5d2;
+  --accent: #0f766e;
+  --on-accent: #ffffff;
+  --sel: #b45309;
+
+  --g-skill: #0f766e;
+  --g-agent: #4f46e5;
+  --g-cmd: #b45309;
+  --g-guard: #be123c;
+  --g-link: #0369a1;
+  --ok: #15803d;
+  --plan: #a16207;
+
+  --f-display: "Be Vietnam Pro", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Be Vietnam Pro", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b1514; --panel: #11201e; --panel-2: #172a27; --ink: #e4efec; --muted: #93aba6; --line: #24403b;
+    --accent: #2dd4bf; --on-accent: #0b1514; --sel: #fbbf24;
+    --g-skill: #2dd4bf; --g-agent: #a5b4fc; --g-cmd: #fbbf24; --g-guard: #fb7185; --g-link: #7dd3fc;
+    --ok: #4ade80; --plan: #facc15;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b1514; --panel: #11201e; --panel-2: #172a27; --ink: #e4efec; --muted: #93aba6; --line: #24403b;
+  --accent: #2dd4bf; --on-accent: #0b1514; --sel: #fbbf24;
+  --g-skill: #2dd4bf; --g-agent: #a5b4fc; --g-cmd: #fbbf24; --g-guard: #fb7185; --g-link: #7dd3fc;
+  --ok: #4ade80; --plan: #facc15;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.55; }
+.wrap {
+  max-width: 1240px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 56px;
+  display: grid; gap: 28px;
+}
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.15; }
+.mono { font-family: var(--f-mono); }
+.label { font-family: var(--f-mono); font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+
+/* Dải trạng thái */
+.topbar { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--line); padding-bottom: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; }
+.brand svg { flex: none; }
+.brand small { font-weight: 500; color: var(--muted); font-family: var(--f-mono); font-size: 12px; }
+.status { font-family: var(--f-mono); font-size: 12px; color: var(--muted); display: flex; gap: 14px; flex-wrap: wrap; }
+.status b { color: var(--ok); font-weight: 600; }
+
+/* Hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px; align-items: end; }
+.hero h1 { font-size: clamp(30px, 4.6vw, 52px); font-weight: 800; letter-spacing: -.025em; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero p { color: var(--muted); max-width: 60ch; margin: 12px 0 0; }
+.runs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; align-items: center; }
+.chip { font-family: var(--f-mono); font-size: 12px; border: 1px solid var(--line); border-radius: 4px; padding: 3px 8px; color: var(--ink); background: var(--panel); }
+
+/* Bảng tổng: giống bảng giờ tàu */
+.board { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.board table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.board th, .board td { text-align: left; padding: 8px 14px; border-bottom: 1px solid var(--line); font-size: 13.5px; }
+.board tr:last-child td { border-bottom: 0; }
+.board th { font-family: var(--f-mono); font-weight: 400; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); background: var(--panel-2); }
+.board td.n { font-family: var(--f-mono); font-weight: 600; font-size: 18px; text-align: right; }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 8px; vertical-align: 1px; }
+
+/* Thanh công cụ */
+.tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; position: sticky; top: env(safe-area-inset-top, 0px);
+  background: var(--bg); padding-block: 10px; z-index: 5; border-bottom: 1px solid var(--line); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.search { flex: 1 1 260px; min-width: 0; display: flex; align-items: center; gap: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 0 10px; }
+.search input { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--ink); font: inherit; padding: 9px 0; outline: none; }
+.search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 25%, transparent); }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.fbtn { font: 600 12.5px var(--f-body); border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+.fbtn[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.fbtn:focus-visible, .item:focus-visible, .copy:focus-visible, .close:focus-visible { outline: 2px solid var(--sel); outline-offset: 2px; }
+
+/* Các đường ray */
+.tracks { display: grid; grid-template-columns: repeat(auto-fill, minmax(228px, 1fr)); gap: 14px; align-items: start; }
+.track { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: grid; gap: 6px; min-width: 0; }
+.track header { display: flex; align-items: baseline; justify-content: space-between; padding: 2px 4px 8px; border-bottom: 2px solid var(--gc); margin-bottom: 4px; }
+.track header h2 { font-size: 13px; font-family: var(--f-mono); letter-spacing: .1em; text-transform: uppercase; font-weight: 600; }
+.track header .cnt { font-family: var(--f-mono); font-size: 22px; font-weight: 600; color: var(--gc); font-variant-numeric: tabular-nums; }
+.sub { font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding: 8px 4px 2px; }
+.item { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; font: 13px var(--f-mono); color: var(--ink);
+  background: var(--panel-2); border: 1px solid transparent; border-radius: 4px; padding: 6px 8px; cursor: pointer; min-width: 0; }
+.item span.nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0; }
+.item:hover { border-color: var(--gc); }
+.item.on { border-color: var(--sel); background: color-mix(in srgb, var(--sel) 14%, var(--panel-2)); }
+.item .pip { width: 6px; height: 6px; border-radius: 50%; background: var(--gc); flex: none; }
+.item .tag { font-size: 10px; color: var(--plan); border: 1px solid currentColor; border-radius: 3px; padding: 0 4px; flex: none; }
+.home .item .pip { box-shadow: 0 0 0 3px color-mix(in srgb, var(--gc) 30%, transparent); }
+.empty { color: var(--muted); font-size: 13px; padding: 4px; }
+
+/* Ngăn chi tiết */
+.drawer { position: fixed; z-index: 20; top: 0; right: 0; bottom: 0; width: min(440px, 100%);
+  background: var(--panel); border-left: 1px solid var(--line); box-shadow: -12px 0 40px rgb(0 0 0 / .18);
+  padding: calc(18px + env(safe-area-inset-top, 0px)) calc(20px + env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) 20px;
+  overflow-y: auto; display: grid; gap: 16px; align-content: start; }
+.drawer h3 { font-family: var(--f-mono); font-size: 18px; word-break: break-word; }
+.drawer .grp { display: inline-flex; align-items: center; gap: 6px; font-family: var(--f-mono); font-size: 12px; color: var(--gc); }
+.drawer p { margin: 0; }
+.drawer dl { margin: 0; display: grid; gap: 10px; }
+.drawer dt { font-family: var(--f-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.drawer dd { margin: 2px 0 0; }
+.cmdline { display: flex; gap: 8px; align-items: stretch; }
+.cmdline code { flex: 1; min-width: 0; font: 13px var(--f-mono); background: var(--panel-2); border: 1px solid var(--line); border-radius: 4px; padding: 8px 10px; overflow-x: auto; white-space: nowrap; }
+.copy { font: 600 12px var(--f-body); border: 1px solid var(--accent); background: var(--accent); color: var(--on-accent); border-radius: 4px; padding: 0 12px; cursor: pointer; }
+.close { justify-self: end; font: 600 13px var(--f-body); background: transparent; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 4px 10px; cursor: pointer; }
+.state { font-family: var(--f-mono); font-size: 12px; }
+.state.ok { color: var(--ok); } .state.plan { color: var(--plan); }
+
+/* Quy trình mẫu */
+.flows { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+.flow { border: 1px solid var(--line); border-radius: 8px; padding: 16px; background: var(--panel); min-width: 0; }
+.flow h3 { font-size: 16px; font-weight: 800; }
+.flow p { color: var(--muted); font-size: 13.5px; margin: 6px 0 12px; }
+.flow ol { margin: 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 0; }
+.flow li { counter-increment: s; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; position: relative; padding-bottom: 12px; font-size: 14px; }
+.flow li::before { content: counter(s); font: 600 12px var(--f-mono); width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--accent); display: grid; place-items: center; background: var(--panel); z-index: 1; }
+.flow li:not(:last-child)::after { content: ""; position: absolute; left: 10px; top: 22px; bottom: 0; border-left: 2px dashed var(--line); }
+.flow code { font-family: var(--f-mono); font-size: 12.5px; color: var(--accent); }
+section > h2 { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+section > .lead { color: var(--muted); margin: 0 0 14px; max-width: 70ch; }
+footer { color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--line); padding-top: 14px; font-family: var(--f-mono); }
+
+@media (max-width: 760px) {
+  .hero { grid-template-columns: 1fr; }
+  .drawer { top: auto; height: 78%; width: 100%; border-left: 0; border-top: 1px solid var(--line); border-radius: 12px 12px 0 0;
+    padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .drawer:not([hidden]) { animation: slide .18s ease-out; }
+  @keyframes slide { from { transform: translateX(24px); } }
+}
+</style>
+
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><rect x="1" y="1" width="28" height="28" rx="6" fill="none" stroke="var(--accent)" stroke-width="2"/><path d="M8 21h14M10 21l-2 4M20 21l2 4M9 9h12v9H9z" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="15" r="1.4" fill="var(--sel)"/><circle cx="18" cy="15" r="1.4" fill="var(--sel)"/></svg>
+      <span>CTXĐN <small>/ Chi nhánh Toa xe Đà Nẵng</small></span>
+    </div>
+    <div class="status"><span>Tuyến Kim Liên – Nha Trang</span><span>Cập nhật <b>12/11/2026</b></span></div>
+  </div>
+
+  <div class="hero">
+    <div>
+      <div class="label">AI Skills Command Center</div>
+      <h1 style="margin-top:8px">Trung tâm điều hành <em>kỹ năng AI</em> của chi nhánh</h1>
+      <p>Một bảng duy nhất liệt kê mọi kỹ năng, tác tử, lệnh, rào chắn an toàn và kết nối mà trợ lý AI đang dùng cho công việc chi nhánh: báo cáo an toàn chạy tàu, phân tích sự cố toa xe, văn bản NĐ 30, hệ thống EMS. Chọn một mục để xem khi nào dùng và câu lệnh gọi.</p>
+      <div class="runs"><span class="label" style="margin-right:4px">Chạy trên</span><span class="chip">Claude Code</span><span class="chip">Claude.ai</span><span class="chip">Cowork</span><span class="chip">Claude Code Web</span></div>
+    </div>
+    <div class="board" aria-label="Tổng hợp theo nhóm">
+      <table>
+        <thead><tr><th>Nhóm</th><th>Phạm vi</th><th style="text-align:right">Số mục</th></tr></thead>
+        <tbody id="board"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tools">
+    <label class="search" for="q">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="var(--muted)" stroke-width="1.6"/><path d="M11 11l3.5 3.5" stroke="var(--muted)" stroke-width="1.6"/></svg>
+      <input id="q" type="search" placeholder="Tìm: báo cáo, sự cố, SQL, email…" autocomplete="off">
+    </label>
+    <div class="filters" id="filters" role="group" aria-label="Lọc theo nguồn"></div>
+  </div>
+
+  <div class="tracks" id="tracks"></div>
+
+  <section>
+    <h2>Quy trình mẫu</h2>
+    <p class="lead">Ba việc lặp lại hằng tuần, nối các mục trên bảng thành một chuỗi. Thứ tự các bước là thứ tự thực hiện.</p>
+    <div class="flows">
+      <article class="flow">
+        <h3>Báo cáo giao ban an toàn tuần</h3>
+        <p>Từ email văn thư đến báo cáo Word theo NĐ 30 gửi đi.</p>
+        <ol>
+          <li><span>Gmail tìm thư báo cáo của 3 trạm, 3 tổ khám chữa trong tuần</span></li>
+          <li><span>Gọi <code>bao-cao-an-toan-van-dung-ctxdn</code> tổng hợp số liệu</span></li>
+          <li><span>Xuất Word bằng <code>docx</code>, đúng thể thức NĐ 30</span></li>
+          <li><span>Phó giám đốc duyệt, rồi tạo thư nháp gửi lãnh đạo</span></li>
+        </ol>
+      </article>
+      <article class="flow">
+        <h3>Phân tích trở ngại chạy tàu</h3>
+        <p>Dựng diễn biến, tìm nguyên nhân gốc, đề xuất biện pháp.</p>
+        <ol>
+          <li><span>Thu thập biên bản, ảnh hiện trường lên Google Drive</span></li>
+          <li><span>Gọi <code>phan-tich-su-co-toa-xe</code>: 5 Why, xương cá</span></li>
+          <li><span>Soạn báo cáo bằng <code>tro-ly-22-ky-nang-ctxdn</code></span></li>
+          <li><span>Đưa biện pháp vào kế hoạch với <code>task-management</code></span></li>
+        </ol>
+      </article>
+      <article class="flow">
+        <h3>Sửa và phát hành EMS</h3>
+        <p>Đổi mã trong kho này đến khi lên máy chủ IIS.</p>
+        <ol>
+          <li><span>Tác tử <code>Explore</code> tìm vị trí cần sửa</span></li>
+          <li><span>Sửa mã; hook <code>guard.py</code> chặn lệnh nguy hiểm</span></li>
+          <li><span><code>/code-review</code> rồi chạy <code>pytest -q</code> và <code>ruff</code></span></li>
+          <li><span>Cập nhật <code>todo.md</code>, <code>MEMORY.md</code></span></li>
+          <li><span>Gọi <code>phat-hanh-ems</code>, triển khai theo TRIEN-KHAI-IIS.md</span></li>
+        </ol>
+      </article>
+    </div>
+  </section>
+
+  <footer>Nguồn: kỹ năng tổ chức và plugin bật trong tài khoản Claude; .claude/ trong kho nguyen-quoc-thang; AGENTS.md. Mục gắn nhãn "đề xuất" chưa được cài.</footer>
+</div>
+
+<aside class="drawer" id="drawer" hidden aria-labelledby="d-name">
+  <button class="close" id="d-close" type="button">Đóng</button>
+  <div>
+    <div class="grp" id="d-grp"></div>
+    <h3 id="d-name" style="margin-top:6px"></h3>
+    <div class="state" id="d-state" style="margin-top:6px"></div>
+  </div>
+  <p id="d-desc"></p>
+  <dl>
+    <div><dt>Khi nào dùng</dt><dd id="d-when"></dd></div>
+    <div><dt>Gọi bằng</dt><dd><div class="cmdline"><code id="d-cmd"></code><button class="copy" id="d-copy" type="button">Sao chép</button></div></dd></div>
+    <div><dt>Ví dụ câu lệnh</dt><dd id="d-ex"></dd></div>
+    <div><dt>Nguồn</dt><dd class="mono" id="d-src" style="font-size:13px"></dd></div>
+  </dl>
+</aside>
+
+<script>
+const GROUPS = {
+  skill: { name: "Kỹ năng", scope: "Kiến thức nghiệp vụ", color: "--g-skill" },
+  agent: { name: "Tác tử", scope: "Ngữ cảnh độc lập", color: "--g-agent" },
+  cmd:   { name: "Lệnh", scope: "Quy trình gọi bằng /", color: "--g-cmd" },
+  guard: { name: "Rào chắn", scope: "An toàn & bộ nhớ", color: "--g-guard" },
+  link:  { name: "Kết nối", scope: "Dịch vụ ngoài", color: "--g-link" },
+};
+const SOURCES = { ctx: "Riêng CTXĐN", repo: "Kho EMS", plugin: "Plugin", core: "Có sẵn" };
+
+// [nhóm, phân mục, tên, nguồn, mô tả, khi nào dùng, gọi bằng, ví dụ, đường dẫn, trạng thái]
+const RAW = [
+  ["skill","Nghiệp vụ CTXĐN","tro-ly-22-ky-nang-ctxdn","ctx","Trợ lý 22 kỹ năng văn phòng của chi nhánh: văn bản NĐ 30, báo cáo, biên bản họp, email, quy trình kỹ thuật, đề thi, truyền thông nội bộ.","Soạn hoặc rà soát bất kỳ văn bản hành chính, kỹ thuật nào của chi nhánh.","/tro-ly-22-ky-nang-ctxdn","Soạn biên bản họp giao ban kỹ thuật sáng thứ Hai theo NĐ 30","Kỹ năng tổ chức (anthropic-skills)"],
+  ["skill","Nghiệp vụ CTXĐN","bao-cao-an-toan-van-dung-ctxdn","ctx","Lập báo cáo giao ban tuần, tháng, quý, năm về an toàn chạy tàu và vận dụng toa xe từ email văn thư; xuất Word theo NĐ 30 và gửi email.","Đến kỳ báo cáo giao ban an toàn.","/bao-cao-an-toan-van-dung-ctxdn","Lập báo cáo an toàn vận dụng tuần 46/2026 từ thư của các trạm","Kỹ năng tổ chức (anthropic-skills)"],
+  ["skill","Nghiệp vụ CTXĐN","phan-tich-su-co-toa-xe","ctx","Phân tích sự cố, trở ngại chạy tàu, hư hỏng toa xe: dựng diễn biến, 5 Why, sơ đồ xương cá, biện pháp khắc phục, báo cáo.","Sau khi có biên bản sự cố hoặc hư hỏng toa xe trên tuyến.","/phan-tich-su-co-toa-xe","Phân tích nguyên nhân hãm bó toa xe tại ga Diêu Trì","Kỹ năng tổ chức (anthropic-skills)"],
+  ["skill","Nghiệp vụ CTXĐN","phat-hanh-ems","repo","Quy trình phát hành hệ thống EMS: chốt phiên bản, CHANGELOG, build/test, gắn tag, staging rồi production trên IIS, rollback.","Khi đưa bản EMS mới lên máy chủ nội bộ.","/phat-hanh-ems","Phát hành EMS bản 1.4.0",".claude/skills/phat-hanh-ems/SKILL.md"],
+  ["skill","Nghiệp vụ CTXĐN","karpathy-guidelines","ctx","Nguyên tắc viết, sửa, review code (ưu tiên C++): tránh giả định sai, code rườm rà, sửa lan ngoài phạm vi.","Mọi việc lập trình, nhất là C++.","/karpathy-guidelines","Review hàm tính hạn khám định kỳ toa xe trong module C++","Kỹ năng tổ chức (anthropic-skills)"],
+  ["skill","Văn phòng","docx","core","Tạo, đọc, sửa tài liệu Word: định dạng, bảng, theo dõi thay đổi, mẫu .dotx.","Cần file .docx để in, ký, gửi đi.","/docx","Chuyển báo cáo này sang Word khổ A4, lề NĐ 30","anthropic-skills"],
+  ["skill","Văn phòng","xlsx","core","Đọc, làm sạch, tính toán, lập biểu đồ trên Excel/CSV.","Bảng thống kê toa xe, kế hoạch sửa chữa dạng Excel.","/xlsx","Tổng hợp số toa xe sửa chữa cấp theo tháng từ file này","anthropic-skills"],
+  ["skill","Văn phòng","pptx","core","Tạo, sửa bài trình chiếu PowerPoint.","Báo cáo hội nghị sơ kết, tổng kết.","/pptx","Làm 10 slide sơ kết 6 tháng công tác an toàn","anthropic-skills"],
+  ["skill","Văn phòng","pdf","core","Gộp, tách, OCR, điền form, trích bảng từ PDF.","Văn bản scan từ công ty, biểu mẫu PDF.","/pdf","OCR công văn scan rồi trích nội dung chỉ đạo","anthropic-skills"],
+  ["skill","Văn phòng","deep-research","core","Nghiên cứu nhiều nguồn, tổng hợp thành báo cáo có dẫn nguồn.","Tìm hiểu quy chuẩn, công nghệ toa xe, kinh nghiệm ngành.","/deep-research","Tổng hợp tiêu chuẩn kiểm tra giá chuyển hướng toa xe khách","anthropic-skills"],
+  ["skill","Dữ liệu","write-query","plugin","Viết câu SQL tối ưu theo phương ngữ (SQL Server).","Truy vấn số liệu EMS; chỉ SELECT tham số hóa.","/data:write-query","Viết truy vấn đếm phân công đang hiệu lực theo tổ","plugin data"],
+  ["skill","Dữ liệu","analyze","plugin","Trả lời câu hỏi dữ liệu, từ tra nhanh đến phân tích đầy đủ.","Tìm nguyên nhân số liệu tăng giảm bất thường.","/data:analyze","Vì sao số trở ngại tháng 10 tăng so với tháng 9?","plugin data"],
+  ["skill","Dữ liệu","build-dashboard","plugin","Bảng điều khiển HTML có biểu đồ, bộ lọc, bảng.","Theo dõi chỉ tiêu an toàn theo trạm.","/data:build-dashboard","Dashboard trở ngại chạy tàu theo 6 đơn vị khám chữa","plugin data"],
+  ["skill","Dữ liệu","validate-data","plugin","Rà phương pháp, số liệu, cách tổng hợp trước khi gửi.","Trước khi nộp báo cáo số liệu lên công ty.","/data:validate-data","Kiểm tra lại các con số trong báo cáo quý III","plugin data"],
+  ["skill","Làm việc","task-management","plugin","Quản lý việc trong file TASKS.md dùng chung.","Theo dõi biện pháp khắc phục, việc giao.","/productivity:task-management","Thêm việc: kiểm tra hãm toàn đoàn tàu SE1 trước 20/11","plugin productivity"],
+  ["skill","Làm việc","memory-management","plugin","Nhớ thuật ngữ, viết tắt nội bộ (CTXĐN, PĐT, KCTX…).","Dạy trợ lý cách gọi tên đơn vị, người, dự án.","/productivity:memory-management","Ghi nhớ: KCTX là khám chữa toa xe","plugin productivity"],
+  ["skill","Làm việc","stakeholder-update","plugin","Viết cập nhật tiến độ theo người nhận và chu kỳ.","Báo cáo nhanh lên giám đốc, công ty.","/product-management:stakeholder-update","Viết cập nhật tuần về dự án EMS cho giám đốc","plugin product-management"],
+
+  ["agent","Có sẵn","general-purpose","core","Tác tử đa năng: nghiên cứu, tìm mã, làm việc nhiều bước trong ngữ cảnh riêng.","Việc nhiều bước mà không muốn làm đầy ngữ cảnh chính.","Agent(general-purpose)","Dùng tác tử phụ rà toàn bộ các nơi gọi fetch_all","Claude Code"],
+  ["agent","Có sẵn","Explore","core","Tìm kiếm chỉ đọc trên nhiều file, trả về kết luận ngắn.","Tìm vị trí dùng hàm, biến trên cả dự án (AGENTS.md mục 4).","Agent(Explore)","Tìm mọi chỗ cập nhật IsActive trong src/","Claude Code"],
+  ["agent","Có sẵn","Plan","core","Kiến trúc sư: lập kế hoạch triển khai, chỉ ra file then chốt và đánh đổi.","Trước khi làm tính năng lớn.","Agent(Plan)","Lập kế hoạch đăng nhập SQL bằng Windows Authentication","Claude Code"],
+  ["agent","Có sẵn","claude-code-guide","core","Giải đáp về Claude Code, hook, lệnh, MCP, Agent SDK, Claude API.","Hỏi cách cấu hình công cụ AI.","Agent(claude-code-guide)","Hook PreToolUse trả JSON ask thế nào?","Claude Code"],
+  ["agent","Đề xuất cho kho","kiem-tra-sql","repo","Rà câu SQL mới theo AGENTS.md mục 3a: tham số hóa, NOLOCK cho báo cáo, không xóa cứng, DECIMAL.","Trước mỗi PR có đổi src/db/.","Agent(kiem-tra-sql)","Rà các thay đổi SQL trên nhánh hiện tại",".claude/agents/kiem-tra-sql.md","plan"],
+  ["agent","Đề xuất cho kho","nghiem-thu","repo","Chạy 3 điều kiện DONE: pytest xanh, ruff không lỗi mới, todo.md/MEMORY.md đã cập nhật.","Trước khi báo hoàn thành một tác vụ.","Agent(nghiem-thu)","Nghiệm thu tác vụ triển khai IIS",".claude/agents/nghiem-thu.md","plan"],
+
+  ["cmd","Kiểm tra mã","/code-review","core","Rà lỗi đúng sai trên diff hoặc PR theo mức độ low…max.","Trước khi commit hoặc mở PR.","/code-review medium","/code-review high --fix","Claude Code"],
+  ["cmd","Kiểm tra mã","/security-review","core","Rà bảo mật các thay đổi trên nhánh hiện tại.","Khi đổi phần đăng nhập, CSDL, triển khai.","/security-review","/security-review","Claude Code"],
+  ["cmd","Kiểm tra mã","/simplify","core","Tìm chỗ dùng lại, rút gọn, hiệu năng rồi sửa.","Dọn mã sau khi tính năng đã chạy.","/simplify","/simplify","Claude Code"],
+  ["cmd","Vận hành","/run","core","Khởi động web app để xem thay đổi chạy thật.","Kiểm tra giao diện điện thoại sau khi sửa.","/run","/run giao diện EMS với dữ liệu mẫu","Claude Code"],
+  ["cmd","Vận hành","/loop","core","Chạy một việc lặp theo chu kỳ.","Theo dõi CI hoặc hộp thư định kỳ.","/loop 30m","/loop 1h kiểm tra thư báo cáo mới","Claude Code"],
+  ["cmd","Vận hành","/init","core","Tạo CLAUDE.md mô tả kho mã.","Mở kho mới cho trợ lý.","/init","/init","Claude Code"],
+  ["cmd","Cấu hình","/fewer-permission-prompts","core","Quét lệnh chỉ đọc hay dùng, đề xuất thêm vào danh sách cho phép.","Bị hỏi quyền quá nhiều lần.","/fewer-permission-prompts","/fewer-permission-prompts","Claude Code"],
+  ["cmd","Cấu hình","/update-config","core","Sửa settings.json: quyền, hook, biến môi trường.","Thêm luật chặn hoặc hook mới.","/update-config","Thêm luật deny cho .env.uat","Claude Code"],
+  ["cmd","Cấu hình","/skill-creator","core","Tạo, sửa, đo hiệu quả kỹ năng.","Đóng gói một quy trình lặp lại thành kỹ năng.","/skill-creator","Tạo kỹ năng lập kế hoạch sửa chữa toa xe cấp","anthropic-skills"],
+  ["cmd","Đề xuất cho kho","/nghiem-thu","repo","Lệnh tắt: pytest -q --tb=short, ruff check src/ --quiet, nhắc cập nhật todo.md.","Kết thúc mỗi tác vụ.","/nghiem-thu","/nghiem-thu",".claude/commands/nghiem-thu.md","plan"],
+
+  ["guard","Cưỡng chế","guard.py (PreToolUse)","repo","Chặn mọi biến thể rm -rf, SHUTDOWN/DROP DATABASE; hỏi lại câu SQL ghi; chặn ghi ngoài dự án và mật khẩu hardcode.","Luôn chạy trước mỗi lệnh Bash/Edit/Write.","python3 .claude/hooks/guard.py","pytest tests/harness/ -q",".claude/hooks/guard.py"],
+  ["guard","Cưỡng chế","Permissions","repo","7 luật cho phép, 7 luật hỏi, 16 luật cấm theo mẫu chữ (đọc secrets/, .env, force push…).","Lớp lọc đầu tiên, trước hook.","settings.local.json","Read(./secrets/**) → deny",".claude/settings.local.json"],
+  ["guard","Cưỡng chế","Ruff S","repo","Bắt mật khẩu hardcode (S105/S106) và SQL ghép chuỗi (S608) khi lint.","Mỗi lần chạy ruff và trên CI.","ruff check src/ --quiet","ruff check . ","pyproject.toml"],
+  ["guard","Cưỡng chế","db_datareader","repo","Tài khoản CSDL của tác tử chỉ có quyền đọc: lớp chắc chắn nhất.","Mọi truy vấn của tác tử.","DB_USER_READONLY (.env)","SELECT … WHERE Id = ?",".env.example"],
+  ["guard","Cưỡng chế","CI","repo","ruff và pytest trên Python 3.11, 3.13 cho mọi PR và push lên main.","Tự chạy trên GitHub.","git push","Xem tab Actions của PR",".github/workflows/ci.yml"],
+  ["guard","Bộ nhớ","AGENTS.md","repo","Quy chuẩn kiến trúc, lệnh, phân quyền, tiêu chuẩn DONE.","Đọc tự động mỗi phiên qua CLAUDE.md.","@AGENTS.md","—","AGENTS.md"],
+  ["guard","Bộ nhớ","MEMORY.md","repo","Bài học lỗi hóc búa, đặc thù CSDL và nghiệp vụ, kèm file và dòng.","Ghi sau mỗi phát hiện quan trọng.","@MEMORY.md","—","MEMORY.md"],
+  ["guard","Bộ nhớ","todo.md","repo","Kế hoạch tác vụ hiện tại và việc còn treo.","Cập nhật trạng thái trước khi báo xong.","@todo.md","—","todo.md"],
+
+  ["link","Đang kết nối","Gmail","core","Đọc, tìm thư; tạo thư nháp, trả lời, gắn nhãn.","Lấy email văn thư cho báo cáo; gửi báo cáo đã duyệt.","Gmail (MCP)","Tìm thư báo cáo an toàn từ trạm Nha Trang tuần này","Connector claude.ai"],
+  ["link","Đang kết nối","Google Drive","core","Tìm, đọc, tạo, chia sẻ file trên Drive.","Lưu biên bản, ảnh hiện trường, báo cáo.","Google Drive (MCP)","Tìm biên bản sự cố tháng 10 trong Drive","Connector claude.ai"],
+  ["link","Đang kết nối","GitHub","core","Nhánh, PR, CI, review cho kho nguyen-quoc-thang.","Mọi thay đổi mã EMS.","GitHub (MCP)","Xem kết quả CI của PR mới nhất","Connector claude.ai"],
+  ["link","Đang kết nối","Claude Docs","core","Tài liệu sống để cùng sửa, xuất Word/PDF.","Dự thảo văn bản cần nhiều người góp ý.","Claude Docs","Tạo dự thảo quy trình khám xe đi đường","Connector claude.ai"],
+  ["link","Đang kết nối","Canva","core","Thiết kế ấn phẩm, poster, slide.","Truyền thông nội bộ, khẩu hiệu an toàn.","Canva (MCP)","Làm poster tháng an toàn giao thông đường sắt","Connector claude.ai"],
+];
+
+const ITEMS = RAW.map((r, i) => ({ id: "i" + i, g: r[0], sub: r[1], name: r[2], src: r[3], desc: r[4], when: r[5], cmd: r[6], ex: r[7], path: r[8], plan: r[9] === "plan" }));
+
+const $ = (s) => document.querySelector(s);
+const tracks = $("#tracks"), q = $("#q"), drawer = $("#drawer");
+let srcFilter = "all", current = null;
+
+function el(tag, attrs = {}, text) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+  if (text != null) e.textContent = text;
+  return e;
+}
+
+// Bảng tổng
+const board = $("#board");
+for (const [k, g] of Object.entries(GROUPS)) {
+  const tr = el("tr");
+  const td = el("td"); const dot = el("span", { class: "dot", style: `background:var(${g.color})` }); td.append(dot, g.name);
+  tr.append(td, el("td", {}, g.scope), el("td", { class: "n" }, String(ITEMS.filter(x => x.g === k).length)));
+  board.append(tr);
+}
+
+// Bộ lọc nguồn
+const filters = $("#filters");
+for (const [k, label] of [["all", "Tất cả"], ...Object.entries(SOURCES)]) {
+  const b = el("button", { class: "fbtn", type: "button", "aria-pressed": String(k === srcFilter), "data-k": k }, label);
+  b.addEventListener("click", () => {
+    srcFilter = k;
+    filters.querySelectorAll(".fbtn").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.k === k)));
+    render();
+  });
+  filters.append(b);
+}
+
+function norm(s) { return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/g, "d"); }
+
+function render() {
+  const term = norm(q.value.trim());
+  tracks.textContent = "";
+  for (const [k, g] of Object.entries(GROUPS)) {
+    const list = ITEMS.filter(x => x.g === k && (srcFilter === "all" || x.src === srcFilter) &&
+      (!term || norm([x.name, x.desc, x.when, x.ex, x.sub].join(" ")).includes(term)));
+    const box = el("div", { class: "track", style: `--gc:var(${g.color})` });
+    const head = el("header"); head.append(el("h2", {}, g.name), el("span", { class: "cnt" }, String(list.length)));
+    box.append(head);
+    let lastSub = null;
+    for (const it of list) {
+      if (it.sub !== lastSub) { box.append(el("div", { class: "sub" }, it.sub)); lastSub = it.sub; }
+      const b = el("button", { class: "item" + (current === it.id ? " on" : ""), type: "button", "data-id": it.id, title: it.name });
+      b.append(el("span", { class: "pip" }), el("span", { class: "nm" }, it.name));
+      if (it.plan) b.append(el("span", { class: "tag" }, "đề xuất"));
+      b.addEventListener("click", () => open(it));
+      box.append(b);
+    }
+    if (!list.length) box.append(el("div", { class: "empty" }, "Không có mục khớp."));
+    tracks.append(box);
+  }
+}
+
+function open(it) {
+  current = it.id;
+  const g = GROUPS[it.g];
+  drawer.style.setProperty("--gc", `var(${g.color})`);
+  $("#d-grp").textContent = `● ${g.name} · ${it.sub} · ${SOURCES[it.src]}`;
+  $("#d-name").textContent = it.name;
+  const st = $("#d-state");
+  st.textContent = it.plan ? "Đề xuất: chưa cài trong kho" : "Đang dùng";
+  st.className = "state " + (it.plan ? "plan" : "ok");
+  $("#d-desc").textContent = it.desc;
+  $("#d-when").textContent = it.when;
+  $("#d-cmd").textContent = it.cmd;
+  $("#d-ex").textContent = it.ex;
+  $("#d-src").textContent = it.path;
+  $("#d-copy").textContent = "Sao chép";
+  drawer.hidden = false;
+  render();
+  $("#d-close").focus();
+}
+function close() {
+  drawer.hidden = true;
+  const back = current && tracks.querySelector(`[data-id="${current}"]`);
+  current = null; render();
+  const again = back && tracks.querySelector(`[data-id="${back.dataset.id}"]`);
+  if (again) again.focus();
+}
+$("#d-close").addEventListener("click", close);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !drawer.hidden) close(); });
+$("#d-copy").addEventListener("click", () => {
+  const code = $("#d-cmd"), btn = $("#d-copy");
+  const done = () => { btn.textContent = "Đã chép"; };
+  const fallback = () => { const r = document.createRange(); r.selectNodeContents(code); const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = "Đã chọn, nhấn Ctrl+C"; };
+  try { navigator.clipboard.writeText(code.textContent).then(done, fallback); } catch { fallback(); }
+});
+q.addEventListener("input", render);
+render();
+</script>
