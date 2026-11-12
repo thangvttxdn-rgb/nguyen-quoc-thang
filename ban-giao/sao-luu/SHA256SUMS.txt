@@ -1,0 +1,8 @@
+e7c14ea710ab6536bf3ec4d98565b9a8a420cfc6b9ffb2845b4bbf5eb5c7f991  ./.claude/hooks/guard.py
+9011b8d2b0eeba7dedcfb799d57052555bf5e1695d916df063289bd43001ef5c  ./.claude/settings.local.json
+f2d587659b600253aa67306388fd533b76b1c0d25d3e312a42183efafa246cac  ./.claude/skills/phat-hanh-ems/SKILL.md
+d997de48b2f6dccde6d028b5a65e32e4bf195182808fc688a32a8ceeea73e2e0  ./AGENTS.md
+b8b779aadce3d7266c288080a2e0f767aac666965ef9399776bb1888630aa13c  ./CLAUDE.md
+6c84e5178ab0c66f10ddb41651c541ddcdcbf07f078c4cb2626b940f303bf0c6  ./MEMORY.md
+307df2c3bb55dc202b0a906e7e0583ab06811e2abe29bd93c55cf23035177b88  ./SHA256SUMS.txt
+a3d4b5f1c2fb250636f98b438c6f7d5edcd00044bc29ba5f357154e5a8d8ea6f  ./todo.md

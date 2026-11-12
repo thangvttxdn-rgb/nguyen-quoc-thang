@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nghiệm thu AGENTS.md</title>
+<style>
+:root{--bg:#f7f7f5;--fg:#1d1d1b;--mut:#666;--card:#fff;--line:#ddd;
+--real:#1a7f37;--demo:#9a6700;--block:#cf222e;--add:#e6ffec;--del:#ffebe9}
+@media (prefers-color-scheme:dark){:root{--bg:#161616;--fg:#eee;--mut:#aaa;--card:#202020;
+--line:#3a3a3a;--add:#12361f;--del:#4a1c1c}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:15px/1.5 -apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-text-size-adjust:100%}
+main{max-width:960px;margin:0 auto;padding:16px}
+h1{font-size:1.4rem;margin:.2em 0} h2{font-size:1.1rem;margin-top:1.6em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.status{border-left:5px solid var(--demo)}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:14px}
+td,th{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+.b{display:inline-block;padding:1px 8px;border-radius:99px;color:#fff;font-size:12px;font-weight:600}
+.real{background:var(--real)} .demo{background:var(--demo)} .block{background:var(--block)}
+pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px;
+overflow-x:auto;font-size:12px;line-height:1.4;white-space:pre}
+pre .add{background:var(--add);display:block} pre .del{background:var(--del);display:block}
+details{margin:.6em 0} summary{cursor:pointer;font-weight:600}
+.mut{color:var(--mut);font-size:13px}
+</style></head><body><main>
+<h1>Tích hợp AGENTS.md &amp; CLAUDE.md – Nghiệm thu</h1>
+<p class="mut">Repo thangvttxdn-rgb/nguyen-quoc-thang · nhánh claude/integrate-agents-claude-md-tsvkvq ·
+HEAD 6a57a7f · 12/11/2026</p>
+<div class="card status"><b>Trạng thái: ĐÃ TÍCH HỢP TRÊN REPO THẬT – CHƯA HOÀN THÀNH.</b><br>
+Còn <span class="b block">BLOCKED</span> pytest đầy đủ (chờ duyệt cài requirements-dev.txt) và SQL Server thật.
+Chưa commit/push (theo lệnh). Không triển khai production.</div>
+<p>Chú giải: <span class="b real">THẬT</span> chạy trên repo thật · <span class="b demo">DEMO</span> dữ liệu mẫu SQLite ·
+<span class="b block">BLOCKED</span> chưa đủ điều kiện.</p>
+
+<h2>Kết quả kiểm thử</h2>
+<div class="tw"><table><tr><th>Mã</th><th>Kiểm thử</th><th>Kết quả</th><th>Nhãn</th><th>Bằng chứng</th></tr>
+<tr><td>T1</td><td>Thư mục gốc dự án</td><td>PASS</td><td><span class="b real">THẬT</span></td><td>toplevel = /home/user/nguyen-quoc-thang, HEAD 6a57a7f</td></tr><tr><td>T2</td><td>Hai tệp đúng vị trí</td><td>PASS</td><td><span class="b real">THẬT</span></td><td>AGENTS.md, CLAUDE.md ở gốc repo</td></tr><tr><td>T3</td><td>Đường dẫn nhập @</td><td>PASS</td><td><span class="b real">THẬT</span></td><td>3/3 import trỏ tới tệp tồn tại, không import lồng</td></tr><tr><td>T4</td><td>Claude Code nạp hướng dẫn</td><td>PASS</td><td><span class="b real">THẬT</span></td><td>Phiên khởi động lại đã nạp bản AGENTS/MEMORY/todo sau sửa qua CLAUDE.md</td></tr><tr><td>T5</td><td>Trùng lặp / mâu thuẫn</td><td>PASS*</td><td><span class="b real">THẬT</span></td><td>1 mâu thuẫn nghiêm trọng ở skill phat-hanh-ems (ghi nhận)</td></tr><tr><td>T6</td><td>Kiến trúc ↔ mã nguồn</td><td>PASS</td><td><span class="b real">THẬT</span></td><td>app.py:22 FastAPI; connection.py:117 pyodbc; py311</td></tr><tr><td>T7</td><td>Không đổi mã nghiệp vụ</td><td>PASS</td><td><span class="b real">THẬT</span></td><td>diff chỉ AGENTS.md, MEMORY.md, todo.md</td></tr><tr><td>T8</td><td>Skills/Agent không đổi</td><td>PASS</td><td><span class="b real">THẬT</span></td><td>SHA-256 SKILL.md, guard.py, settings trùng sao lưu</td></tr><tr><td>T9</td><td>Diff, sao lưu, khôi phục</td><td>PASS</td><td><span class="b real">THẬT</span></td><td>3 tệp +28/−8; sao lưu == HEAD</td></tr><tr><td>T10a</td><td>ruff check .</td><td>PASS</td><td><span class="b real">THẬT</span></td><td>All checks passed!</td></tr><tr><td>T10b</td><td>pytest ngoài tests/api</td><td>PASS 95/95</td><td><span class="b demo">DEMO</span></td><td>SQLite mẫu, không phải SQL Server thật</td></tr><tr><td>T10c</td><td>pytest -q toàn bộ</td><td>BLOCKED</td><td><span class="b block">BLOCKED</span></td><td>Thiếu fastapi – chờ duyệt cài requirements-dev.txt</td></tr><tr><td>T10d</td><td>SQL Server thật</td><td>BLOCKED</td><td><span class="b block">BLOCKED</span></td><td>Không có SQL Server trong môi trường</td></tr></table></div>
+
+<h2>Mâu thuẫn cần người duyệt</h2>
+<div class="card"><b>Nghiêm trọng:</b> skill <code>.claude/skills/phat-hanh-ems</code> mô tả EMS là Node.js
+(npm, package.json, nhánh develop) trong khi repo là Python/FastAPI. Chưa sửa skill.<br>
+<b>Ghi chú:</b> không tìm thấy bộ tệp ngày 12/11 trước đó nên “8 vị trí” được xác định lại từ mã nguồn.</div>
+
+<h2>Danh sách thay đổi</h2>
+<div class="tw"><table><tr><th>Tệp</th><th>Thay đổi</th></tr><tr><td><code>AGENTS.md</code></td><td>Thêm khối Phạm vi (chung CTXĐN / riêng dự án)</td></tr><tr><td><code>AGENTS.md</code></td><td>FastAPI / Flask → FastAPI, Python ≥ 3.11</td></tr><tr><td><code>AGENTS.md</code></td><td>pyodbc / SQLAlchemy → pyodbc; demo SQLite; chưa dùng SQLAlchemy</td></tr><tr><td><code>AGENTS.md</code></td><td>Bổ sung thư mục migrations, deploy, docs, examples, .claude, nhóm test</td></tr><tr><td><code>AGENTS.md</code></td><td>Lint ruff check src/ → ruff check . (trùng CI)</td></tr><tr><td><code>AGENTS.md</code></td><td>Ghi rõ chưa có .claude/agents/</td></tr><tr><td><code>AGENTS.md</code></td><td>Thêm mục 4a Skills + cảnh báo skill phat-hanh-ems Node.js ↔ Python</td></tr><tr><td><code>AGENTS.md</code></td><td>DONE: phải cài requirements-dev.txt, thiếu thì BLOCKED</td></tr><tr><td><code>MEMORY.md</code></td><td>Chú thích 2 tham chiếu không tồn tại (formatter.py, tax.py); thêm 2 ghi nhận 12/11</td></tr><tr><td><code>todo.md</code></td><td>Thêm mục tiêu 12/11 và việc còn treo</td></tr><tr><td><code>CLAUDE.md</code></td><td>Không đổi (đã có @AGENTS.md)</td></tr></table></div>
+
+<h2>Git diff</h2>
+<pre><span class="">diff --git a/AGENTS.md b/AGENTS.md</span>
+<span class="">index 38cc0da..119e3e1 100644</span>
+<span class="">--- a/AGENTS.md</span>
+<span class="">+++ b/AGENTS.md</span>
+<span class="">@@ -1,20 +1,25 @@</span>
+<span class=""> # QUY CHUẨN KIẾN TRÚC &amp; VẬN HÀNH AGENT (AGENTS.md)</span>
+<span class=""> </span>
+<span class="add">+&gt; **Phạm vi.** Mục 3 (an toàn, xin phép), mục 5 (định nghĩa DONE) và yêu cầu trả lời tiếng Việt là **quy định dùng chung CTXĐN**. Các mục còn lại là **riêng dự án này** (web app EMS phân công nhân sự, Python). Skills dùng chung CTXĐN cài ở cấp tài khoản, không nằm trong repo. Nạp vào Claude Code qua `@AGENTS.md` trong `CLAUDE.md`.</span>
+<span class="add">+</span>
+<span class=""> ## 1. Tổng quan Kiến trúc &amp; Công nghệ</span>
+<span class="del">-- **Backend:** Python (FastAPI / Flask)</span>
+<span class="del">-- **Cơ sở dữ liệu:** SQL Server (truy vấn qua pyodbc / SQLAlchemy)</span>
+<span class="add">+- **Backend:** Python ≥ 3.11 (`target-version` trong `pyproject.toml`), FastAPI (`src/api/app.py:22`). Không dùng Flask.</span>
+<span class="add">+- **Cơ sở dữ liệu:** SQL Server qua pyodbc (`src/db/connection.py:117`, import trễ); chế độ demo `EMS_DEMO=1` dùng SQLite có sẵn. Hiện chưa dùng SQLAlchemy.</span>
+<span class=""> - **Frontend:** HTML5, CSS3, JavaScript thuần (Vanilla JS)</span>
+<span class=""> - **Thư mục chính:**</span>
+<span class="">   - `src/api/`: Các route xử lý nghiệp vụ và API.</span>
+<span class="">   - `src/db/`: Kết nối CSDL, stored procedures và schema.</span>
+<span class="">   - `src/static/` &amp; `src/templates/`: Giao diện người dùng.</span>
+<span class="del">-  - `tests/`: Toàn bộ bài kiểm thử tự động (pytest).</span>
+<span class="add">+  - `tests/`: Toàn bộ bài kiểm thử tự động (pytest), chia `api/`, `db/`, `examples/`, `harness/`.</span>
+<span class="add">+  - `src/db/migrations/`: script đổi cấu trúc bảng (hiện trống, chỉ có `.gitkeep`).</span>
+<span class="add">+  - `deploy/` (IIS, SQL tạo tài khoản), `docs/` (hướng dẫn, bản xem trước), `examples/` (ví dụ chạy trên SQLite).</span>
+<span class="add">+  - `.claude/`: `settings.local.json` (permissions + hook), `hooks/guard.py`, `skills/phat-hanh-ems/`.</span>
+<span class=""> </span>
+<span class=""> ## 2. Lệnh Thực thi &amp; Lọc nhiễu (Observe &amp; Trim)</span>
+<span class=""> Luôn sử dụng cờ rút gọn (quiet/short) khi chạy lệnh để cắt giảm log thừa, tránh làm tràn cửa sổ ngữ cảnh:</span>
+<span class=""> - **Chạy toàn bộ test:** `pytest -q --tb=short`</span>
+<span class=""> - **Chạy test theo phân hệ:** `pytest tests/&lt;ten_phan_he&gt;/ -q`</span>
+<span class="del">-- **Kiểm tra lỗi cú pháp/quy chuẩn (Lint):** `ruff check src/ --quiet`</span>
+<span class="add">+- **Kiểm tra lỗi cú pháp/quy chuẩn (Lint):** `ruff check . --quiet` (cùng phạm vi với CI; `ruff check src/` chỉ là kiểm tra nhanh, bỏ sót `tests/`, `examples/`, `.claude/hooks/`).</span>
+<span class=""> - **Cài công cụ:** `pip install -r requirements-dev.txt` (phiên bản ghim, trùng với CI; đã gồm `requirements.txt`).</span>
+<span class=""> - **Chạy web app (dữ liệu mẫu):** `EMS_DEMO=1 uvicorn src.api.app:app --host 0.0.0.0 --port 8000` (1 worker). Cần file tài khoản `secrets/users.json`; tạo chuỗi băm mật khẩu bằng `python -m src.api.auth`. Tác tử không được đọc `secrets/`. Sửa giao diện (`src/templates`, `src/static`) thì sinh lại bản xem trước `docs/giao-dien-mobile.html`.</span>
+<span class=""> - **Triển khai IIS:** làm theo `docs/TRIEN-KHAI-IIS.md`; máy chủ cài `requirements-prod.txt`. Không bao giờ commit `deploy/iis/web.config` (chỉ commit file `.mau`).</span>
+<span class="">@@ -43,10 +48,15 @@ Sửa `guard.py` phải kèm test tại `tests/harness/test_guard.py`.</span>
+<span class=""> - **Kiểu dữ liệu**: `DECIMAL` -&gt; `decimal.Decimal`, không ép sang `float` khi tính toán; `DATETIME` lưu và so sánh theo một múi giờ thống nhất.</span>
+<span class=""> </span>
+<span class=""> ## 4. Điều phối Tác tử phụ (Subagents)</span>
+<span class="add">+- Repo chưa định nghĩa subagent riêng (không có `.claude/agents/`); dùng subagent có sẵn của Claude Code.</span>
+<span class=""> - Khi cần tìm kiếm vị trí sử dụng của một biến/hàm trên toàn bộ dự án hoặc đọc tài liệu quy chuẩn dài, hãy tách **Subagent** với vùng ngữ cảnh độc lập để rà soát và chỉ trả về bản tóm tắt ngắn gọn cho Agent chính.</span>
+<span class=""> </span>
+<span class="add">+## 4a. Skills trong repo</span>
+<span class="add">+- `.claude/skills/phat-hanh-ems/SKILL.md`: quy trình phát hành EMS. **Lưu ý mâu thuẫn chưa xử lý:** skill mô tả EMS là Node.js (`npm ci`, `npm test`, `package.json`, nhánh `develop`), trong khi repo này là Python/FastAPI, không có `package.json`, không có nhánh `develop`. Chưa dùng skill này cho repo này cho đến khi người duyệt xác nhận và sửa. Tác tử không tự triển khai production.</span>
+<span class="add">+- Quy trình G0–G1 chỉ áp dụng cho công việc tạo/sửa Skills, không áp dụng cho việc sửa mã nguồn thông thường.</span>
+<span class="add">+</span>
+<span class=""> ## 5. Tiêu chuẩn Nghiệm thu (Verifier - Định nghĩa &quot;DONE&quot;)</span>
+<span class=""> Một tác vụ CHỈ được phép đánh dấu hoàn thành khi thỏa mãn đồng thời 3 điều kiện thực tế:</span>
+<span class="del">-1. Chạy `pytest -q` báo xanh 100% (tests pass).</span>
+<span class="del">-2. Chạy `ruff check` không phát sinh lỗi mới (no new lint errors).</span>
+<span class="add">+1. Chạy `pytest -q` báo xanh 100% (tests pass). Cần cài `requirements-dev.txt` trước; thiếu `fastapi`/`httpx` thì `tests/api/` lỗi thu thập - khi đó báo BLOCKED, không báo PASS.</span>
+<span class="add">+2. Chạy `ruff check .` không phát sinh lỗi mới (no new lint errors).</span>
+<span class=""> 3. Đã cập nhật trạng thái vào `todo.md` và ghi chú phát hiện quan trọng (nếu có) vào `MEMORY.md`.</span>
+<span class="">diff --git a/MEMORY.md b/MEMORY.md</span>
+<span class="">index 94ac1cd..5089d18 100644</span>
+<span class="">--- a/MEMORY.md</span>
+<span class="">+++ b/MEMORY.md</span>
+<span class="">@@ -3,8 +3,8 @@</span>
+<span class=""> *Chỉ ghi lại các quyết định kiến trúc quan trọng, đặc thù hệ thống và các lỗi hóc búa đã xử lý (Kèm tên file và số dòng).*</span>
+<span class=""> </span>
+<span class=""> ## 1. Lỗi điển hình &amp; Bài học xương máu (Bug Patterns)</span>
+<span class="del">-- `[2026-10-15]` **Lỗi sai lệch số liệu / kiểu dữ liệu**: Khi xử lý dữ liệu từ SQL Server lên Python, các trường `DECIMAL` cần ép kiểu rõ ràng trước khi serialize sang JSON (Xem cách xử lý tại `src/utils/formatter.py:42`).</span>
+<span class="del">-- `[Mẫu từ sơ đồ]` `&quot;currency bug: tax.py:88&quot;` — Luôn kiểm tra đơn vị tiền tệ trước khi áp thuế.</span>
+<span class="add">+- `[2026-10-15]` **Lỗi sai lệch số liệu / kiểu dữ liệu**: Khi xử lý dữ liệu từ SQL Server lên Python, các trường `DECIMAL` cần ép kiểu rõ ràng trước khi serialize sang JSON (Xem cách xử lý tại `src/utils/formatter.py:42`). *[2026-11-12: file này KHÔNG có trong repo; quy tắc giữ `Decimal` hiện nằm ở `src/db/connection.py:9`.]*</span>
+<span class="add">+- `[Mẫu từ sơ đồ]` `&quot;currency bug: tax.py:88&quot;` — Luôn kiểm tra đơn vị tiền tệ trước khi áp thuế. *[2026-11-12: ví dụ minh họa, không có `tax.py` trong repo.]*</span>
+<span class=""> - `[2026-10-15]` **Luật permissions chỉ khớp mẫu chữ**: `Bash(DROP TABLE *)` không bao giờ khớp vì SQL nằm trong `sqlcmd -Q &quot;...&quot;`; `Bash(rm -rf *)` để lọt `rm -r -f`. Đã chuyển phần chặn này sang hook `.claude/hooks/guard.py`.</span>
+<span class=""> - `[2026-10-15]` **Hook soi cả nội dung lệnh**: lệnh có `python`/`sqlcmd` kèm chữ SQL (kể cả trong commit message, heredoc) sẽ bị hỏi/chặn. Viết commit message ra file rồi `git commit -F &lt;file&gt;` trong lệnh riêng.</span>
+<span class=""> - `[2026-10-15]` **Test có mật khẩu giả cũng bị hook chặn**: viết `&quot;DB_PASSWORD_READONLY&quot;: &quot;abc&quot;` trong test sẽ bị deny. Khai báo giá trị giả thành hằng (`FAKE_SECRET = &quot;...&quot;`) rồi dùng biến (xem `tests/db/test_connection.py:17`).</span>
+<span class="">@@ -15,6 +15,8 @@</span>
+<span class=""> - `[2026-10-15]` **Đăng nhập web app** (`src/api/auth.py`): tài khoản ở `secrets/users.json`, băm scrypt; phiên trong bộ nhớ nên **chỉ chạy 1 worker** uvicorn, khởi động lại thì phải đăng nhập lại. Vai trò `quan_ly` (sửa) / `xem` (chỉ đọc). Trong code tránh đặt tên biến chứa &quot;password&quot; gán chuỗi literal (hook chặn) - dùng tên tiếng Việt `mat_khau`, `bam`.</span>
+<span class=""> - `[2026-10-15]` **Logger tự tạo không ra log dưới uvicorn**: uvicorn chỉ cấu hình logger của nó, nên `ems.nhat_ky` ở mức INFO bị nuốt. Đã gắn StreamHandler riêng trong `src/api/app.py`.</span>
+<span class=""> - `[2026-10-15]` **Triển khai IIS**: HttpPlatformHandler khởi động uvicorn (`--app-dir`), site IIS chỉ trỏ vào `deploy/iis` (chỉ chứa web.config). web.config thật chứa mật khẩu CSDL - đã gitignore, chỉ commit `web.config.mau`. Xem `docs/TRIEN-KHAI-IIS.md`.</span>
+<span class="add">+- `[2026-11-12]` **Skill `phat-hanh-ems` mô tả Node.js/npm** trong khi repo là Python/FastAPI - mâu thuẫn, chưa sửa skill (chờ người duyệt). Xem `BAO-CAO-DOI-CHIEU.md` trong gói bàn giao.</span>
+<span class="add">+- `[2026-11-12]` **Máy chưa cài `requirements-dev.txt` thì `tests/api/` lỗi thu thập** (thiếu `fastapi`); `pytest --ignore=tests/api` vẫn chạy 95 test.</span>
+<span class=""> </span>
+<span class=""> ## 2. Đặc thù Cơ sở dữ liệu &amp; Nghiệp vụ</span>
+<span class=""> - Bảng `NhanSu` và `PhanCong` liên kết qua mã định danh nội bộ, tuyệt đối không xóa cứng (hard delete) mà chỉ cập nhật cờ `IsActive = 0`.</span>
+<span class="">diff --git a/todo.md b/todo.md</span>
+<span class="">index b2a6575..69780f2 100644</span>
+<span class="">--- a/todo.md</span>
+<span class="">+++ b/todo.md</span>
+<span class="">@@ -14,3 +14,11 @@</span>
+<span class=""> - [ ] Làm theo tài liệu trên máy chủ thật (người quản trị).</span>
+<span class=""> - [ ] (Tùy chọn) Đăng nhập SQL bằng Windows Authentication thay mật khẩu trong web.config - cần sửa code kết nối.</span>
+<span class=""> - [ ] Đối chiếu schema thật; thử với SQL Server thật.</span>
+<span class="add">+</span>
+<span class="add">+## Mục tiêu (2026-11-12): Tích hợp &amp; kiểm chứng AGENTS.md / CLAUDE.md</span>
+<span class="add">+- [x] Kiểm kê: AGENTS.md, CLAUDE.md (`@AGENTS.md @MEMORY.md @todo.md`), `.claude/` (settings, hook, 1 skill); không có CLAUDE.local.md, `.claude/agents/`.</span>
+<span class="add">+- [x] Đối chiếu với mã nguồn, sửa 8 điểm thiếu/sai trong AGENTS.md; chú thích 2 tham chiếu không tồn tại trong MEMORY.md.</span>
+<span class="add">+- [x] Không đổi mã nguồn, hook, permissions, skill.</span>
+<span class="add">+- [ ] `pytest -q` đầy đủ: BLOCKED - cần duyệt `pip install -r requirements-dev.txt` (95/95 test ngoài `tests/api/` xanh).</span>
+<span class="add">+- [ ] Người duyệt quyết định sửa skill `phat-hanh-ems` (Node.js ↔ Python).</span>
+<span class="add">+- [ ] Người duyệt commit/push (tác tử không tự commit theo lệnh).</span></pre>
+
+<h2>Bằng chứng lệnh</h2>
+<details><summary>bang-chung.txt</summary><pre>== T1
+vm
+/home/user/nguyen-quoc-thang
+/home/user/nguyen-quoc-thang
+6a57a7f91a2e683b1918924731699cce188fb560
+claude/integrate-agents-claude-md-tsvkvq
+== T2
+-rw-r--r-- 1 root root 6630 Nov 12 02:18 AGENTS.md
+-rw-r--r-- 1 root root  140 Nov  9 04:28 CLAUDE.md
+ls: cannot access &#x27;CLAUDE.local.md&#x27;: No such file or directory
+ls: cannot access &#x27;.claude/agents&#x27;: No such file or directory
+== T3
+OK dòng 5 -&gt; AGENTS.md (62 dòng)
+OK dòng 6 -&gt; MEMORY.md (25 dòng)
+OK dòng 7 -&gt; todo.md (24 dòng)
+Import lồng:
+không có
+== T5
+6:- **Backend:** Python ≥ 3.11 (`target-version` trong `pyproject.toml`), FastAPI (`src/api/app.py:22`). Không dùng Flask.
+== T6
+22:from fastapi import Cookie, Depends, FastAPI, HTTPException, Response
+23:from fastapi.responses import FileResponse
+24:from fastapi.staticfiles import StaticFiles
+    import pyodbc  # Import trễ: test và lint không cần cài driver ODBC.
+7:target-version = &quot;py311&quot;
+.
+..
+.gitkeep
+hooks
+settings.local.json
+skills
+ls: cannot access &#x27;src/utils&#x27;: No such file or directory
+ls: cannot access &#x27;package.json&#x27;: No such file or directory
+nhánh develop: 0
+== T7
+AGENTS.md
+MEMORY.md
+todo.md
+ M AGENTS.md
+ M MEMORY.md
+ M todo.md
+== T8
+./.claude/hooks/guard.py: OK
+./.claude/settings.local.json: OK
+./.claude/skills/phat-hanh-ems/SKILL.md: OK
+./AGENTS.md: OK
+./CLAUDE.md: OK
+./MEMORY.md: OK
+./todo.md: OK
+sha256sum: WARNING: 1 computed checksum did NOT match
+f2d587659b600253aa67306388fd533b76b1c0d25d3e312a42183efafa246cac  .claude/skills/phat-hanh-ems/SKILL.md
+e7c14ea710ab6536bf3ec4d98565b9a8a420cfc6b9ffb2845b4bbf5eb5c7f991  .claude/hooks/guard.py
+9011b8d2b0eeba7dedcfb799d57052555bf5e1695d916df063289bd43001ef5c  .claude/settings.local.json
+b8b779aadce3d7266c288080a2e0f767aac666965ef9399776bb1888630aa13c  CLAUDE.md
+== T9
+ AGENTS.md | 22 ++++++++++++++++------
+ MEMORY.md |  6 ++++--
+ todo.md   |  8 ++++++++
+ 3 files changed, 28 insertions(+), 8 deletions(-)
+sao lưu AGENTS.md == HEAD: khôi phục được
+sao lưu MEMORY.md == HEAD: khôi phục được
+sao lưu todo.md == HEAD: khôi phục được
+== T10
+ERROR tests/api/test_app.py
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+.......................                                                  [100%]
+All checks passed!
+ruff exit=0
+Hook guard.py chặn Write ra /tmp (ngoài dự án) lúc tạo báo cáo -&gt; gói bàn giao đặt trong ban-giao/.
+== T4 (sau khởi động lại phiên): Claude Code báo &#x27;Instruction files were re-read when this session started; these differ from their earlier copies&#x27; và nạp AGENTS.md/MEMORY.md/todo.md bản sau sửa qua CLAUDE.md.
+</pre></details>
+
+<h2>Nội dung tệp</h2>
+<details><summary>CLAUDE.md</summary><pre># CLAUDE.md
+
+Claude Code tự đọc file này mỗi phiên; nội dung thực nằm ở các file dưới:
+
+@AGENTS.md
+@MEMORY.md
+@todo.md
+</pre></details>
+<details><summary>AGENTS.md (sau sửa)</summary><pre># QUY CHUẨN KIẾN TRÚC &amp; VẬN HÀNH AGENT (AGENTS.md)
+
+&gt; **Phạm vi.** Mục 3 (an toàn, xin phép), mục 5 (định nghĩa DONE) và yêu cầu trả lời tiếng Việt là **quy định dùng chung CTXĐN**. Các mục còn lại là **riêng dự án này** (web app EMS phân công nhân sự, Python). Skills dùng chung CTXĐN cài ở cấp tài khoản, không nằm trong repo. Nạp vào Claude Code qua `@AGENTS.md` trong `CLAUDE.md`.
+
+## 1. Tổng quan Kiến trúc &amp; Công nghệ
+- **Backend:** Python ≥ 3.11 (`target-version` trong `pyproject.toml`), FastAPI (`src/api/app.py:22`). Không dùng Flask.
+- **Cơ sở dữ liệu:** SQL Server qua pyodbc (`src/db/connection.py:117`, import trễ); chế độ demo `EMS_DEMO=1` dùng SQLite có sẵn. Hiện chưa dùng SQLAlchemy.
+- **Frontend:** HTML5, CSS3, JavaScript thuần (Vanilla JS)
+- **Thư mục chính:**
+  - `src/api/`: Các route xử lý nghiệp vụ và API.
+  - `src/db/`: Kết nối CSDL, stored procedures và schema.
+  - `src/static/` &amp; `src/templates/`: Giao diện người dùng.
+  - `tests/`: Toàn bộ bài kiểm thử tự động (pytest), chia `api/`, `db/`, `examples/`, `harness/`.
+  - `src/db/migrations/`: script đổi cấu trúc bảng (hiện trống, chỉ có `.gitkeep`).
+  - `deploy/` (IIS, SQL tạo tài khoản), `docs/` (hướng dẫn, bản xem trước), `examples/` (ví dụ chạy trên SQLite).
+  - `.claude/`: `settings.local.json` (permissions + hook), `hooks/guard.py`, `skills/phat-hanh-ems/`.
+
+## 2. Lệnh Thực thi &amp; Lọc nhiễu (Observe &amp; Trim)
+Luôn sử dụng cờ rút gọn (quiet/short) khi chạy lệnh để cắt giảm log thừa, tránh làm tràn cửa sổ ngữ cảnh:
+- **Chạy toàn bộ test:** `pytest -q --tb=short`
+- **Chạy test theo phân hệ:** `pytest tests/&lt;ten_phan_he&gt;/ -q`
+- **Kiểm tra lỗi cú pháp/quy chuẩn (Lint):** `ruff check . --quiet` (cùng phạm vi với CI; `ruff check src/` chỉ là kiểm tra nhanh, bỏ sót `tests/`, `examples/`, `.claude/hooks/`).
+- **Cài công cụ:** `pip install -r requirements-dev.txt` (phiên bản ghim, trùng với CI; đã gồm `requirements.txt`).
+- **Chạy web app (dữ liệu mẫu):** `EMS_DEMO=1 uvicorn src.api.app:app --host 0.0.0.0 --port 8000` (1 worker). Cần file tài khoản `secrets/users.json`; tạo chuỗi băm mật khẩu bằng `python -m src.api.auth`. Tác tử không được đọc `secrets/`. Sửa giao diện (`src/templates`, `src/static`) thì sinh lại bản xem trước `docs/giao-dien-mobile.html`.
+- **Triển khai IIS:** làm theo `docs/TRIEN-KHAI-IIS.md`; máy chủ cài `requirements-prod.txt`. Không bao giờ commit `deploy/iis/web.config` (chỉ commit file `.mau`).
+- **CI:** `.github/workflows/ci.yml` chạy `ruff check .` và `pytest` trên Python 3.11 và 3.13 cho mọi PR và push lên `main`.
+
+## 3. Quy tắc An toàn &amp; Phân quyền (Policy Gate)
+- **ĐƯỢC PHÉP TỰ ĐỘNG (ALLOW):** Đọc file, tìm kiếm mã nguồn, chạy `pytest`, chạy `ruff`, truy vấn SQL dạng `SELECT`.
+- **PHẢI XIN PHÉP CON NGƯỜI (ASK/APPROVE):** Mọi thao tác sửa file cấu hình hệ thống, thay đổi cấu trúc bảng (`ALTER/DROP TABLE`), cài đặt thêm thư viện mới, hoặc đẩy code lên nhánh chính.
+- **CẤM TUYỆT ĐỐI (DENY):** Xóa thư mục gốc (`rm -rf`), can thiệp ra ngoài phạm vi thư mục dự án, hardcode mật khẩu/chuỗi kết nối CSDL trực tiếp vào mã nguồn.
+
+### Cưỡng chế kỹ thuật
+| Lớp | File | Chặn được |
+|---|---|---|
+| Permissions | `.claude/settings.local.json` | Lệnh/đường dẫn khớp mẫu chữ |
+| Hook PreToolUse | `.claude/hooks/guard.py` | Mọi biến thể `rm -rf`; câu SQL ghi/đổi cấu trúc trong lệnh gọi CSDL (ask), `SHUTDOWN`/`DROP DATABASE` (deny); ghi file ngoài dự án; mật khẩu hardcode |
+| Ruff `S` | `pyproject.toml` | Mật khẩu hardcode (S105/S106), SQL ghép chuỗi (S608) |
+| Tài khoản CSDL | `.env` | Tác tử chỉ dùng tài khoản `db_datareader` - lớp chắc chắn nhất |
+
+Sửa `guard.py` phải kèm test tại `tests/harness/test_guard.py`.
+
+## 3a. Quy tắc SQL Server
+- **Tham số hóa mọi truy vấn** (`cursor.execute(&quot;... WHERE Id = ?&quot;, ma)` hoặc `text(&quot;:ma&quot;)` của SQLAlchemy). Cấm ghép chuỗi/f-string vào câu SQL.
+- **Cấu hình kết nối** đọc từ biến môi trường (mẫu tại `.env.example`); `.env` không được commit.
+- **Thay đổi cấu trúc bảng** chỉ qua script đánh số trong `src/db/migrations/` (vd. `0003_them_cot_ghi_chu.sql`), có kèm script hoàn tác, và phải được người duyệt trước khi chạy.
+- **Không xóa cứng** bảng nghiệp vụ: cập nhật `IsActive = 0` (xem `MEMORY.md`).
+- **Kiểu dữ liệu**: `DECIMAL` -&gt; `decimal.Decimal`, không ép sang `float` khi tính toán; `DATETIME` lưu và so sánh theo một múi giờ thống nhất.
+
+## 4. Điều phối Tác tử phụ (Subagents)
+- Repo chưa định nghĩa subagent riêng (không có `.claude/agents/`); dùng subagent có sẵn của Claude Code.
+- Khi cần tìm kiếm vị trí sử dụng của một biến/hàm trên toàn bộ dự án hoặc đọc tài liệu quy chuẩn dài, hãy tách **Subagent** với vùng ngữ cảnh độc lập để rà soát và chỉ trả về bản tóm tắt ngắn gọn cho Agent chính.
+
+## 4a. Skills trong repo
+- `.claude/skills/phat-hanh-ems/SKILL.md`: quy trình phát hành EMS. **Lưu ý mâu thuẫn chưa xử lý:** skill mô tả EMS là Node.js (`npm ci`, `npm test`, `package.json`, nhánh `develop`), trong khi repo này là Python/FastAPI, không có `package.json`, không có nhánh `develop`. Chưa dùng skill này cho repo này cho đến khi người duyệt xác nhận và sửa. Tác tử không tự triển khai production.
+- Quy trình G0–G1 chỉ áp dụng cho công việc tạo/sửa Skills, không áp dụng cho việc sửa mã nguồn thông thường.
+
+## 5. Tiêu chuẩn Nghiệm thu (Verifier - Định nghĩa &quot;DONE&quot;)
+Một tác vụ CHỈ được phép đánh dấu hoàn thành khi thỏa mãn đồng thời 3 điều kiện thực tế:
+1. Chạy `pytest -q` báo xanh 100% (tests pass). Cần cài `requirements-dev.txt` trước; thiếu `fastapi`/`httpx` thì `tests/api/` lỗi thu thập - khi đó báo BLOCKED, không báo PASS.
+2. Chạy `ruff check .` không phát sinh lỗi mới (no new lint errors).
+3. Đã cập nhật trạng thái vào `todo.md` và ghi chú phát hiện quan trọng (nếu có) vào `MEMORY.md`.
+</pre></details>
+<p class="mut">Tệp độc lập, không dùng CDN hay mạng.</p>
+</main></body></html>

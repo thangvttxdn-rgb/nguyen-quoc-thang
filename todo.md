@@ -14,3 +14,11 @@
 - [ ] Làm theo tài liệu trên máy chủ thật (người quản trị).
 - [ ] (Tùy chọn) Đăng nhập SQL bằng Windows Authentication thay mật khẩu trong web.config - cần sửa code kết nối.
 - [ ] Đối chiếu schema thật; thử với SQL Server thật.
+
+## Mục tiêu (2026-11-12): Tích hợp & kiểm chứng AGENTS.md / CLAUDE.md
+- [x] Kiểm kê: AGENTS.md, CLAUDE.md (`@AGENTS.md @MEMORY.md @todo.md`), `.claude/` (settings, hook, 1 skill); không có CLAUDE.local.md, `.claude/agents/`.
+- [x] Đối chiếu với mã nguồn, sửa 8 điểm thiếu/sai trong AGENTS.md; chú thích 2 tham chiếu không tồn tại trong MEMORY.md.
+- [x] Không đổi mã nguồn, hook, permissions, skill.
+- [ ] `pytest -q` đầy đủ: BLOCKED - cần duyệt `pip install -r requirements-dev.txt` (95/95 test ngoài `tests/api/` xanh).
+- [ ] Người duyệt quyết định sửa skill `phat-hanh-ems` (Node.js ↔ Python).
+- [ ] Người duyệt commit/push (tác tử không tự commit theo lệnh).
