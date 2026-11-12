@@ -40,6 +40,19 @@ Mục có `trang_thai: blocked` trong registry: **không dùng**, nêu `ly_do` n
 
 **Không nghiệm thu thay chủ đầu tư.** Báo "đã xong" chỉ khi đạt; còn lại báo đúng trạng thái.
 
+### Tính năng mới: đi theo Spec Kit
+
+| Cổng | Lệnh Spec Kit |
+|---|---|
+| G0 | `/speckit-specify` rồi `/speckit-clarify` (đặc tả tiếng Việt, tối đa 5 câu hỏi) |
+| G1 | `/speckit-plan` → `/speckit-tasks` → `/speckit-implement` |
+| G2 | `/speckit-checklist`, `/speckit-converge`, pytest, ruff |
+| G3 | `/speckit-analyze` (bộ spec/plan/tasks) + `/code-review` (mã) |
+
+Hiến pháp `.specify/memory/constitution.md` chỉ tóm tắt `AGENTS.md`; sửa `AGENTS.md` trước.
+`todo.md` chỉ ghi trạng thái và đường dẫn `specs/NNN-ten/tasks.md`, không chép danh sách việc.
+Không tự tạo nhánh git cho tính năng; làm trên nhánh được giao.
+
 ## 4. Nhãn dữ liệu
 
 `THẬT` (đo, đọc từ nguồn) · `DEMO` (ví dụ mô phỏng) · `BLOCKED` (không tiếp cận được) ·

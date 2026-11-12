@@ -19,6 +19,9 @@
 - `[2026-11-12]` **Hook điều phối so từ khóa có dấu**: bỏ dấu làm "trả lời" khớp "lỗi", "hãm" khớp "hàm". `dieu_phoi.py` so có dấu, chỉ bỏ dấu khi người dùng gõ toàn ASCII; việc kèm phải khớp ≥ 2 từ khóa. Hook không lặp lại nguyên văn yêu cầu (chống tiêm lệnh) và luôn exit 0.
 - `[2026-11-12]` **`pytest` trần trong container web không thấy thư viện** (bản cài riêng ở ~/.local/bin). Dùng `python -m pytest`.
 
+- `[2026-11-12]` **Từ khóa định tuyến quá rộng gây giao nhầm**: "gửi" bắt cả "em gửi các bác" (chia sẻ link); "spec" khớp vào URL `github.com/github/spec-kit`. Từ khóa cảnh báo phải là cụm có nghĩa hành động ("gửi cho", "gửi email"); câu gây lỗi được thêm vào `tests/harness/test_dieu_phoi.py`.
+- `[2026-11-12]` **Cài công cụ bên ngoài: thử trên bản sao trước** (`git clone` kho vào scratchpad, chạy lệnh cài, xem `git status`/`git diff`). `guard.py` chặn cả `rm -rf` trong scratchpad - dùng thư mục mới thay vì xóa.
+
 ## 2. Đặc thù Cơ sở dữ liệu & Nghiệp vụ
 - Bảng `NhanSu` và `PhanCong` liên kết qua mã định danh nội bộ, tuyệt đối không xóa cứng (hard delete) mà chỉ cập nhật cờ `IsActive = 0`.
 - `[2026-10-15]` **Ngừng nhân sự thì ngừng luôn PhanCong liên quan** (chủ dự án xác nhận), trong cùng giao dịch - xem `src/db/nhan_su.py` hàm `deactivate`. Kích hoạt lại nhân sự KHÔNG tự khôi phục PhanCong.

@@ -38,9 +38,19 @@ def tuyen_chinh(prompt):
     ("Sửa lỗi API phân công", "ma-nguon"),
     ("Viết truy vấn SQL đếm nhân sự theo tổ", "du-lieu"),
     ("Rà soát trùng lặp kỹ năng và plugin", "danh-gia-cong-cu"),
+    ("EM GỬI CÁC BÁC Ạ: https://github.com/github/spec-kit Thêm cái này vào luôn",
+     "danh-gia-cong-cu"),
+    ("Làm tính năng mới xem lịch sử phân công, viết đặc tả trước", "ke-hoach"),
 ])
 def test_dinh_tuyen(prompt, tuyen):
     assert tuyen_chinh(prompt) == tuyen
+
+
+def test_chia_se_link_khong_bi_canh_bao_gui_ra_ngoai():
+    kq = dieu_phoi.phan_tich("EM GỬI CÁC BÁC Ạ: https://github.com/github/spec-kit", REG)
+    assert kq["canh_bao"] == []
+    kq = dieu_phoi.phan_tich("Lập báo cáo giao ban rồi gửi cho giám đốc", REG)
+    assert any("Gửi" in c for c in kq["canh_bao"])
 
 
 def test_go_co_dau_khong_khop_nham_khi_khac_dau():

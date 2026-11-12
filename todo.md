@@ -20,6 +20,15 @@
 - [ ] Hồ sơ rà soát Knowledge Work (nhánh `claude/anthropic-knowledge-work-review-em31y1`) chưa gộp vào nhánh này - chờ chủ đầu tư quyết (Đề xuất 7).
 - [ ] Chạy thử hook trên máy Windows: lệnh `python3` có thể không có, cần đổi thành `py -3` hoặc `python`.
 
+## Mục tiêu phụ: Thêm GitHub Spec Kit (v1.4.0, MIT)
+- [x] G0: khảo sát mã nguồn (commit `0019fa1`), chạy thử `specify init` trên bản sao - chỉ thêm file, không ghi đè; rà script: không gọi mạng, không xóa, không tự tạo nhánh.
+- [x] Cài: `.specify/` + 9 kỹ năng `.claude/skills/speckit-*` (script Python để chạy được trên Windows).
+- [x] Gỡ trùng: hiến pháp chỉ trỏ về AGENTS.md; tasks.md/todo.md chia cấp; /speckit-plan thay tác tử Plan cho tính năng mới; analyze/to-phan-bien chia phạm vi.
+- [x] Registry: 48 mục, 12 kết luận trùng lặp; tuyến "Tính năng mới" giao cho /speckit-specify. `.specify` loại khỏi ruff.
+- [x] Sửa hook: "gửi" quá rộng (cảnh báo nhầm khi chia sẻ link); "spec" khớp nhầm URL.
+- [x] Nghiệm thu: `python -m pytest -q` 148/148, `ruff check .` sạch.
+- [ ] Thử luồng /speckit-specify → /speckit-implement với một tính năng thật (đề xuất: lịch sử phân công theo nhân sự).
+
 ### Việc còn treo
 - [ ] Làm theo tài liệu trên máy chủ thật (người quản trị).
 - [ ] (Tùy chọn) Đăng nhập SQL bằng Windows Authentication thay mật khẩu trong web.config - cần sửa code kết nối.
