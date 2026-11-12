@@ -23,3 +23,8 @@
 - [x] Skill `phat-hanh-ems`: giữ phần Node.js, thêm mục 9 cho repo Python/FastAPI (site `PhanCong`).
 - [x] Commit, push nhánh `claude/integrate-agents-claude-md-tsvkvq`, mở PR vào `main` (không tự merge, không triển khai).
 - [ ] Thử với SQL Server thật: BLOCKED - môi trường không có SQL Server (đã có ở mục treo phía trên).
+
+## Mục tiêu (2026-11-12, đợt 3): Thêm skills từ anthropics/skills + tham khảo video
+- [x] Kiểm tra trùng lặp 19 skill: thêm 6, không thêm 13 (8 trùng tên, 1 trùng chức năng, 4 không phù hợp/chưa rõ giấy phép) - `.claude/skills/NGUON-SKILLS.md`.
+- [x] Loại 6 skill khỏi ruff; `ruff check .` sạch, `pytest -q` 121/121.
+- [x] Video "7 repo làm video": tóm tắt + kiểm tra giấy phép tại `docs/tham-khao/7-repo-lam-video.md`; không lưu tệp video vào repo.

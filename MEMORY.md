@@ -17,6 +17,8 @@
 - `[2026-10-15]` **Triển khai IIS**: HttpPlatformHandler khởi động uvicorn (`--app-dir`), site IIS chỉ trỏ vào `deploy/iis` (chỉ chứa web.config). web.config thật chứa mật khẩu CSDL - đã gitignore, chỉ commit `web.config.mau`. Xem `docs/TRIEN-KHAI-IIS.md`.
 - `[2026-11-12]` **Skill `phat-hanh-ems` mô tả Node.js/npm** trong khi repo là Python/FastAPI. Đã giữ nguyên phần Node (có thể là hệ EMS khác: tra cứu toa xe, phiếu sửa chữa) và thêm mục 9 cho repo này. Xem `ban-giao/BAO-CAO-DOI-CHIEU.md`.
 - `[2026-11-12]` **`pytest` trong PATH có thể là bản cô lập (uv tool)** nên không thấy `fastapi` dù đã `pip install -r requirements-dev.txt` → `tests/api/` lỗi thu thập. Chạy `python -m pytest`, `python -m ruff` (đúng bản ghim 0.16.8).
+- `[2026-11-12]` **Skill bên thứ ba làm đỏ ruff**: code trong `anthropics/skills` vi phạm luật E/S/B của dự án. Không sửa mã gốc - thêm từng thư mục vào `extend-exclude` trong `pyproject.toml` (không exclude cả `.claude/` vì `guard.py` phải được lint).
+- `[2026-11-12]` **Remotion không miễn phí cho Chi nhánh**: giấy phép chỉ miễn phí cho công ty ≤ 3 nhân viên (`docs/tham-khao/7-repo-lam-video.md`).
 
 ## 2. Đặc thù Cơ sở dữ liệu & Nghiệp vụ
 - Bảng `NhanSu` và `PhanCong` liên kết qua mã định danh nội bộ, tuyệt đối không xóa cứng (hard delete) mà chỉ cập nhật cờ `IsActive = 0`.
