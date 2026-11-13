@@ -59,5 +59,8 @@
         ]
       }
     ]
+  },
+  "env": {
+    "FLOORPLAN_NO_PROMPTS": "1"
   }
 }

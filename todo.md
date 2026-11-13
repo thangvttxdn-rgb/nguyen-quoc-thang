@@ -43,7 +43,7 @@
 - [x] Cài: chép `skills/floorplan` vào `.claude/skills/floorplan` (+LICENSE, bỏ file Codex); `/floorplan/` vào `.gitignore`.
 - [x] Registry: mục `floorplan` (`chua-kiem-thu`), tuyến "Sơ đồ mã nguồn", cảnh báo, 2 kết luận trùng lặp (với /speckit-plan, Explore).
 - [x] G2: `scan.mjs` chạy trên bản sao kho - nhận 10 route FastAPI, 14 lời gọi frontend→API.
-- [ ] Đề xuất (cấu hình, chờ duyệt): `FLOORPLAN_NO_PROMPTS=1` trong `env` của `.claude/settings.local.json`.
+- [x] Đã đặt `FLOORPLAN_NO_PROMPTS=1` trong `env` của `.claude/settings.local.json` (chủ đầu tư duyệt 2026-11-13); có hiệu lực từ phiên Claude Code sau.
 - [ ] Dựng bản đồ đầy đủ cho EMS bằng `/floorplan` (tốn token: trợ lý viết mô tả cho từng file).
 
 ### Việc còn treo

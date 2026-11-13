@@ -312,7 +312,7 @@
       "vi_du": "Vẽ sơ đồ mã nguồn EMS, chỉ rõ trang nào gọi API nào",
       "duong_dan": ".claude/skills/floorplan/SKILL.md",
       "trang_thai": "chua-kiem-thu",
-      "ly_do": "G2 mới chạy scan.mjs trên bản sao kho (nhận đúng FastAPI, 10 route); chưa dựng bản đồ đầy đủ. Đặt FLOORPLAN_NO_PROMPTS=1 để tắt hỏi đăng ký waitlist (gửi email ra ngoài)."
+      "ly_do": "G2 mới chạy scan.mjs trên bản sao kho (nhận đúng FastAPI, 10 route); chưa dựng bản đồ đầy đủ. Đã đặt FLOORPLAN_NO_PROMPTS=1 trong settings.local.json (tắt hỏi đăng ký waitlist)."
     },
     {
       "id": "to-phan-bien",
@@ -1003,7 +1003,7 @@
         "sơ đồ mã",
         "bản đồ mã"
       ],
-      "noi_dung": "Floorplan: chạy trên máy, bản đồ ghi vào floorplan/ (tự gitignore, không commit). Đặt FLOORPLAN_NO_PROMPTS=1; không bấm 'Notify me' (gửi email tới máy chủ waitlist của tác giả). Không dùng --claude-md khi chưa duyệt (ghi CLAUDE.local.md). Nút Export tạo 1 file HTML chứa toàn bộ sơ đồ - không gửi ra ngoài khi chưa duyệt."
+      "noi_dung": "Floorplan: chạy trên máy, bản đồ ghi vào floorplan/ (tự gitignore, không commit). FLOORPLAN_NO_PROMPTS=1 đã đặt trong settings.local.json - không gỡ; không bấm 'Notify me' (gửi email tới máy chủ waitlist của tác giả). Không dùng --claude-md khi chưa duyệt (ghi CLAUDE.local.md). Nút Export tạo 1 file HTML chứa toàn bộ sơ đồ - không gửi ra ngoài khi chưa duyệt."
     }
   ],
   "trung_lap": [
