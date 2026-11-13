@@ -54,4 +54,12 @@ Quay lui sau kích hoạt: `git revert` commit kích hoạt.
 
 ## 4. Kết quả thử gỡ - THẬT
 
-Ghi ở cuối file sau khi chạy trên bản sao (scratchpad), không chạy trên kho thật.
+Chạy 13/11/2026 trên bản sao kho trong scratchpad (không đụng kho thật):
+
+| Bước | Kết quả |
+|---|---|
+| `git clone` kho → `git revert --no-edit 318f482` | Tạo commit hoàn tác, không xung đột |
+| `.claude/thu-nghiem/`, `docs/unslop/` | Đã biến mất |
+| `git diff af0596b HEAD` (so với trước khi cài) | **Rỗng** - trở về đúng trạng thái cũ |
+| `python -m pytest` | 176 passed (183 trừ 7 test của unslop) |
+| `build_page.py --check` | Trang Command Center khớp registry |
