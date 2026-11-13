@@ -77,7 +77,11 @@ def _ten_muc(muc_id: str, muc: dict) -> str:
         return muc_id
     nhan = {"skill": "kỹ năng", "agent": "tác tử", "cmd": "lệnh", "guard": "rào chắn",
             "link": "kết nối"}[m["nhom"]]
-    return f"{nhan} /{muc_id}" if m["nhom"] == "cmd" else f"{nhan} {muc_id}"
+    ten = f"{nhan} /{muc_id}" if m["nhom"] == "cmd" else f"{nhan} {muc_id}"
+    if m.get("trang_thai") == "thu-nghiem":
+        # Chưa kích hoạt: Claude Code không tự nạp, phải đọc file và chỉ chạy trên bản sao.
+        ten += f" (THỬ NGHIỆM: đọc {m['duong_dan']}, chỉ làm trên bản sao trong sandbox)"
+    return ten
 
 
 def ke_hoach(kq: dict, reg: dict) -> str:

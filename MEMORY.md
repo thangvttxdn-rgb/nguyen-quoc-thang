@@ -25,6 +25,10 @@
 - `[2026-11-12]` **Kỹ năng bên thứ ba thường gọi `npx <goi>` không ghim** (HyperFrames: 273 chỗ). Không sửa file của họ (bị ghi đè khi nâng cấp); ghim bằng cảnh báo trong `registry.json` + `tong-chi-huy`. Phiên đám mây: chạy `npx` gói ngoài bị bộ phân loại tự động chặn - cần người dùng cho phép.
 - `[2026-11-12]` **Tổ 2 (`to-phan-bien`) bắt được lỗi Tổ 1 bỏ sót**: luật chỉ đặt ở lớp điều phối thì kỹ năng nạp vào vẫn dặn ngược lại; phải cưỡng chế bằng `guard.py` + sửa chính file kỹ năng (`lop_phu_hyperframes.py`). Rà bảo mật kỹ năng ngoài phải tìm cả đo lường/feedback trong luồng mặc định, không chỉ `curl|sh`. Mẫu regex chặn lệnh phải neo đầu đoạn lệnh, nếu không sẽ chặn cả heredoc/grep chứa chữ đó.
 
+- `[2026-11-13]` **Kỹ năng "thử nghiệm" không được đặt ở `.claude/skills/`**: Claude Code tự nạp mọi thư mục ở đó (= kích hoạt). Kỹ năng chờ duyệt để ở `.claude/thu-nghiem/`, registry `trang_thai: thu-nghiem`, hook gắn nhãn "đọc file, chỉ làm trên bản sao" (`dieu_phoi.py` `_ten_muc`). Bản gốc bên ngoài giữ nguyên, khóa bằng mã băm + test.
+- `[2026-11-13]` **Toast che nút ở giao diện điện thoại**: sau "Giao việc", `#toast` chặn bấm "Ngừng nhân sự" vài giây (Playwright: "intercepts pointer events"). Sửa được bằng CSS `pointer-events: none` - chưa áp vào `src/static/app.css`. Kiểm thử giao diện so chữ bằng TreeWalker (textContent), không dùng `innerText` vì `text-transform` làm sai lệch.
+- `[2026-11-13]` **Container mới không có pytest**: cài `python -m pip install -r requirements-dev.txt` (bản ghim, trùng CI) trước khi nghiệm thu.
+
 ## 2. Đặc thù Cơ sở dữ liệu & Nghiệp vụ
 - Bảng `NhanSu` và `PhanCong` liên kết qua mã định danh nội bộ, tuyệt đối không xóa cứng (hard delete) mà chỉ cập nhật cờ `IsActive = 0`.
 - `[2026-10-15]` **Ngừng nhân sự thì ngừng luôn PhanCong liên quan** (chủ dự án xác nhận), trong cùng giao dịch - xem `src/db/nhan_su.py` hàm `deactivate`. Kích hoạt lại nhân sự KHÔNG tự khôi phục PhanCong.

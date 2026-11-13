@@ -137,7 +137,7 @@ def test_tuyen_chi_tro_toi_muc_dang_dung():
 def test_trang_thai_hop_le_va_co_ly_do():
     for m in REG["muc"]:
         if "trang_thai" in m:
-            assert m["trang_thai"] in {"blocked", "chua-kiem-thu"}, m["id"]
+            assert m["trang_thai"] in {"blocked", "chua-kiem-thu", "thu-nghiem"}, m["id"]
             assert m.get("ly_do"), m["id"]
 
 
@@ -159,3 +159,40 @@ def test_file_cua_muc_trong_kho_ton_tai():
 
 def test_trang_command_center_khop_registry():
     assert build_page.main(["--check"]) == 0, "Chạy: python .claude/tong-chi-huy/build_page.py"
+
+
+# --- Tuyến giao diện (unslop, thử nghiệm) ---
+
+@pytest.mark.parametrize("prompt", [
+    "Nâng cấp giao diện màn hình phân công cho gọn",
+    "unslop trang đăng nhập EMS",
+    "lam dep giao dien man hinh tai san",  # gõ không dấu
+])
+def test_tuyen_giao_dien(prompt):
+    assert tuyen_chinh(prompt) == "giao-dien"
+
+
+def test_sua_loi_giao_dien_van_uu_tien_ma_nguon():
+    # "sửa lỗi", "lỗi" (2 từ khóa) thắng "giao diện" (1) - sửa lỗi chức năng không giao cho unslop.
+    assert tuyen_chinh("Sửa lỗi giao diện nút Giao việc không bấm được") == "ma-nguon"
+
+
+def test_muc_thu_nghiem_duoc_gan_nhan_trong_ke_hoach():
+    ke_hoach = dieu_phoi.ke_hoach(dieu_phoi.phan_tich("Nâng cấp giao diện EMS", REG), REG)
+    assert "ctxdn-ui-ux-unslop (THỬ NGHIỆM" in ke_hoach
+    assert ".claude/thu-nghiem/ctxdn-ui-ux-unslop/SKILL.md" in ke_hoach
+
+
+def test_ban_goc_unslop_khong_bi_sua():
+    import hashlib
+    goc = GOC / ".claude" / "thu-nghiem"
+    for dong in (goc / "unslop.sha256").read_text(encoding="utf-8").splitlines():
+        ma, ten = dong.split(maxsplit=1)
+        assert hashlib.sha256((goc / "unslop" / ten).read_bytes()).hexdigest() == ma, ten
+
+
+def test_muc_thu_nghiem_khong_nam_trong_thu_muc_skills():
+    # Thử nghiệm = không kích hoạt: không được nằm ở .claude/skills/ (nơi Claude Code tự nạp).
+    for m in REG["muc"]:
+        if m.get("trang_thai") == "thu-nghiem":
+            assert not m["duong_dan"].startswith(".claude/skills/"), m["id"]

@@ -38,6 +38,17 @@
 - [ ] Đề xuất (cấu hình, chờ duyệt): `HYPERFRAMES_NO_TELEMETRY=1` trong `env` của `.claude/settings.local.json`.
 - [ ] **G2 BLOCKED**: chạy thử `npx hyperframes@0.9.37` bị bộ phân loại tự động chặn (mã tải từ ngoài). Cần chủ đầu tư cho phép lệnh `npx hyperframes@0.9.37` rồi render thử 1 clip 10 giây.
 
+## Mục tiêu phụ: Unslop - kỹ năng nâng cấp giao diện (thử nghiệm)
+- [x] G0: kho `heydamir/unslop` commit `97daa3e`, CC BY 4.0; là kỹ năng Markdown + 2 script Node tùy chọn. Hồ sơ: `docs/unslop/`.
+- [x] Bảo mật: không tải mã, không telemetry, không ký tự ẩn; rủi ro sinh ảnh trả phí, sửa chữ chạm cảnh báo an toàn → chặn ở lớp bọc.
+- [x] Cài thử vào `.claude/thu-nghiem/` (không tự nạp); lớp bọc `ctxdn-ui-ux-unslop` + bộ kiểm thử 4 cỡ màn hình.
+- [x] Registry: trạng thái mới `thu-nghiem`, tuyến `giao-dien` ("giao diện" chuyển khỏi tuyến mã nguồn), 5 kết luận trùng lặp.
+- [x] DEMO trên bản sao EMS: chỉ đổi CSS, kiểm thử PASS 8/8; phát hiện toast chặn nút "Ngừng nhân sự" ở bản hiện hành.
+- [x] Nghiệm thu kỹ thuật: `python -m pytest -q` 183 passed, `ruff check .` sạch. Tổng: **PARTIAL**.
+- [ ] Chờ duyệt: kích hoạt vào `.claude/skills/` (`docs/unslop/PHUONG-AN-ROLLBACK.md` mục 3).
+- [ ] Chờ duyệt: sửa toast chặn nút trong `src/static/app.css` thật (`pointer-events: none`).
+- [ ] BLOCKED: kiểm thử iPhone Safari, Android Chrome, máy Windows thật; AI OS 3.0, Quản lý tài sản, Báo cáo tự động không có trong kho.
+
 ### Việc còn treo
 - [ ] Làm theo tài liệu trên máy chủ thật (người quản trị).
 - [ ] (Tùy chọn) Đăng nhập SQL bằng Windows Authentication thay mật khẩu trong web.config - cần sửa code kết nối.

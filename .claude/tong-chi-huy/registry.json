@@ -1,6 +1,6 @@
 {
   "phien_ban": "1.0",
-  "cap_nhat": "2026-11-12",
+  "cap_nhat": "2026-11-13",
   "ghi_chu": "Nguồn dữ liệu duy nhất cho hook điều phối (.claude/hooks/dieu_phoi.py) và trang docs/ai-command-center.html. Sửa ở đây rồi chạy: python .claude/tong-chi-huy/build_page.py",
   "nhom": {
     "skill": {
@@ -300,6 +300,32 @@
       "duong_dan": "github.com/ahujasid/mcp-for-blender",
       "trang_thai": "blocked",
       "ly_do": "Cho AI chạy mã Python tùy ý trong Blender; cần Blender và GPU trên máy trạm (phương án B của G0). Chờ duyệt máy trạm cô lập."
+    },
+    {
+      "id": "ctxdn-ui-ux-unslop",
+      "nhom": "skill",
+      "phan_muc": "Giao diện",
+      "nguon": "repo",
+      "mo_ta": "Nâng cấp giao diện phần mềm nội bộ (EMS, AI OS 3.0, quản lý tài sản, báo cáo tự động) theo phương pháp unslop: rà dấu hiệu, chuẩn hóa khoảng cách, màu, chữ, biểu tượng, tối ưu điện thoại, so sánh trước/sau. Chỉ sửa lớp trình bày, bất biến nghiệp vụ.",
+      "khi_dung": "Được giao nâng cấp, làm đẹp, chuẩn hóa giao diện. Kiểm tra tái sử dụng kỹ năng này trước khi tạo kỹ năng giao diện mới.",
+      "goi": "Đọc .claude/thu-nghiem/ctxdn-ui-ux-unslop/SKILL.md (chưa có lệnh /)",
+      "vi_du": "Rà giao diện docs/giao-dien-mobile.html theo unslop, chỉ báo dấu hiệu, chưa sửa",
+      "duong_dan": ".claude/thu-nghiem/ctxdn-ui-ux-unslop/SKILL.md",
+      "trang_thai": "thu-nghiem",
+      "ly_do": "Thử nghiệm: chưa kích hoạt (nằm ở .claude/thu-nghiem/, Claude Code không tự nạp). Chỉ chạy trên bản sao trong sandbox; kích hoạt cần chủ đầu tư duyệt - docs/unslop/PHUONG-AN-ROLLBACK.md."
+    },
+    {
+      "id": "unslop",
+      "nhom": "skill",
+      "phan_muc": "Giao diện",
+      "nguon": "repo",
+      "mo_ta": "Bản gốc unslop (heydamir, CC BY 4.0, commit 97daa3e): 9 lượt sửa giao diện kiểu AI - khoảng cách, màu, biểu tượng, chữ, kiểu chữ, bố cục, chi tiết, hình ảnh, chuyển động. Giữ nguyên, không sửa.",
+      "khi_dung": "Chỉ đọc qua ctxdn-ui-ux-unslop (lớp bọc thắng khi khác nhau). Không gọi trực tiếp.",
+      "goi": "Qua ctxdn-ui-ux-unslop",
+      "vi_du": "",
+      "duong_dan": ".claude/thu-nghiem/unslop/SKILL.md",
+      "trang_thai": "thu-nghiem",
+      "ly_do": "Thử nghiệm: chưa kích hoạt (nằm ở .claude/thu-nghiem/, Claude Code không tự nạp). Chỉ chạy trên bản sao trong sandbox; kích hoạt cần chủ đầu tư duyệt - docs/unslop/PHUONG-AN-ROLLBACK.md. Sinh ảnh trả phí (fal, Replicate, OpenAI images, Higgsfield) và font CDN: không dùng."
     },
     {
       "id": "to-phan-bien",
@@ -726,7 +752,6 @@
         "api",
         "pytest",
         "test",
-        "giao diện",
         "refactor",
         "c++",
         "python"
@@ -734,6 +759,28 @@
       "chinh": "karpathy-guidelines",
       "ho_tro": [
         "Explore",
+        "code-review"
+      ]
+    },
+    {
+      "id": "giao-dien",
+      "ten": "Nâng cấp giao diện (thử nghiệm)",
+      "tu_khoa": [
+        "giao diện",
+        "unslop",
+        "ui",
+        "ux",
+        "bố cục",
+        "css",
+        "responsive",
+        "làm đẹp",
+        "màu sắc",
+        "typography"
+      ],
+      "chinh": "ctxdn-ui-ux-unslop",
+      "ho_tro": [
+        "unslop",
+        "karpathy-guidelines",
         "code-review"
       ]
     },
@@ -1087,6 +1134,36 @@
       "b": "HyperFrames",
       "quyet_dinh": "Giữ cả hai, chia phạm vi",
       "ly_do": "Canva cho ấn phẩm tĩnh, mẫu có sẵn; HyperFrames cho video dựng bằng mã."
+    },
+    {
+      "a": "unslop (bản gốc)",
+      "b": "ctxdn-ui-ux-unslop",
+      "quyet_dinh": "Bọc, không gộp",
+      "ly_do": "Giữ bản gốc nguyên vẹn để nâng cấp và giữ ghi công CC BY 4.0; luật CTXĐN (bất biến nghiệp vụ, cấm sinh ảnh trả phí, font CDN) nằm ở lớp bọc."
+    },
+    {
+      "a": "ctxdn-ui-ux-unslop",
+      "b": "karpathy-guidelines (tuyến Sửa mã nguồn)",
+      "quyet_dinh": "Giữ cả hai, chia phạm vi",
+      "ly_do": "Giao diện: chỉ CSS và chữ trang trí; sửa logic JS, API, CSDL vẫn theo karpathy-guidelines + /code-review. Từ khóa 'giao diện' chuyển từ tuyến mã nguồn sang tuyến giao diện."
+    },
+    {
+      "a": "artifact-design (có sẵn)",
+      "b": "ctxdn-ui-ux-unslop",
+      "quyet_dinh": "Giữ cả hai, chia phạm vi",
+      "ly_do": "artifact-design cho trang Artifact trên claude.ai; ctxdn-ui-ux-unslop cho giao diện phần mềm nội bộ trong kho."
+    },
+    {
+      "a": "frontend-design (được Adobe gợi ý)",
+      "b": "ctxdn-ui-ux-unslop",
+      "quyet_dinh": "Không cài",
+      "ly_do": "Không có trong kho; cùng việc nâng cấp giao diện web - tránh hai hệ quy tắc thiết kế."
+    },
+    {
+      "a": "Canva (kết nối)",
+      "b": "ctxdn-ui-ux-unslop",
+      "quyet_dinh": "Giữ cả hai, chia phạm vi",
+      "ly_do": "Canva cho ấn phẩm, poster; unslop cho màn hình phần mềm."
     }
   ],
   "nguon_ngoai": [
@@ -1112,6 +1189,19 @@
       ],
       "sua_doi": "Lớp phủ CTXĐN: ghim 278 lệnh npx về @0.9.37 + khối luật đầu mỗi SKILL.md. Áp lại sau nâng cấp: python .claude/tong-chi-huy/lop_phu_hyperframes.py",
       "bien_ban": "docs/G0-cong-cu-video.md"
+    },
+    {
+      "ten": "unslop",
+      "phien_ban": "main (chưa có tag)",
+      "commit": "97daa3eb365670ea3f87ed85356cbfcee18105a5",
+      "giay_phep": "CC-BY-4.0",
+      "cai_bang": "chép skills/unslop (+LICENSE) vào .claude/thu-nghiem/unslop - theo hướng dẫn README, đổi đích sang vùng thử nghiệm",
+      "thu_muc": [
+        ".claude/thu-nghiem/unslop/",
+        ".claude/thu-nghiem/ctxdn-ui-ux-unslop/"
+      ],
+      "sua_doi": "Không sửa bản gốc (kiểm bằng .claude/thu-nghiem/unslop.sha256). Lớp bọc CTXĐN: ctxdn-ui-ux-unslop.",
+      "bien_ban": "docs/unslop/BAO-CAO-KHAO-SAT-UNSLOP.md"
     }
   ]
 }

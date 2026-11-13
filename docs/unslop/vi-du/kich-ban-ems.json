@@ -1,0 +1,56 @@
+[
+ {
+  "cho": "#l-form"
+ },
+ {
+  "chup": "1-dang-nhap"
+ },
+ {
+  "dien": "#l-user",
+  "gia_tri": "thu"
+ },
+ {
+  "dien": "#l-pass",
+  "gia_tri": "thu"
+ },
+ {
+  "bam": "#l-btn"
+ },
+ {
+  "cho": "#list li button"
+ },
+ {
+  "chup": "2-danh-sach"
+ },
+ {
+  "bam": "#list li:nth-child(2) button"
+ },
+ {
+  "cho": "#s-form"
+ },
+ {
+  "chup": "3-bang-truot"
+ },
+ {
+  "dien": "#s-input",
+  "gia_tri": "Khám đoàn tàu SE5 tại ga Đà Nẵng"
+ },
+ {
+  "bam": "#s-add"
+ },
+ {
+  "cho": "#toast"
+ },
+ {
+  "chup": "4-vua-giao-viec"
+ },
+ {
+  "bam": ".btn.danger"
+ },
+ {
+  "cho": ".confirm"
+ },
+ {
+  "chup": "5-xac-nhan-ngung"
+ }
+]
