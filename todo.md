@@ -44,7 +44,7 @@
 - [x] Registry: mục `floorplan` (`chua-kiem-thu`), tuyến "Sơ đồ mã nguồn", cảnh báo, 2 kết luận trùng lặp (với /speckit-plan, Explore).
 - [x] G2: `scan.mjs` chạy trên bản sao kho - nhận 10 route FastAPI, 14 lời gọi frontend→API.
 - [x] Đã đặt `FLOORPLAN_NO_PROMPTS=1` trong `env` của `.claude/settings.local.json` (chủ đầu tư duyệt 2026-11-13); có hiệu lực từ phiên Claude Code sau.
-- [ ] Dựng bản đồ đầy đủ cho EMS bằng `/floorplan` (tốn token: trợ lý viết mô tả cho từng file).
+- [x] Dựng bản đồ EMS (cách tiết kiệm: bỏ `.claude/skills`, `.specify`, `docs`; tự viết mô tả, không gọi tác tử phụ): 27/27 file, 10/10 API, Health 0 nghiêm trọng, 1 nhẹ (`GET /api/info` không cần đăng nhập - chỉ trả phiên bản, chấp nhận được). Bản đồ nằm ở `floorplan/` (không commit), mất khi container bị thu hồi; chạy lại `/floorplan` trên máy để giữ.
 
 ### Việc còn treo
 - [ ] Làm theo tài liệu trên máy chủ thật (người quản trị).
