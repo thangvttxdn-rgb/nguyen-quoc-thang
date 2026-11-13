@@ -16,7 +16,9 @@ trang Command Center hiện nhãn "thử nghiệm". Test bắt buộc mục th�
 ## 2. Tuyến mới `giao-dien` - "Nâng cấp giao diện (thử nghiệm)"
 
 - Từ khóa: `giao diện`, `unslop`, `ui`, `ux`, `bố cục`, `css`, `responsive`, `làm đẹp`, `màu sắc`, `typography`.
-- Chính: `ctxdn-ui-ux-unslop`. Hỗ trợ: `unslop`, `karpathy-guidelines`, `/code-review`.
+- Chính: `ctxdn-ui-ux-unslop`. Hỗ trợ: `karpathy-guidelines`, `/code-review`.
+- Bản gốc `unslop` **không** nằm trong tuyến (G3 phát hiện hook từng đưa đường dẫn bản gốc ra làm theo trực tiếp).
+  Mục `unslop` có `chi_qua: ctxdn-ui-ux-unslop`; test cấm mọi tuyến giao cho mục có `chi_qua`.
 - **Thay đổi tuyến cũ:** từ khóa `giao diện` chuyển từ tuyến `ma-nguon` sang `giao-dien` (test cấm trùng từ khóa).
   "Sửa lỗi giao diện…" vẫn về `ma-nguon` vì khớp 2 từ khóa ("sửa lỗi", "lỗi") - có test.
 
@@ -32,5 +34,6 @@ trang Command Center hiện nhãn "thử nghiệm". Test bắt buộc mục th�
 
 ## 4. Xung đột đã kiểm - THẬT
 
-`python -m pytest -q`: **183 passed** (gồm 7 test mới: định tuyến có dấu/không dấu, ưu tiên sửa lỗi,
-nhãn thử nghiệm, mã băm bản gốc, vị trí thư mục). `ruff check .`: sạch. `build_page.py --check`: khớp.
+`python -m pytest`: **185 passed** (176 cũ + 9 mới: định tuyến có dấu/không dấu ×3, ưu tiên sửa lỗi, nhãn thử
+nghiệm, mã băm + danh sách file bản gốc, đường dẫn/`chi_qua`, không nằm ở `.claude/skills/`, bản gốc không vào tuyến).
+`ruff check .`: sạch. `build_page.py --check`: khớp.

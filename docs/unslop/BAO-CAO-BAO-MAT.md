@@ -1,7 +1,10 @@
 # Báo cáo bảo mật Unslop
 
-Phạm vi: toàn bộ 23 file ở commit `97daa3e`. Cách làm: đọc hết `SKILL.md`, `README.md`, 5 file `references/*.md`,
-2 script, 2 test; dò mẫu nguy hiểm bằng `grep`; dò ký tự ẩn (zero-width, đảo chiều bidi, BOM) bằng Python `-I`.
+Phạm vi: 23 file ở commit `97daa3e`. Cách làm: đọc toàn văn `SKILL.md`, `README.md`, `signs.md`, đầu
+`snapshot.mjs` và đoạn máy chủ HTTP của `story.mjs`, phần "Generate it" của `visuals.md`; với **mọi** file văn bản:
+dò mẫu nguy hiểm bằng `grep` (gọi mạng, chạy chương trình, xóa, biến môi trường, URL, từ khóa dịch vụ) và dò ký tự
+ẩn (zero-width, đảo chiều bidi, BOM) bằng Python `-I`. Phần còn lại của `tokens.md`, `effects.md`, `refs.md` chỉ dò
+mẫu, chưa đọc toàn văn.
 **Không chạy script nào của kho.** Kết luận: **ĐẠT có điều kiện**.
 
 ## 1. Kết quả dò - THẬT
@@ -30,6 +33,9 @@ Phạm vi: toàn bộ 23 file ở commit `97daa3e`. Cách làm: đọc hết `SK
 | R7 | README quảng cáo dịch vụ thuê thiết kế ("Hire the unslopper") | Thấp | Lớp bọc ghi bỏ qua |
 | R8 | Giấy phép CC BY 4.0 bắt buộc ghi công | Pháp lý | Giữ `LICENSE`, dòng ghi công trong các file; video kể chuyện phải có dòng `unslop by @heydamir` |
 | R9 | Kiểm thử Windows: script tìm Chrome theo đường dẫn macOS/Linux | Thấp | Trên Windows Playwright dùng Chromium đi kèm; **chưa thử** (BLOCKED) |
+| R10 | "Thử nghiệm" nhưng hook vẫn giao **việc chính** cho lớp bọc mỗi khi yêu cầu có từ "giao diện", "css"… - tức là kích hoạt trên thực tế qua điều phối (dù Claude Code không tự nạp) | Trung bình | Hook gắn nhãn "chỉ làm trên bản sao"; bản gốc bị bỏ khỏi tuyến (có test). Muốn chặn hẳn: bỏ tuyến `giao-dien` đến khi duyệt |
+| R11 | Bản gốc dặn làm dịu màu ngữ nghĩa, bỏ mọi emoji, thay dữ liệu mẫu bằng dữ liệu "trông thật", dùng lucide | Trung bình | Lớp bọc mục 1-2 ghi ngoại lệ từng dòng |
+| R12 | Bản gốc gợi ý cả "design tool" - môi trường đang kết nối Adobe, Canva | Trung bình | Lớp bọc cấm gọi trong kỹ năng này |
 
 ## 3. Quyền cần có khi chạy
 

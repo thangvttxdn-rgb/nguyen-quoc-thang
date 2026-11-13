@@ -19,19 +19,26 @@ không sửa thẳng `src/` khi chưa có nhiệm vụ cụ thể được chủ
 |---|---|
 | API, backend, CSDL, schema, thuật toán, quy trình xử lý toa xe | Chỉ sửa `*.css`, khối `<style>`, thuộc tính `class`/`style` |
 | Phân quyền, đăng nhập | Không đổi `id`, `name`, `type`, `autocomplete`, `required` của ô nhập |
-| Chức năng nút, cơ chế xuất nhập dữ liệu | Số lượng và `id`/`data-*` của `button`, `a`, `form`, `input`, `select` giữ nguyên |
-| Nội dung cảnh báo an toàn | Giữ nguyên chữ, màu đỏ/cam và mức nổi bật; được đổi biểu tượng emoji sang biểu tượng nét nếu ý nghĩa giữ nguyên |
+| Chức năng nút, cơ chế xuất nhập dữ liệu | Khung HTML (mọi thẻ, thuộc tính trừ `class`/`style`, mọi `<script>`) trùng khớp - script kiểm thử so tự động |
+| Nội dung cảnh báo an toàn | Giữ nguyên chữ **và cả emoji** (⚠️, ⛔…), màu đỏ/cam, mức nổi bật. Ngoại lệ với bản gốc `SKILL.md` dòng 96-100 (emoji → biểu tượng màu chữ phụ) và dòng 224 ("No emoji left") |
+| Màu ngữ nghĩa (đang làm / đã ngừng / cảnh báo / dữ liệu mẫu) | Giữ họ màu và độ nổi; được chỉnh mã màu cho đủ tương phản, ghi bảng mã cũ → mới trong báo cáo. Ngoại lệ với bản gốc dòng 88 ("toned down") |
+| Dữ liệu mẫu, nhãn DEMO | Không thay dữ liệu mẫu bằng dữ liệu "trông thật" (ngoại lệ với bản gốc dòng 112, 212); giữ nguyên nhãn "dữ liệu mẫu" |
 | Cấu trúc dữ liệu, JavaScript nghiệp vụ | Mã `<script>` phải trùng khớp từng byte với bản trước |
 | Nhận diện phần mềm | Giữ tên phần mềm, logo thật, màu thương hiệu thật (nếu có) |
 
-Bản gốc unslop cho phép sửa câu chữ (pass "Copy"). Ở CTXĐN: chỉ sửa chữ **trang trí** (tiêu đề chào hỏi,
-dấu chấm than, emoji); không sửa nhãn trường, tên nút, thông báo lỗi, thuật ngữ ngành (toa xe, KCTX, trạm…).
-Mọi thay đổi chữ phải liệt kê trong báo cáo.
+Bản gốc unslop cho phép sửa câu chữ (pass "Copy"). Ở CTXĐN: mặc định **không sửa chữ** (script so chữ trong
+DOM, khác là FAIL). Chỉ sửa chữ trang trí (tiêu đề chào hỏi, dấu chấm than) khi chủ đầu tư duyệt từng câu; không
+bao giờ sửa nhãn trường, tên nút, thông báo lỗi, thuật ngữ ngành (toa xe, KCTX, trạm…).
+
+Bố cục: phần mềm nội bộ dùng trên điện thoại được giữ cột hẹp (vd. EMS 640 px) - ngoại lệ với bản gốc dòng 128.
 
 ## 2. Ngoài phạm vi (bản gốc có, CTXĐN không dùng)
 
-- **Sinh ảnh trả phí** (fal, Replicate, OpenAI images, Higgsfield - `references/visuals.md`): không kết nối,
-  không gọi. Phần mềm nội bộ không cần ảnh minh họa; để trống và ghi đề xuất.
+- **Sinh ảnh, công cụ thiết kế bên ngoài** (fal, Replicate, OpenAI images, Higgsfield, và mọi "design tool" như
+  Adobe, Canva, Figma đang kết nối - `references/visuals.md` dòng 54, 60): không gọi trong kỹ năng này. Phần mềm
+  nội bộ không cần ảnh minh họa; để trống và ghi đề xuất.
+- **Bộ biểu tượng** (bản gốc gợi ý lucide): chỉ dùng biểu tượng đã có trong dự án hoặc SVG viết tay nội tuyến;
+  không tải từ CDN, không `npm install` (cài thư viện phải xin phép).
 - **Font từ CDN**: máy chủ nội bộ có thể không ra Internet. Dùng font hệ thống hỗ trợ tiếng Việt
   (`"Segoe UI", Roboto, system-ui, sans-serif`); font web chỉ khi đã có sẵn trong dự án.
 - **`scripts/snapshot.mjs` với URL ngoài**: chỉ dùng với file cục bộ hoặc địa chỉ nội bộ được giao.
@@ -58,7 +65,7 @@ Mọi thay đổi chữ phải liệt kê trong báo cáo.
 ```
 Dùng ctxdn-ui-ux-unslop rà giao diện docs/giao-dien-mobile.html, chỉ báo dấu hiệu, chưa sửa
 Nâng cấp giao diện màn hình phân công EMS ở mức nhẹ, làm trên bản sao trong sandbox
-Chuẩn hóa khoảng cách và màu của src/static/app.css theo unslop, giữ nguyên màu xanh/đỏ trạng thái
+Chép src/static/app.css ra bản sao, chuẩn hóa khoảng cách và màu theo unslop, giữ họ màu xanh/đỏ trạng thái
 Kiểm tra giao diện trước/sau ở 360, 390, 768, 1366 px và xuất báo cáo
 ```
 
@@ -69,11 +76,13 @@ node .claude/thu-nghiem/ctxdn-ui-ux-unslop/scripts/kiem_tra_giao_dien.mjs <truoc
 ```
 
 Script dùng Playwright + Chromium có sẵn, mở cả hai bản ở 360/390/768/1366 px, ghi `ket-qua.json` và
-ảnh chụp. Kiểm: không tràn ngang, không mất nút/ô nhập (so `id`, `name`, `type`), mã `<script>` trùng khớp,
-chữ hiển thị ≥ 12px, nút bấm ≥ 44px chiều cao trên điện thoại, không lỗi JavaScript, nút không bị che.
+ảnh chụp. Kiểm: có `<meta name="viewport" content="width=device-width…">` (thiếu thì số đo điện thoại vô nghĩa),
+khung HTML trừ CSS trùng khớp, chữ trong DOM giống bản trước, không tràn ngang, chữ ≥ 12px, nút ≥ 44px trên
+điện thoại, không lỗi JavaScript/tải tài nguyên mới, nút không bị che hoặc bị lớp cố định (toast…) đè.
+Mã thoát: 0 PASS, 1 FAIL, 2 lỗi công cụ.
 Đây là **mô phỏng trình duyệt** (Chromium), không thay kiểm thử trên iPhone Safari / Android Chrome thật.
 
 ## 6. Chi phí
 
-Ngân sách 10.000 đ/lượt. Một tác tử là đủ; không gọi tác tử phụ; tối đa 3 lần chụp/so sánh mỗi lượt
+Ngân sách 10.000 đ/lượt (theo lệnh giao nhiệm vụ của chủ đầu tư ngày 13/11/2026). Một tác tử là đủ; không gọi tác tử phụ; tối đa 3 lần chụp/so sánh mỗi lượt
 (theo bản gốc); dùng lại kết quả kiểm thử. Không đăng ký, không mua dịch vụ.

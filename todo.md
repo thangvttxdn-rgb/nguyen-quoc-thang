@@ -43,10 +43,12 @@
 - [x] Bảo mật: không tải mã, không telemetry, không ký tự ẩn; rủi ro sinh ảnh trả phí, sửa chữ chạm cảnh báo an toàn → chặn ở lớp bọc.
 - [x] Cài thử vào `.claude/thu-nghiem/` (không tự nạp); lớp bọc `ctxdn-ui-ux-unslop` + bộ kiểm thử 4 cỡ màn hình.
 - [x] Registry: trạng thái mới `thu-nghiem`, tuyến `giao-dien` ("giao diện" chuyển khỏi tuyến mã nguồn), 5 kết luận trùng lặp.
-- [x] DEMO trên bản sao EMS: chỉ đổi CSS, kiểm thử PASS 8/8; phát hiện toast chặn nút "Ngừng nhân sự" ở bản hiện hành.
-- [x] Nghiệm thu kỹ thuật: `python -m pytest -q` 183 passed, `ruff check .` sạch. Tổng: **PARTIAL**.
+- [x] DEMO trên bản sao EMS: đổi CSS (+ bỏ font CDN), kiểm thử PASS 8/8 (chạy lại sau khi thêm viewport); phát hiện toast chặn/đè nút "Ngừng nhân sự" và hộp xác nhận ở 360 px.
+- [x] G3: `/code-review` 10 điểm, Tổ 2 FAIL 15 điểm - đã xử lý hết (viewport, ngoại lệ lớp bọc, bỏ bản gốc khỏi tuyến, bảng mã màu, rollback toàn dải, NODE_PATH).
+- [x] Nghiệm thu kỹ thuật: `python -m pytest` 185 passed, `ruff check .` sạch. Tổng: **PARTIAL**.
 - [ ] Chờ duyệt: kích hoạt vào `.claude/skills/` (`docs/unslop/PHUONG-AN-ROLLBACK.md` mục 3).
-- [ ] Chờ duyệt: sửa toast chặn nút trong `src/static/app.css` thật (`pointer-events: none`).
+- [ ] Chờ duyệt: sửa toast chặn/đè nút trong `src/static/app.css` thật (đưa lên đầu màn hình + `pointer-events: none`).
+- [ ] Chờ duyệt: đổi mã màu trạng thái (bảng ở `docs/unslop/BAO-CAO-KIEM-THU.md` mục 5).
 - [ ] BLOCKED: kiểm thử iPhone Safari, Android Chrome, máy Windows thật; AI OS 3.0, Quản lý tài sản, Báo cáo tự động không có trong kho.
 
 ### Việc còn treo

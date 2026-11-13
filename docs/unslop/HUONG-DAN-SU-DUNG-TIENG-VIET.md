@@ -32,7 +32,7 @@ Kỹ năng **chưa kích hoạt** - không có lệnh `/ctxdn-ui-ux-unslop`. Khi
 ```
 Dùng ctxdn-ui-ux-unslop rà giao diện docs/giao-dien-mobile.html, chỉ liệt kê dấu hiệu, chưa sửa
 Nâng cấp giao diện màn hình phân công EMS ở mức nhẹ, làm trên bản sao trong docs/unslop/vi-du/
-Chuẩn hóa khoảng cách và màu của src/static/app.css theo unslop, giữ nguyên màu xanh/đỏ trạng thái
+Chép src/static/app.css ra bản sao, chuẩn hóa khoảng cách và màu theo unslop, giữ họ màu xanh/đỏ trạng thái
 Đề xuất hướng thiết kế 5 dòng cho phần mềm quản lý tài sản, chưa sửa gì
 Kiểm tra giao diện trước/sau ở 360, 390, 768, 1366 px và xuất báo cáo
 ```
@@ -51,7 +51,11 @@ npm init -y
 npm install -D playwright@1.63.0
 npx playwright@1.63.0 install chromium
 
-# Mỗi lần kiểm thử (đứng trong thư mục ctxdn-ui-test để Node tìm thấy playwright)
+# Mỗi phiên PowerShell: BẮT BUỘC chỉ cho Node chỗ có playwright. Script nạp thư viện theo vị trí file script
+# (createRequire), không theo thư mục đang đứng, nên thiếu dòng này sẽ báo "Cannot find module 'playwright'".
+$env:NODE_PATH = "$env:USERPROFILE\ctxdn-ui-test\node_modules"
+
+# Mỗi lần kiểm thử
 node <đường-dẫn-kho>\.claude\thu-nghiem\ctxdn-ui-ux-unslop\scripts\kiem_tra_giao_dien.mjs `
   <đường-dẫn-kho>\docs\unslop\vi-du\truoc.html `
   <đường-dẫn-kho>\docs\unslop\vi-du\sau.html `
@@ -59,8 +63,9 @@ node <đường-dẫn-kho>\.claude\thu-nghiem\ctxdn-ui-ux-unslop\scripts\kiem_tr
 ```
 
 Phiên bản `1.63.0` là bản đã dùng để kiểm thử trong phiên đám mây (THẬT); đổi bản khác phải được người quản trị duyệt.
-Lưu ý: script nạp `playwright` theo vị trí file script; nếu báo không tìm thấy, đặt biến `NODE_PATH`
-trỏ tới `ctxdn-ui-test\node_modules` cho phiên PowerShell đó (`$env:NODE_PATH = "..."`), không sửa PATH hệ thống.
+`$env:NODE_PATH` chỉ có hiệu lực trong phiên PowerShell đó, không sửa PATH hệ thống.
+Nếu PowerShell báo `npm.ps1 cannot be loaded because running scripts is disabled` (execution policy): gọi
+`npm.cmd` / `npx.cmd` thay cho `npm` / `npx`, không đổi execution policy của máy.
 Hướng dẫn Windows này **chưa chạy thử** trên máy Windows (BLOCKED trong phiên đám mây).
 
 Kết quả: `ket-qua\ket-qua.json` (PASS/FAIL, danh sách lỗi) và ảnh `truoc-<cỡ>-<trạng thái>.jpg`, `sau-…jpg`.

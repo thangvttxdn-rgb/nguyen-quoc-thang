@@ -10,9 +10,9 @@
 | Hệ điều hành | Linux 6.18 (container đám mây của Claude Code), không phải Windows | THẬT |
 | Windows: phiên bản, PATH, PowerShell | Không có máy Windows trong phiên này | **BLOCKED** |
 | Node.js / npm | v22.23.4 tại `/opt/node22/bin` | THẬT |
-| Python | 3.x tại `/usr/local/bin/python`; dev deps cài theo `requirements-dev.txt` (bản ghim, như CI) | THẬT |
+| Python | 3.13 tại `/usr/local/bin/python`; dev deps cài theo `requirements-dev.txt` (bản ghim, như CI) | THẬT |
 | Git | Có | THẬT |
-| Playwright + Chromium | Có sẵn trong môi trường (không cài thêm) | THẬT |
+| Playwright + Chromium | 1.63.0 + Chromium 153, có sẵn trong môi trường (không cài thêm) | THẬT |
 | FFmpeg | `/usr/bin/ffmpeg` | THẬT |
 | Thư mục Command Center | `.claude/tong-chi-huy/registry.json` (53 mục trước khi thêm) + `docs/ai-command-center.html` | THẬT |
 | Unslop hoặc kỹ năng tương đương | Chưa có. Gần nhất: `artifact-design` (có sẵn, cho trang Artifact), `frontend-design` (không có trong kho) | THẬT |
@@ -71,10 +71,21 @@ Kết quả kiểm thử: `BAO-CAO-KIEM-THU.md`.
 | Repository được xác minh | **ĐẠT** |
 | Kiểm tra bảo mật | **ĐẠT có điều kiện** (`BAO-CAO-BAO-MAT.md`) |
 | Cài đặt thử | **ĐẠT** ở vùng thử nghiệm; **chưa kích hoạt** trong `.claude/skills/` (chờ duyệt) |
-| Registry thử nghiệm không xung đột | **ĐẠT** (pytest 183/183) |
-| Hướng dẫn tiếng Việt | **ĐẠT** |
-| Kiểm thử có bằng chứng | **PARTIAL** - Chromium mô phỏng; iPhone Safari, Android Chrome, Windows thật: BLOCKED |
-| Gỡ cài đặt, rollback | **ĐẠT** (đã thử gỡ trên bản sao kho) |
+| Registry thử nghiệm không xung đột | **ĐẠT** (`python -m pytest` 185 passed, `ruff` sạch) |
+| Hướng dẫn tiếng Việt | **PARTIAL** - phần Windows chưa chạy trên máy Windows |
+| Kiểm thử có bằng chứng | **PARTIAL** - Chromium mô phỏng (lần đầu không hợp lệ do thiếu viewport, đã chạy lại); iPhone Safari, Android Chrome, Windows thật: BLOCKED |
+| Gỡ cài đặt, rollback | **ĐẠT** (thử `git revert` toàn dải commit trên bản sao kho - `PHUONG-AN-ROLLBACK.md` mục 4) |
 | HTML xem trước | **ĐẠT** |
 
-→ Tổng: **PARTIAL**. Thiếu: kiểm thử thiết bị thật và máy Windows; 3 dự án ngoài kho chưa thử.
+→ Tổng: **PARTIAL**. Thiếu: kiểm thử thiết bị thật và máy Windows; hướng dẫn Windows chưa chạy thử; 3 dự án ngoài kho chưa thử.
+
+## 7. Phản biện G3
+
+- `/code-review`: 10 điểm về script kiểm thử và hook - đã sửa hết.
+- Tổ 2 (`to-phan-bien`): **FAIL**, 15 điểm. Đã sửa hết, đáng kể nhất:
+  - Kiểm thử 360/390 px lần đầu đo sai khổ (thiếu viewport). Đã chạy lại và lộ thêm lỗi toast đè hộp xác nhận.
+  - Lớp bọc bổ sung các ngoại lệ với bản gốc: emoji cảnh báo, màu ngữ nghĩa, dữ liệu mẫu, cột hẹp, công cụ thiết kế, lucide.
+  - Bỏ bản gốc khỏi danh sách hỗ trợ của tuyến.
+  - Nhãn "giữ nguyên màu" sửa thành bảng mã cũ → mới.
+  - Rollback thử lại với toàn dải commit.
+  - Hướng dẫn Windows: `NODE_PATH` thành bước bắt buộc.

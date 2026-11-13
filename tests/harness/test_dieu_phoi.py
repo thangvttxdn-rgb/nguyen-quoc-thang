@@ -181,8 +181,8 @@ def test_muc_thu_nghiem_duoc_gan_nhan_trong_ke_hoach():
     ke_hoach = dieu_phoi.ke_hoach(dieu_phoi.phan_tich("Nâng cấp giao diện EMS", REG), REG)
     assert "ctxdn-ui-ux-unslop (THỬ NGHIỆM" in ke_hoach
     assert ".claude/thu-nghiem/ctxdn-ui-ux-unslop/SKILL.md" in ke_hoach
-    # Bản gốc chỉ được nhắc qua lớp bọc, không đưa đường dẫn để làm theo trực tiếp.
-    assert "unslop (chỉ dùng qua ctxdn-ui-ux-unslop" in ke_hoach
+    # Bản gốc không được giao trực tiếp: không xuất hiện trong kế hoạch.
+    assert "kỹ năng unslop" not in ke_hoach
     assert ".claude/thu-nghiem/unslop/SKILL.md" not in ke_hoach
 
 
@@ -214,3 +214,10 @@ def test_muc_thu_nghiem_khong_nam_trong_thu_muc_skills():
     for m in REG["muc"]:
         if m.get("trang_thai") == "thu-nghiem":
             assert not m["duong_dan"].startswith(".claude/skills/"), m["id"]
+            assert not (GOC / ".claude" / "skills" / m["id"]).exists(), m["id"]
+
+
+def test_ban_goc_chi_qua_lop_boc_khong_duoc_giao_trong_tuyen():
+    chi_qua = {m["id"] for m in REG["muc"] if m.get("chi_qua")}
+    for t in REG["tuyen"]:
+        assert not chi_qua & {t["chinh"], *t["ho_tro"]}, t["id"]

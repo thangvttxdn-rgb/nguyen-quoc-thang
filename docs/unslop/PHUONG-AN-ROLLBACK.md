@@ -17,10 +17,11 @@ Toàn bộ thay đổi nằm trong kho, không đụng PATH, registry Windows, c
 
 ## 2. Gỡ hoàn toàn
 
-Cách 1 - hoàn tác commit (khuyên dùng, giữ lịch sử):
+Cách 1 - hoàn tác **toàn bộ dải commit** unslop (khuyên dùng, giữ lịch sử). Việc cài gồm nhiều commit
+(cài đặt, ghi kết quả gỡ, sửa sau G3); revert một commit lẻ sẽ không về đúng trạng thái cũ:
 
 ```bash
-git revert <mã-commit-unslop>
+git revert --no-edit af0596b..<commit-cuối-của-unslop>   # af0596b = commit ngay trước khi cài
 python -m pytest -q          # phải xanh
 ```
 
@@ -54,7 +55,8 @@ Quay lui sau kích hoạt: `git revert` commit kích hoạt.
 
 ## 4. Kết quả thử gỡ - THẬT
 
-Chạy 13/11/2026 trên bản sao kho trong scratchpad (không đụng kho thật):
+Lần 1 (trước G3) chỉ revert commit `318f482` - G3 chỉ ra là chưa đủ vì nhánh có thêm commit.
+Lần 2 chạy lại với toàn dải - kết quả ở cuối file. Bảng lần 1, để đối chiếu:
 
 | Bước | Kết quả |
 |---|---|

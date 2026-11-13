@@ -71,8 +71,11 @@ const nguonSau = readFileSync(sau, "utf-8");
 const sTruoc = scriptCua(nguonTruoc), sSau = scriptCua(nguonSau);
 const dkTruoc = dieuKhienCua(nguonTruoc), dkSau = dieuKhienCua(nguonSau);
 const kTruoc = khungCua(nguonTruoc), kSau = khungCua(nguonSau);
+// Thiếu viewport thì trình duyệt điện thoại dựng trang khổ ~980px rồi thu nhỏ: số đo 360/390 vô nghĩa.
+const coViewport = (html) => /<meta\b[^>]*name=["']?viewport["']?[^>]*width=device-width/i.test(html);
 const batBien = {
   khung_html_trung_khop: kTruoc === kSau,
+  viewport: [coViewport(nguonTruoc), coViewport(nguonSau)],
   script_trung_khop: sTruoc.length === sSau.length && sTruoc.every((s, i) => s === sSau[i]),
   so_script: [sTruoc.length, sSau.length],
   dieu_khien_trung_khop: JSON.stringify(dkTruoc) === JSON.stringify(dkSau),
@@ -100,18 +103,39 @@ function doTrang({ chuToiThieu, nutToiThieu, dienThoai }) {
   const nutNho = [], biChe = [];
   // Khi có hộp thoại modal đang mở, chỉ xét điều khiển bên trong nó (nền bị phủ là chủ ý).
   const modal = [...document.querySelectorAll('[aria-modal="true"]')].find(hien);
+  // Lớp cố định hiển thị (trừ lớp phủ nền toàn màn hình và chính hộp modal).
+  const phuCoDinh = [...document.querySelectorAll("body *")].filter((f) => {
+    if (!hien(f) || f === modal || getComputedStyle(f).position !== "fixed") return false;
+    const rf = f.getBoundingClientRect();
+    return !(rf.width >= innerWidth - 1 && rf.height >= innerHeight - 1);
+  });
   for (const e of (modal || document).querySelectorAll("button, a[href], input:not([type=hidden]), select, textarea")) {
     if (!hien(e)) continue;
     const r = e.getBoundingClientRect();
     if (dienThoai && r.height < nutToiThieu) nutNho.push(`${ten(e)} ${Math.round(r.width)}×${Math.round(r.height)}`);
     const x = r.left + r.width / 2, y = r.top + r.height / 2;
-    if (x >= 0 && y >= 0 && x < innerWidth && y < innerHeight) {
+    // Nút đang cuộn khuất trong khung cuộn của nó: không phải bị che.
+    let khuat = false;
+    for (let a = e.parentElement; a; a = a.parentElement) {
+      if (/(auto|scroll|hidden)/.test(getComputedStyle(a).overflowY)) {
+        const ra = a.getBoundingClientRect();
+        if (y < ra.top || y > ra.bottom || x < ra.left || x > ra.right) { khuat = true; break; }
+      }
+    }
+    // Phần tử cố định (toast, thanh nổi) đè lên nút về mặt hiển thị - kể cả khi pointer-events: none.
+    for (const f of phuCoDinh) {
+      if (f.contains(e) || e.contains(f) || (modal && !modal.contains(f) && f.compareDocumentPosition(modal) & 4)) continue;
+      const rf = f.getBoundingClientRect();
+      if (!khuat && rf.left < r.right && rf.right > r.left && rf.top < r.bottom && rf.bottom > r.top) biChe.push(`${ten(e)} bị đè bởi ${ten(f)}`);
+    }
+    if (!khuat && x >= 0 && y >= 0 && x < innerWidth && y < innerHeight) {
       const tren = document.elementFromPoint(x, y);
       if (tren && tren !== e && !e.contains(tren) && !tren.contains(e) && !(e.labels && [...e.labels].some((l) => l.contains(tren)))) biChe.push(`${ten(e)} dưới ${ten(tren)}`);
     }
   }
   return {
     tran_ngang: document.documentElement.scrollWidth > innerWidth,
+    rong_bo_cuc: innerWidth,
     rong_noi_dung: document.documentElement.scrollWidth,
     chu_nho: chuNho,
     nut_nho: nutNho,
@@ -128,7 +152,8 @@ function doTrang({ chuToiThieu, nutToiThieu, dienThoai }) {
 
 process.on("unhandledRejection", (e) => loiCongCu(String(e?.message || e).split("\n")[0]));
 const trinhDuyet = await chromium.launch();
-const ketQua = { cong_cu: "Playwright + Chromium (mô phỏng)", ngay: new Date().toISOString(), bat_bien: batBien, lan_chay: [] };
+const phienBan = { playwright: require("playwright/package.json").version, chromium: trinhDuyet.version() };
+const ketQua = { cong_cu: "Playwright + Chromium (mô phỏng)", phien_ban: phienBan, ngay: new Date().toISOString(), bat_bien: batBien, lan_chay: [] };
 
 for (const [ban, file] of [["truoc", truoc], ["sau", sau]]) {
   for (const kc of RONG) {
@@ -166,6 +191,7 @@ await trinhDuyet.close();
 
 // Đánh giá: bản "sau" phải sạch; chữ hiển thị (nghiệp vụ) phải giống bản "truoc" ở mọi trạng thái.
 const loi = [], ghiChu = [];
+if (!batBien.viewport[1]) loi.push("Bản sau thiếu <meta name=viewport width=device-width> - số đo điện thoại không hợp lệ");
 if (!batBien.khung_html_trung_khop) loi.push("Khung HTML (ngoài CSS/class/style) bị thay đổi");
 if (!batBien.script_trung_khop) loi.push("Mã <script> bị thay đổi");
 if (!batBien.dieu_khien_trung_khop) loi.push("Danh sách nút/ô nhập/biểu mẫu bị thay đổi");
@@ -179,6 +205,7 @@ for (const lc of ketQua.lan_chay.filter((l) => l.ban === "sau")) {
     const n = `${lc.rong}px/${tt.trang_thai}`;
     if (tt.trang_thai === "loi-kich-ban") { loi.push(`${n}: ${tt.loi}`); continue; }
     if (tt.tran_ngang) loi.push(`${n}: tràn ngang (${tt.rong_noi_dung}px)`);
+    if (tt.rong_bo_cuc > lc.rong) loi.push(`${n}: bố cục dựng ở khổ ${tt.rong_bo_cuc}px, không phải ${lc.rong}px`);
     if (tt.chu_nho.length) loi.push(`${n}: chữ < ${CHU_TOI_THIEU}px ×${tt.chu_nho.length}`);
     if (tt.nut_nho.length) loi.push(`${n}: nút < ${NUT_TOI_THIEU}px ×${tt.nut_nho.length}`);
     if (tt.nut_bi_che.length) loi.push(`${n}: nút bị che ×${tt.nut_bi_che.length}`);
