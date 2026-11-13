@@ -78,9 +78,12 @@ def _ten_muc(muc_id: str, muc: dict) -> str:
     nhan = {"skill": "kỹ năng", "agent": "tác tử", "cmd": "lệnh", "guard": "rào chắn",
             "link": "kết nối"}[m["nhom"]]
     ten = f"{nhan} /{muc_id}" if m["nhom"] == "cmd" else f"{nhan} {muc_id}"
-    if m.get("trang_thai") == "thu-nghiem":
+    if m.get("chi_qua"):
+        # Bản gốc bên ngoài: chỉ dùng qua lớp bọc, không làm theo trực tiếp (lớp bọc có luật chặn).
+        ten += f" (chỉ dùng qua {m['chi_qua']}, không làm theo trực tiếp)"
+    elif m.get("trang_thai") == "thu-nghiem":
         # Chưa kích hoạt: Claude Code không tự nạp, phải đọc file và chỉ chạy trên bản sao.
-        ten += f" (THỬ NGHIỆM: đọc {m['duong_dan']}, chỉ làm trên bản sao trong sandbox)"
+        ten += f" (THỬ NGHIỆM: đọc {m.get('duong_dan', '?')}, chỉ làm trên bản sao trong sandbox)"
     return ten
 
 

@@ -9,7 +9,7 @@
 // Kết quả: <thu-muc>/ket-qua.json và ảnh <ban>-<rong>-<trang-thai>.jpg. Mã thoát 0 = PASS, 1 = FAIL.
 
 import { createRequire } from "node:module";
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve, join } from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -26,21 +26,43 @@ const CHU_TOI_THIEU = 12; // px
 const NUT_TOI_THIEU = 44; // px, chiều cao vùng bấm trên màn hình cảm ứng
 
 const args = process.argv.slice(2);
+// Mã thoát: 0 = PASS, 1 = FAIL giao diện, 2 = lỗi công cụ/tham số (không phải kết luận về giao diện).
+const loiCongCu = (msg) => { console.error("LỖI CÔNG CỤ: " + msg); process.exit(2); };
 const viTri = args.indexOf("--kich-ban");
-const kichBan = viTri >= 0 ? JSON.parse(readFileSync(args[viTri + 1], "utf-8")) : [];
 const [truoc, sau, raDir] = args.filter((a, i) => !a.startsWith("--") && (viTri < 0 || i !== viTri + 1));
-if (!truoc || !sau || !raDir) {
-  console.error("Cách dùng: node kiem_tra_giao_dien.mjs <truoc.html> <sau.html> <thu-muc> [--kich-ban file.json]");
-  process.exit(2);
+if (!truoc || !sau || !raDir || (viTri >= 0 && !args[viTri + 1])) {
+  loiCongCu("cách dùng: node kiem_tra_giao_dien.mjs <truoc.html> <sau.html> <thu-muc> [--kich-ban file.json]");
 }
+for (const f of [truoc, sau]) if (!existsSync(f)) loiCongCu(`không thấy file ${f}`);
+let kichBan = [];
+try { if (viTri >= 0) kichBan = JSON.parse(readFileSync(args[viTri + 1], "utf-8")); } catch (e) { loiCongCu(`đọc kịch bản: ${e.message}`); }
+const BUOC = ["dien", "bam", "cho", "cho_an", "chup"];
+const tenChup = new Set();
+for (const b of kichBan) {
+  const khoa = Object.keys(b).filter((k) => BUOC.includes(k));
+  if (khoa.length !== 1) loiCongCu(`bước không hợp lệ: ${JSON.stringify(b)} (dùng một trong ${BUOC.join(", ")})`);
+  if (b.chup) { if (tenChup.has(b.chup)) loiCongCu(`tên chụp trùng: ${b.chup}`); tenChup.add(b.chup); }
+}
+if (kichBan.length && !tenChup.size) loiCongCu("kịch bản không có bước chup nào - không đo được gì");
 mkdirSync(raDir, { recursive: true });
 
-// Bất biến nghiệp vụ đọc từ mã nguồn: mã <script> nội tuyến và danh sách điều khiển phải giữ nguyên.
+// Bất biến nghiệp vụ đọc từ mã nguồn. Khung HTML = mã nguồn sau khi bỏ lớp trình bày (<style>,
+// <link rel=stylesheet>, thuộc tính class/style, chú thích). Khung phải trùng khớp: mọi script (kể cả src),
+// onclick, action/method, disabled/required, id/name… đều nằm trong khung.
+const khungCua = (html) => html
+  .replace(/<!--[\s\S]*?-->/g, "")
+  .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, "")
+  .replace(/<link\b[^>]*rel=["']?stylesheet["']?[^>]*>/gi, "")
+  .replace(/\s(class|style)=("[^"]*"|'[^']*'|[^\s>]+)/gi, "")
+  .replace(/\s+/g, " ").trim();
 const scriptCua = (html) => [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map((m) => m[1]);
 const dieuKhienCua = (html) =>
   [...html.matchAll(/<(button|a|input|select|textarea|form)\b([^>]*)>/gi)]
     .map((m) => {
-      const thuocTinh = (ten) => (m[2].match(new RegExp(`\\b${ten}="([^"]*)"`)) || [])[1] || "";
+      const thuocTinh = (ten) => {
+        const k = m[2].match(new RegExp(`(?:^|\\s)${ten}=(?:"([^"]*)"|'([^']*)'|([^\\s>]+))`, "i"));
+        return k ? k[1] ?? k[2] ?? k[3] : "";
+      };
       return [m[1].toLowerCase(), thuocTinh("id"), thuocTinh("name"), thuocTinh("type"), thuocTinh("data-f"), thuocTinh("href")].join("|");
     })
     .sort();
@@ -48,7 +70,9 @@ const nguonTruoc = readFileSync(truoc, "utf-8");
 const nguonSau = readFileSync(sau, "utf-8");
 const sTruoc = scriptCua(nguonTruoc), sSau = scriptCua(nguonSau);
 const dkTruoc = dieuKhienCua(nguonTruoc), dkSau = dieuKhienCua(nguonSau);
+const kTruoc = khungCua(nguonTruoc), kSau = khungCua(nguonSau);
 const batBien = {
+  khung_html_trung_khop: kTruoc === kSau,
   script_trung_khop: sTruoc.length === sSau.length && sTruoc.every((s, i) => s === sSau[i]),
   so_script: [sTruoc.length, sSau.length],
   dieu_khien_trung_khop: JSON.stringify(dkTruoc) === JSON.stringify(dkSau),
@@ -83,7 +107,7 @@ function doTrang({ chuToiThieu, nutToiThieu, dienThoai }) {
     const x = r.left + r.width / 2, y = r.top + r.height / 2;
     if (x >= 0 && y >= 0 && x < innerWidth && y < innerHeight) {
       const tren = document.elementFromPoint(x, y);
-      if (tren && tren !== e && !e.contains(tren) && !tren.contains(e) && !(e.labels && [...e.labels].includes(tren))) biChe.push(`${ten(e)} dưới ${ten(tren)}`);
+      if (tren && tren !== e && !e.contains(tren) && !tren.contains(e) && !(e.labels && [...e.labels].some((l) => l.contains(tren)))) biChe.push(`${ten(e)} dưới ${ten(tren)}`);
     }
   }
   return {
@@ -102,6 +126,7 @@ function doTrang({ chuToiThieu, nutToiThieu, dienThoai }) {
   };
 }
 
+process.on("unhandledRejection", (e) => loiCongCu(String(e?.message || e).split("\n")[0]));
 const trinhDuyet = await chromium.launch();
 const ketQua = { cong_cu: "Playwright + Chromium (mô phỏng)", ngay: new Date().toISOString(), bat_bien: batBien, lan_chay: [] };
 
@@ -141,11 +166,15 @@ await trinhDuyet.close();
 
 // Đánh giá: bản "sau" phải sạch; chữ hiển thị (nghiệp vụ) phải giống bản "truoc" ở mọi trạng thái.
 const loi = [], ghiChu = [];
+if (!batBien.khung_html_trung_khop) loi.push("Khung HTML (ngoài CSS/class/style) bị thay đổi");
 if (!batBien.script_trung_khop) loi.push("Mã <script> bị thay đổi");
 if (!batBien.dieu_khien_trung_khop) loi.push("Danh sách nút/ô nhập/biểu mẫu bị thay đổi");
 for (const lc of ketQua.lan_chay.filter((l) => l.ban === "sau")) {
   const goc = ketQua.lan_chay.find((l) => l.ban === "truoc" && l.rong === lc.rong);
   if (lc.loi_js.length) loi.push(`${lc.rong}px: lỗi JavaScript ${lc.loi_js.length}`);
+  const mangMoi = lc.loi_mang.filter((x) => !goc?.loi_mang.includes(x));
+  if (mangMoi.length) loi.push(`${lc.rong}px: lỗi tải tài nguyên mới ${mangMoi.length}`);
+  if (!lc.trang_thai.some((tt) => tt.trang_thai !== "loi-kich-ban")) loi.push(`${lc.rong}px: không đo được trạng thái nào`);
   for (const tt of lc.trang_thai) {
     const n = `${lc.rong}px/${tt.trang_thai}`;
     if (tt.trang_thai === "loi-kich-ban") { loi.push(`${n}: ${tt.loi}`); continue; }

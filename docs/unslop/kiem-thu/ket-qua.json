@@ -1,7 +1,8 @@
 {
   "cong_cu": "Playwright + Chromium (mô phỏng)",
-  "ngay": "2026-11-13T10:59:14.245Z",
+  "ngay": "2026-11-13T11:38:55.152Z",
   "bat_bien": {
+    "khung_html_trung_khop": true,
     "script_trung_khop": true,
     "so_script": [
       2,

@@ -181,14 +181,32 @@ def test_muc_thu_nghiem_duoc_gan_nhan_trong_ke_hoach():
     ke_hoach = dieu_phoi.ke_hoach(dieu_phoi.phan_tich("Nâng cấp giao diện EMS", REG), REG)
     assert "ctxdn-ui-ux-unslop (THỬ NGHIỆM" in ke_hoach
     assert ".claude/thu-nghiem/ctxdn-ui-ux-unslop/SKILL.md" in ke_hoach
+    # Bản gốc chỉ được nhắc qua lớp bọc, không đưa đường dẫn để làm theo trực tiếp.
+    assert "unslop (chỉ dùng qua ctxdn-ui-ux-unslop" in ke_hoach
+    assert ".claude/thu-nghiem/unslop/SKILL.md" not in ke_hoach
+
+
+def test_muc_thu_nghiem_co_duong_dan_va_chi_qua_hop_le():
+    muc = {m["id"]: m for m in REG["muc"]}
+    for m in REG["muc"]:
+        if m.get("trang_thai") == "thu-nghiem":
+            assert m.get("duong_dan"), m["id"]
+        if "chi_qua" in m:
+            assert m["chi_qua"] in muc, m["id"]
 
 
 def test_ban_goc_unslop_khong_bi_sua():
     import hashlib
     goc = GOC / ".claude" / "thu-nghiem"
+    ds = {}
     for dong in (goc / "unslop.sha256").read_text(encoding="utf-8").splitlines():
         ma, ten = dong.split(maxsplit=1)
+        ds[ten.removeprefix("./")] = ma
         assert hashlib.sha256((goc / "unslop" / ten).read_bytes()).hexdigest() == ma, ten
+    # Không thêm file lạ vào bản gốc.
+    thu_muc = goc / "unslop"
+    co = {p.relative_to(thu_muc).as_posix() for p in thu_muc.rglob("*") if p.is_file()}
+    assert co == set(ds), co ^ set(ds)
 
 
 def test_muc_thu_nghiem_khong_nam_trong_thu_muc_skills():

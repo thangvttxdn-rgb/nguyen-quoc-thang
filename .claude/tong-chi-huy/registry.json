@@ -325,7 +325,8 @@
       "vi_du": "",
       "duong_dan": ".claude/thu-nghiem/unslop/SKILL.md",
       "trang_thai": "thu-nghiem",
-      "ly_do": "Thử nghiệm: chưa kích hoạt (nằm ở .claude/thu-nghiem/, Claude Code không tự nạp). Chỉ chạy trên bản sao trong sandbox; kích hoạt cần chủ đầu tư duyệt - docs/unslop/PHUONG-AN-ROLLBACK.md. Sinh ảnh trả phí (fal, Replicate, OpenAI images, Higgsfield) và font CDN: không dùng."
+      "ly_do": "Thử nghiệm: chưa kích hoạt (nằm ở .claude/thu-nghiem/, Claude Code không tự nạp). Chỉ chạy trên bản sao trong sandbox; kích hoạt cần chủ đầu tư duyệt - docs/unslop/PHUONG-AN-ROLLBACK.md. Sinh ảnh trả phí (fal, Replicate, OpenAI images, Higgsfield) và font CDN: không dùng.",
+      "chi_qua": "ctxdn-ui-ux-unslop"
     },
     {
       "id": "to-phan-bien",
