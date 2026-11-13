@@ -31,7 +31,7 @@ Lần chạy 10:59 UTC báo PASS nhưng **không hợp lệ** ở 360/390/768 px
 | Nút, ô nhập, biểu mẫu | 13 = 13, cùng `id`/`name`/`type` |
 | Phần đầu file | **Có sửa ngoài CSS**: bỏ thẻ `<link>` Google Fonts, đổi một dòng chú thích. Từ `<section class="login">` đến hết file trùng khớp |
 | Chữ trong DOM | Giống nhau ở **16/20** trạng thái so được. 4 trạng thái "xác nhận ngừng" (mỗi cỡ một) **không so được** vì bản trước không mở được hộp xác nhận (mục 4); 4 trạng thái này chỉ dựa vào việc khung HTML và `<script>` trùng khớp |
-| API, CSDL, `src/` | Không đụng |
+| API, CSDL, schema, JavaScript, logic `src/` | Không đụng. Chỉ `src/static/app.css` (CSS) được sửa, theo duyệt ngày 13/11/2026 (commit `730dca2`) |
 
 ## 3. Kết quả theo cỡ màn hình - THẬT (mô phỏng), bố cục dựng đúng khổ
 
@@ -60,7 +60,9 @@ Hộp "xác nhận ngừng" **không đo được trên bản trước** (bướ
 Với **bản hiện hành** thì chỉ suy luận: bấm "Ngừng nhân sự" bị chặn nên chưa mở được hộp xác nhận để đo - **CẦN CĂN CỨ**.
 
 Bản sau xử lý bằng CSS: toast lên đầu màn hình và có `pointer-events: none`; nút cao 44 px.
-Bản sau đã được áp vào `src/static/app.css` (xem mục 7 của `BAO-CAO-KHAO-SAT-UNSLOP.md`).
+Đã áp vào `src/static/app.css`: toast đầu màn hình + `pointer-events: none`; `.chip` và `.logout` 44 px; mã màu trạng thái
+và băng dữ liệu mẫu theo bảng mục 5. **Chưa áp** phần còn lại của `sau.html`: toast vẫn nền gradient, chữ 14.5px, bóng đậm;
+chip giữ padding 6px 14px và bo 999px. Các khác biệt này không ảnh hưởng số liệu kiểm thử, vì kiểm thử đo trên `sau.html`.
 
 ## 5. Thay đổi trình bày (DEMO)
 

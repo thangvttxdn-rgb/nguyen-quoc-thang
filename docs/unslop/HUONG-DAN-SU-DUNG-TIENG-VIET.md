@@ -22,7 +22,7 @@ nghiệp vụ, kiểm thử 4 cỡ màn hình.
 Giá trị chuẩn (bản gốc, `references/tokens.md`): lưới 4px; chữ trọng lượng 400-500 (tối đa 600); một màu nhấn;
 bo góc: nút 8-10px, thẻ 12-16px; biểu tượng 16-18px nét 1.5. CTXĐN thêm: chữ ≥ 12px, vùng bấm ≥ 44px trên điện thoại.
 
-## 2. Trạng thái hiện tại: THỬ NGHIỆM
+## 2. Trạng thái hiện tại: ĐÃ KÍCH HOẠT
 
 Kỹ năng **đã kích hoạt** (13/11/2026) - gọi bằng `/ctxdn-ui-ux-unslop`. Khi gõ yêu cầu có "giao diện", "unslop",
 "làm đẹp"…, Tổng chỉ huy nhắc đọc file `.claude/skills/ctxdn-ui-ux-unslop/SKILL.md` và chỉ làm trên bản sao.

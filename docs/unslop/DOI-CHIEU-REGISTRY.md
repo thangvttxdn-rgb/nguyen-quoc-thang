@@ -7,10 +7,10 @@ Registry duy nhất: `.claude/tong-chi-huy/registry.json` (không tạo registry
 
 | id | Nhóm | Trạng thái | Đường dẫn |
 |---|---|---|---|
-| `ctxdn-ui-ux-unslop` | Kỹ năng · Giao diện | `thu-nghiem` | `.claude/skills/ctxdn-ui-ux-unslop/SKILL.md` |
-| `unslop` | Kỹ năng · Giao diện | `thu-nghiem` | `.claude/skills/ctxdn-ui-ux-unslop/unslop/SKILL.md` |
+| `ctxdn-ui-ux-unslop` | Kỹ năng · Giao diện | (lúc cài: `thu-nghiem`; nay đã kích hoạt) | `.claude/skills/ctxdn-ui-ux-unslop/SKILL.md` |
+| `unslop` | Kỹ năng · Giao diện | (lúc cài: `thu-nghiem`; nay `chi_qua` - chỉ gọi qua lớp bọc) | `.claude/skills/ctxdn-ui-ux-unslop/unslop/SKILL.md` |
 
-Trạng thái `thu-nghiem` mới: hook in "THỬ NGHIỆM: đọc <đường dẫn>, chỉ làm trên bản sao trong sandbox";
+Bảng này là lịch sử lúc cài. Trạng thái `thu-nghiem` (đã bỏ sau kích hoạt): hook in "THỬ NGHIỆM: đọc <đường dẫn>, chỉ làm trên bản sao trong sandbox";
 trang Command Center hiện nhãn "thử nghiệm". Test bắt buộc mục thử nghiệm **không** nằm trong `.claude/skills/`.
 
 ## 2. Tuyến mới `giao-dien` - "Nâng cấp giao diện (thử nghiệm)"

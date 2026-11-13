@@ -49,14 +49,14 @@ Bố cục: phần mềm nội bộ dùng trên điện thoại được giữ c
 ## 3. Quy trình (ánh xạ 9 lượt của unslop)
 
 1. **G0 - Nhìn màn hình.** Đọc file giao diện; chụp ảnh ở 4 cỡ (mục 5). Ghi nhãn THẬT/DEMO.
-2. **Rà dấu hiệu** theo `../unslop/references/signs.md`, mỗi dấu hiệu một dòng kèm vị trí (file:dòng).
+2. **Rà dấu hiệu** theo `unslop/references/signs.md`, mỗi dấu hiệu một dòng kèm vị trí (file:dòng).
    Bổ sung dấu hiệu riêng CTXĐN: chữ < 12px trên điện thoại, nút < 44×44px, tương phản < 4.5:1,
    tràn ngang, ô nhập không có nhãn.
 3. **Chọn mức sửa** (nặng / nhẹ / không cần) như bản gốc. Phần mềm đang dùng thật → mặc định **nhẹ**.
 4. **Hướng thiết kế 5 dòng** (Product, Character, World, Moments, Signature) bằng tiếng Việt, rút từ
    nghiệp vụ ngành toa xe. **Dừng, trình chủ đầu tư** trước khi sửa (trừ khi đã được bảo "cứ làm").
 5. **9 lượt theo thứ tự**: khoảng cách → màu → biểu tượng → chữ trang trí → kiểu chữ → bố cục →
-   chi tiết → hình ảnh → chuyển động. Giá trị cụ thể: `../unslop/references/tokens.md`.
+   chi tiết → hình ảnh → chuyển động. Giá trị cụ thể: `unslop/references/tokens.md`.
 6. **Kiểm thử** bằng `scripts/kiem_tra_giao_dien.mjs` (mục 5) - phải PASS hết.
 7. **Báo cáo**: hướng thiết kế, thay đổi từng lượt, bảng kiểm thử, ảnh trước/sau, danh sách chữ đã đổi.
 

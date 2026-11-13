@@ -47,14 +47,14 @@ Cách cài chính thức (README): `git clone` rồi `cp -r unslop/skills/unslop
 ## 4. Cách tích hợp đã chọn
 
 Không tạo hệ thống quản lý thứ hai: đăng ký vào **registry duy nhất** `.claude/tong-chi-huy/registry.json`
-với trạng thái mới `thu-nghiem`.
+với trạng thái `thu-nghiem` (lúc cài; đã bỏ sau khi kích hoạt).
 
 | Thành phần | Vị trí | Ghi chú |
 |---|---|---|
 | Bản gốc unslop | `.claude/skills/ctxdn-ui-ux-unslop/unslop/` | Chép nguyên vẹn + `LICENSE`; mã băm ở `.claude/skills/ctxdn-ui-ux-unslop/unslop.sha256`, có test |
 | Lớp bọc CTXĐN | `.claude/skills/ctxdn-ui-ux-unslop/SKILL.md` | Bất biến nghiệp vụ, ngoài phạm vi, quy trình tiếng Việt |
 | Bộ kiểm thử | `.claude/skills/ctxdn-ui-ux-unslop/scripts/kiem_tra_giao_dien.mjs` | 4 cỡ màn hình, so trước/sau |
-| Tuyến điều phối | `giao-dien` trong registry | Hook gắn nhãn "THỬ NGHIỆM … chỉ làm trên bản sao" |
+| Tuyến điều phối | `giao-dien` trong registry | Lúc cài hook gắn nhãn "THỬ NGHIỆM"; sau kích hoạt, nhãn `chi_qua` cho bản gốc |
 
 Vì sao không chép thẳng vào `.claude/skills/` như README: Claude Code tự nạp mọi thư mục ở đó, tức là
 **kích hoạt thật**. Lúc đầu chưa kích hoạt; sau khi chủ đầu tư duyệt, đã chuyển vào `.claude/skills/` (`PHUONG-AN-ROLLBACK.md` mục 3).
@@ -83,10 +83,12 @@ Kết quả kiểm thử: `BAO-CAO-KIEM-THU.md`.
 ## 7. Phản biện G3
 
 - `/code-review`: 10 điểm về script kiểm thử và hook - đã sửa hết.
-- Tổ 2 (`to-phan-bien`) lần 1: **FAIL**, 15 điểm. Lần 2: 15 điểm đã sửa đúng, còn 7 lỗi văn bản (số trạng thái so chữ 18/20, nguồn của nhận định toast, số rủi ro, số test, mô tả "chỉ CSS", toast đè đầu trang chưa kiểm, màu tối băng dữ liệu mẫu) - đã sửa hết. Đáng kể nhất ở lần 1:
+- Tổ 2 (`to-phan-bien`) lần 1: **FAIL**, 15 điểm. Lần 2: 15 điểm đã sửa đúng, còn 7 lỗi văn bản (số trạng thái so chữ (lúc đầu ghi 18/20, đã sửa thành 16/20), nguồn của nhận định toast, số rủi ro, số test, mô tả "chỉ CSS", toast đè đầu trang chưa kiểm, màu tối băng dữ liệu mẫu) - đã sửa hết. Đáng kể nhất ở lần 1:
   - Kiểm thử 360/390 px lần đầu đo sai khổ (thiếu viewport). Đã chạy lại. Toast đè hộp xác nhận chỉ đo được trên biến thể toast-ở-đáy; với bản hiện hành là suy ra, CẦN CĂN CỨ.
   - Lớp bọc bổ sung các ngoại lệ với bản gốc: emoji cảnh báo, màu ngữ nghĩa, dữ liệu mẫu, cột hẹp, công cụ thiết kế, lucide.
   - Bỏ bản gốc khỏi danh sách hỗ trợ của tuyến.
   - Nhãn "giữ nguyên màu" sửa thành bảng mã cũ → mới.
   - Rollback thử lại với toàn dải commit.
   - Hướng dẫn Windows: `NODE_PATH` thành bước bắt buộc.
+- Lần 3 và 4: FAIL, chỉ lỗi hồ sơ (đường dẫn rollback, `../unslop/`, các ghi chú "chưa kích hoạt" và "chưa áp src/" lỗi thời,
+  cột "bấm không được" 768/1366 thiếu, nguồn của nhận định toast). Đã sửa ở commit sau `fc1de51`.

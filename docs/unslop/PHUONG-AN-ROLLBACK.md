@@ -1,20 +1,24 @@
 # Phương án gỡ cài đặt và khôi phục
 
-Toàn bộ thay đổi nằm trong kho, không đụng PATH, registry Windows, cấu hình toàn cục `~/.claude/`,
-`.claude/settings.local.json` hay `src/`. Không cần quyền Administrator.
+Toàn bộ thay đổi nằm trong kho, không đụng PATH, registry Windows, cấu hình toàn cục `~/.claude/`
+hay `.claude/settings.local.json`. Ngoại lệ có duyệt: `src/static/app.css` (chỉ CSS, commit `730dca2`).
+Không cần quyền Administrator.
 
-## 1. Danh sách thay đổi
+## 1. Danh sách thay đổi (trạng thái hiện hành, sau kích hoạt)
 
 | Loại | Đường dẫn |
 |---|---|
-| Thêm | `.claude/thu-nghiem/` (bản gốc unslop, `unslop.sha256`, lớp bọc `ctxdn-ui-ux-unslop/`) |
+| Thêm | `.claude/skills/ctxdn-ui-ux-unslop/` (lớp bọc `SKILL.md`, `scripts/`, bản gốc `unslop/`, `unslop.sha256`) |
 | Thêm | `docs/unslop/` (hồ sơ, `vi-du/`, `kiem-thu/`) |
+| Sửa | `src/static/app.css` (toast, nút 44 px, mã màu trạng thái, băng dữ liệu mẫu) - commit `730dca2` |
 | Sửa | `.claude/tong-chi-huy/registry.json` (+2 mục, +1 tuyến, `giao diện` chuyển tuyến, +5 trùng lặp, +1 nguồn ngoài) |
-| Sửa | `.claude/hooks/dieu_phoi.py` (hàm `_ten_muc`: nhãn thử nghiệm) |
-| Sửa | `tests/harness/test_dieu_phoi.py` (trạng thái `thu-nghiem`, +9 test) |
-| Sửa | `docs/ai-command-center.html` (nhãn thử nghiệm + dữ liệu registry sinh lại) |
+| Sửa | `.claude/hooks/dieu_phoi.py` (hàm `_ten_muc`: nhãn `chi_qua` và `thu-nghiem`) |
+| Sửa | `tests/harness/test_dieu_phoi.py` (+9 test) |
+| Sửa | `docs/ai-command-center.html` (dữ liệu registry sinh lại) |
 | Sửa | `todo.md`, `MEMORY.md` |
-| Commit | `318f482` cài đặt · `60e4150` ghi kết quả gỡ lần 1 · `a3d84ee` sửa sau /code-review · `de2b2d7` sửa sau Tổ 2 · các commit ghi kết quả/sửa chữ sau đó. Gỡ: `git revert --no-edit af0596b..HEAD` |
+| Commit | `318f482` cài · `60e4150` ghi kết quả gỡ lần 1 · `a3d84ee` sửa /code-review · `de2b2d7` sửa Tổ 2 · `5cab4b4`, `912b967`, `730dca2` (kích hoạt + CSS), `fc1de51` và các commit ghi hồ sơ sau đó |
+
+Các file cũ `.claude/thu-nghiem/` đã được `git mv` sang vị trí mới; không còn thư mục này.
 
 ## 2. Gỡ hoàn toàn
 
@@ -29,32 +33,35 @@ python -m pytest -q          # phải xanh
 Cách 2 - gỡ bằng tay (khi đã có thay đổi khác chồng lên):
 
 ```bash
-git rm -r .claude/thu-nghiem docs/unslop
-git checkout <mã-commit-trước-unslop> -- .claude/tong-chi-huy/registry.json .claude/hooks/dieu_phoi.py tests/harness/test_dieu_phoi.py docs/ai-command-center.html
+git rm -r .claude/skills/ctxdn-ui-ux-unslop docs/unslop
+git checkout af0596b -- .claude/tong-chi-huy/registry.json .claude/hooks/dieu_phoi.py tests/harness/test_dieu_phoi.py docs/ai-command-center.html src/static/app.css
 python .claude/tong-chi-huy/build_page.py
 python -m pytest -q
 ```
+Cách 2 chỉ dùng khi không thể revert: nó khôi phục `src/static/app.css` về `af0596b` và cần thêm kiểm tra
+`git diff af0596b -- src/` để chắc không còn khác biệt.
 
 Trên Windows (PowerShell) các lệnh `git` giống hệt; dùng `py -3` nếu không có `python`.
 Nếu đã cài Playwright theo hướng dẫn Windows: xóa thư mục `%USERPROFILE%\ctxdn-ui-test`.
 
 Đã thử Cách 1 trên bản sao kho trong sandbox: xem kết quả mục 4.
 
-## 3. Kích hoạt (chỉ khi chủ đầu tư duyệt)
+## 3. Kích hoạt (đã thực hiện 13/11/2026, theo duyệt của chủ đầu tư)
+
+Các lệnh đã chạy (mỗi lệnh một lần, không có lệnh xóa):
 
 ```bash
-git mv .claude/skills/ctxdn-ui-ux-unslop .claude/skills/ctxdn-ui-ux-unslop
-git mv .claude/skills/ctxdn-ui-ux-unslop/unslop .claude/skills/ctxdn-ui-ux-unslop/unslop
+git mv .claude/thu-nghiem/ctxdn-ui-ux-unslop .claude/skills/ctxdn-ui-ux-unslop
+git mv .claude/thu-nghiem/unslop .claude/skills/ctxdn-ui-ux-unslop/unslop
+git mv .claude/thu-nghiem/unslop.sha256 .claude/skills/ctxdn-ui-ux-unslop/unslop.sha256
 ```
 
-Rồi sửa đường dẫn `../unslop/` trong `SKILL.md` thành `unslop/`, sửa `duong_dan` và `trang_thai` trong registry
-(bỏ `thu-nghiem`, đổi test `test_muc_thu_nghiem_khong_nam_trong_thu_muc_skills` và `test_ban_goc_unslop_khong_bi_sua`
-theo đường dẫn mới), chạy `build_page.py` và pytest. Bản gốc `unslop` vẫn **không** đặt thẳng ở `.claude/skills/unslop`
-để không tự kích hoạt ngoài lớp bọc. Kích hoạt chỉ ảnh hưởng phiên Claude Code mở kho này, không phải máy chủ IIS.
+Sau đó: `SKILL.md` đổi `../unslop/` thành `unslop/`; registry bỏ `trang_thai` của hai mục và đổi `duong_dan`;
+test trỏ tới `.claude/skills/ctxdn-ui-ux-unslop`; `build_page.py` và pytest chạy lại.
+Bản gốc `unslop` nằm lồng ở `.claude/skills/ctxdn-ui-ux-unslop/unslop/` chứ không ở `.claude/skills/unslop/`.
+**Chưa kiểm chứng** Claude Code có tự nạp file lồng hai cấp này hay không; chỉ `SKILL.md` cấp một được coi là kỹ năng.
 
-**Đã thực hiện 13/11/2026** theo duyệt của chủ đầu tư (`git mv`, không xóa; registry và test đã cập nhật đường dẫn).
-
-Quay lui sau kích hoạt: `git revert` commit kích hoạt.
+Quay lui sau kích hoạt: `git revert` dải commit kích hoạt (mục 2, Cách 1).
 
 ## 4. Kết quả thử gỡ - THẬT
 
