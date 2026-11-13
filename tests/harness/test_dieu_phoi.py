@@ -43,6 +43,8 @@ def tuyen_chinh(prompt):
     ("Làm tính năng mới xem lịch sử phân công, viết đặc tả trước", "ke-hoach"),
     ("Dựng phim 45 giây hướng dẫn khám hãm, có phụ đề", "video"),
     ("lam video huong dan an toan", "video"),  # gõ không dấu
+    ("Vẽ sơ đồ mã nguồn EMS, trang nào gọi API nào", "so-do-ma"),
+    ("Cập nhật floorplan sau khi sửa", "so-do-ma"),
 ])
 def test_dinh_tuyen(prompt, tuyen):
     assert tuyen_chinh(prompt) == tuyen

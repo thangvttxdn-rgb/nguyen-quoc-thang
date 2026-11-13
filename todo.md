@@ -38,6 +38,14 @@
 - [ ] Đề xuất (cấu hình, chờ duyệt): `HYPERFRAMES_NO_TELEMETRY=1` trong `env` của `.claude/settings.local.json`.
 - [ ] **G2 BLOCKED**: chạy thử `npx hyperframes@0.9.37` bị bộ phân loại tự động chặn (mã tải từ ngoài). Cần chủ đầu tư cho phép lệnh `npx hyperframes@0.9.37` rồi render thử 1 clip 10 giây.
 
+## Mục tiêu phụ: Floorplan (sơ đồ mã nguồn, v0.8.0, MIT)
+- [x] G0: rà kho `haydenschmitty/floorplan` commit `5e3eaac`: 0 thư viện phụ thuộc, Node 18+; máy chủ xem chỉ nghe 127.0.0.1 có token; Ask bar gọi `claude -p` chỉ đọc. Gọi ra ngoài duy nhất: waitlist (gửi email khi bấm "Notify me"; ô email tự điền từ tài khoản Claude). Test gốc 287/287 xanh.
+- [x] Cài: chép `skills/floorplan` vào `.claude/skills/floorplan` (+LICENSE, bỏ file Codex); `/floorplan/` vào `.gitignore`.
+- [x] Registry: mục `floorplan` (`chua-kiem-thu`), tuyến "Sơ đồ mã nguồn", cảnh báo, 2 kết luận trùng lặp (với /speckit-plan, Explore).
+- [x] G2: `scan.mjs` chạy trên bản sao kho - nhận 10 route FastAPI, 14 lời gọi frontend→API.
+- [ ] Đề xuất (cấu hình, chờ duyệt): `FLOORPLAN_NO_PROMPTS=1` trong `env` của `.claude/settings.local.json`.
+- [ ] Dựng bản đồ đầy đủ cho EMS bằng `/floorplan` (tốn token: trợ lý viết mô tả cho từng file).
+
 ### Việc còn treo
 - [ ] Làm theo tài liệu trên máy chủ thật (người quản trị).
 - [ ] (Tùy chọn) Đăng nhập SQL bằng Windows Authentication thay mật khẩu trong web.config - cần sửa code kết nối.

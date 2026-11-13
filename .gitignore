@@ -25,3 +25,4 @@ video/**/*.mov
 video/**/*.webm
 video/**/frames/
 video/**/snapshots/
+/floorplan/

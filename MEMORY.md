@@ -24,6 +24,7 @@
 
 - `[2026-11-12]` **Kỹ năng bên thứ ba thường gọi `npx <goi>` không ghim** (HyperFrames: 273 chỗ). Không sửa file của họ (bị ghi đè khi nâng cấp); ghim bằng cảnh báo trong `registry.json` + `tong-chi-huy`. Phiên đám mây: chạy `npx` gói ngoài bị bộ phân loại tự động chặn - cần người dùng cho phép.
 - `[2026-11-12]` **Tổ 2 (`to-phan-bien`) bắt được lỗi Tổ 1 bỏ sót**: luật chỉ đặt ở lớp điều phối thì kỹ năng nạp vào vẫn dặn ngược lại; phải cưỡng chế bằng `guard.py` + sửa chính file kỹ năng (`lop_phu_hyperframes.py`). Rà bảo mật kỹ năng ngoài phải tìm cả đo lường/feedback trong luồng mặc định, không chỉ `curl|sh`. Mẫu regex chặn lệnh phải neo đầu đoạn lệnh, nếu không sẽ chặn cả heredoc/grep chứa chữ đó.
+- `[2026-11-13]` **Công cụ "chạy trên máy" vẫn có thể gửi dữ liệu**: Floorplan (`.claude/skills/floorplan/assets/serve.mjs:239`) có ô đăng ký waitlist tự điền email tài khoản Claude, gửi tới Cloud Run của tác giả khi bấm. Rà kho ngoài phải grep `fetch(`/URL trong cả mã máy chủ cục bộ, không chỉ README.
 
 ## 2. Đặc thù Cơ sở dữ liệu & Nghiệp vụ
 - Bảng `NhanSu` và `PhanCong` liên kết qua mã định danh nội bộ, tuyệt đối không xóa cứng (hard delete) mà chỉ cập nhật cờ `IsActive = 0`.

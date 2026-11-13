@@ -1,6 +1,6 @@
 {
   "phien_ban": "1.0",
-  "cap_nhat": "2026-11-12",
+  "cap_nhat": "2026-11-13",
   "ghi_chu": "Nguồn dữ liệu duy nhất cho hook điều phối (.claude/hooks/dieu_phoi.py) và trang docs/ai-command-center.html. Sửa ở đây rồi chạy: python .claude/tong-chi-huy/build_page.py",
   "nhom": {
     "skill": {
@@ -300,6 +300,19 @@
       "duong_dan": "github.com/ahujasid/mcp-for-blender",
       "trang_thai": "blocked",
       "ly_do": "Cho AI chạy mã Python tùy ý trong Blender; cần Blender và GPU trên máy trạm (phương án B của G0). Chờ duyệt máy trạm cô lập."
+    },
+    {
+      "id": "floorplan",
+      "nhom": "skill",
+      "phan_muc": "Mã nguồn",
+      "nguon": "repo",
+      "mo_ta": "Floorplan v0.8.0: vẽ bản đồ tương tác của mã nguồn (phân hệ, file, API, màn hình) có tên và mô tả dễ hiểu, kèm Health check (khóa trong mã, API không đăng nhập) và Recent work.",
+      "khi_dung": "Giới thiệu kiến trúc EMS cho người mới, xem frontend gọi API nào, rà nhanh API chưa có đăng nhập.",
+      "goi": "/floorplan",
+      "vi_du": "Vẽ sơ đồ mã nguồn EMS, chỉ rõ trang nào gọi API nào",
+      "duong_dan": ".claude/skills/floorplan/SKILL.md",
+      "trang_thai": "chua-kiem-thu",
+      "ly_do": "G2 mới chạy scan.mjs trên bản sao kho (nhận đúng FastAPI, 10 route); chưa dựng bản đồ đầy đủ. Đặt FLOORPLAN_NO_PROMPTS=1 để tắt hỏi đăng ký waitlist (gửi email ra ngoài)."
     },
     {
       "id": "to-phan-bien",
@@ -904,6 +917,24 @@
         "hyperframes-cli",
         "to-phan-bien"
       ]
+    },
+    {
+      "id": "so-do-ma",
+      "ten": "Sơ đồ mã nguồn",
+      "tu_khoa": [
+        "floorplan",
+        "sơ đồ mã",
+        "sơ đồ mã nguồn",
+        "vẽ sơ đồ",
+        "bản đồ mã",
+        "sơ đồ kiến trúc",
+        "sơ đồ hệ thống",
+        "bản đồ ứng dụng"
+      ],
+      "chinh": "floorplan",
+      "ho_tro": [
+        "Explore"
+      ]
     }
   ],
   "canh_bao": [
@@ -965,6 +996,14 @@
         "mp4"
       ],
       "noi_dung": "Video: chưa render thử (G2 BLOCKED). Gọi npx hyperframes@0.9.37 (guard.py chặn bản không ghim và lệnh events/feedback/usage/auth/share/publish/cloud/lambda/capture); đặt HYPERFRAMES_NO_TELEMETRY=1; bỏ qua Usage beacon; media-use BLOCKED; locate.mjs auto bị cấm (khóa Gemini trong URL); bake-basemap.mjs, browser ensure, CDN phải xin phép; dự án trong video/, không commit file render."
+    },
+    {
+      "tu_khoa": [
+        "floorplan",
+        "sơ đồ mã",
+        "bản đồ mã"
+      ],
+      "noi_dung": "Floorplan: chạy trên máy, bản đồ ghi vào floorplan/ (tự gitignore, không commit). Đặt FLOORPLAN_NO_PROMPTS=1; không bấm 'Notify me' (gửi email tới máy chủ waitlist của tác giả). Không dùng --claude-md khi chưa duyệt (ghi CLAUDE.local.md). Nút Export tạo 1 file HTML chứa toàn bộ sơ đồ - không gửi ra ngoài khi chưa duyệt."
     }
   ],
   "trung_lap": [
@@ -1087,6 +1126,18 @@
       "b": "HyperFrames",
       "quyet_dinh": "Giữ cả hai, chia phạm vi",
       "ly_do": "Canva cho ấn phẩm tĩnh, mẫu có sẵn; HyperFrames cho video dựng bằng mã."
+    },
+    {
+      "a": "Floorplan (blueprint từ PRD)",
+      "b": "/speckit-plan",
+      "quyet_dinh": "Giữ cả hai, chia phạm vi",
+      "ly_do": "Tính năng mới vẫn đi Spec Kit (đặc tả → kế hoạch). Floorplan chỉ để vẽ sơ đồ mã đã có; blueprint chỉ dùng minh họa thêm khi được yêu cầu."
+    },
+    {
+      "a": "Floorplan (Ask the map)",
+      "b": "Tác tử Explore",
+      "quyet_dinh": "Giữ cả hai",
+      "ly_do": "Explore tìm vị trí trong mã cho trợ lý; Floorplan là sơ đồ cho người đọc. Health check của Floorplan không thay /security-review."
     }
   ],
   "nguon_ngoai": [
@@ -1112,6 +1163,17 @@
       ],
       "sua_doi": "Lớp phủ CTXĐN: ghim 278 lệnh npx về @0.9.37 + khối luật đầu mỗi SKILL.md. Áp lại sau nâng cấp: python .claude/tong-chi-huy/lop_phu_hyperframes.py",
       "bien_ban": "docs/G0-cong-cu-video.md"
+    },
+    {
+      "ten": "Floorplan",
+      "phien_ban": "v0.8.0",
+      "commit": "5e3eaac9639705f52e5e31b620a0d20550acd9dd",
+      "giay_phep": "MIT",
+      "cai_bang": "chép skills/floorplan (bỏ agents/openai.yaml của Codex), kèm LICENSE",
+      "thu_muc": [
+        ".claude/skills/floorplan/"
+      ],
+      "sua_doi": "Không sửa file của tác giả. 0 thư viện phụ thuộc, cần Node 18+."
     }
   ]
 }
