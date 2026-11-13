@@ -25,6 +25,10 @@
 - `[2026-11-12]` **Kỹ năng bên thứ ba thường gọi `npx <goi>` không ghim** (HyperFrames: 273 chỗ). Không sửa file của họ (bị ghi đè khi nâng cấp); ghim bằng cảnh báo trong `registry.json` + `tong-chi-huy`. Phiên đám mây: chạy `npx` gói ngoài bị bộ phân loại tự động chặn - cần người dùng cho phép.
 - `[2026-11-12]` **Tổ 2 (`to-phan-bien`) bắt được lỗi Tổ 1 bỏ sót**: luật chỉ đặt ở lớp điều phối thì kỹ năng nạp vào vẫn dặn ngược lại; phải cưỡng chế bằng `guard.py` + sửa chính file kỹ năng (`lop_phu_hyperframes.py`). Rà bảo mật kỹ năng ngoài phải tìm cả đo lường/feedback trong luồng mặc định, không chỉ `curl|sh`. Mẫu regex chặn lệnh phải neo đầu đoạn lệnh, nếu không sẽ chặn cả heredoc/grep chứa chữ đó.
 
+- `[2026-11-13]` **Đo chi phí Claude Code**: hook không nhận trường chi phí; transcript `~/.claude/projects/<dự án>/<phiên>.jsonl` có `usage` từng lượt gọi (một requestId ghi nhiều dòng - phải khử trùng) -> `de-xuat/doi-agent-tu-chu/cong-cu/chi_phi.py`. Chặn cứng chỉ có `claude -p --max-budget-usd`. Phiên lập hồ sơ đo được 6,32 USD/58 lượt (Opus): ngân sách 10.000 đ/lượt không đủ cho đội nhiều Agent. Tác tử không ghi `model` thì kế thừa model phiên chính (to-phan-bien chạy Opus) - mọi tác tử mới phải ghi `model`.
+- `[2026-11-13]` **Luật permissions khớp mẫu chữ để lọt biến thể Git**: `Bash(git push --force *)` không khớp `git push origin main --force`, `+main`, `--force-with-lease`; `guard.py` chưa soi Git, `gh pr merge`, `cat .env` qua Bash. Đề xuất hook `hook_an_toan.py` (chưa áp dụng).
+- `[2026-11-13]` **`isolation: worktree` tạo từ nhánh mặc định** (tài liệu chính thức), không phải HEAD hiện tại - phải nêu nhánh gốc khi giao việc cho tác tử triển khai.
+
 ## 2. Đặc thù Cơ sở dữ liệu & Nghiệp vụ
 - Bảng `NhanSu` và `PhanCong` liên kết qua mã định danh nội bộ, tuyệt đối không xóa cứng (hard delete) mà chỉ cập nhật cờ `IsActive = 0`.
 - `[2026-10-15]` **Ngừng nhân sự thì ngừng luôn PhanCong liên quan** (chủ dự án xác nhận), trong cùng giao dịch - xem `src/db/nhan_su.py` hàm `deactivate`. Kích hoạt lại nhân sự KHÔNG tự khôi phục PhanCong.

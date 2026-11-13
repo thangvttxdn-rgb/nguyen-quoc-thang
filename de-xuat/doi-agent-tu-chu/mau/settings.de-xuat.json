@@ -1,0 +1,44 @@
+{
+  "_ghi_chu": "BẢN MẪU - CHƯA ÁP DỤNG. Gộp vào .claude/settings.local.json chỉ sau GATE 2 (người duyệt). Chỉ ghi phần THÊM so với file hiện hành; giữ nguyên allow/ask/deny và hook guard.py, dieu_phoi.py đang có.",
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "0",
+    "CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH": "1",
+    "DOI_AGENT_SO_CAI": ".doi-agent"
+  },
+  "permissions": {
+    "deny": [
+      "Bash(git push * --force*)",
+      "Bash(git push * -f *)",
+      "Bash(git push * +*)",
+      "Bash(git reset * --hard*)",
+      "Bash(git clean *)",
+      "Bash(gh pr merge *)",
+      "Read(./deploy/iis/web.config)"
+    ],
+    "ask": [
+      "Bash(git merge *)",
+      "Bash(git rebase *)",
+      "Bash(git tag *)",
+      "Bash(git branch -D *)",
+      "Bash(git worktree remove *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [{"type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/de-xuat/doi-agent-tu-chu/cong-cu/hook_an_toan.py\""}]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [{"type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/de-xuat/doi-agent-tu-chu/cong-cu/hook_khoa_tep.py\""}]
+      }
+    ],
+    "SubagentStart": [
+      {"hooks": [{"type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/de-xuat/doi-agent-tu-chu/cong-cu/hook_nhat_ky.py\""}]}
+    ],
+    "SubagentStop": [
+      {"hooks": [{"type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/de-xuat/doi-agent-tu-chu/cong-cu/hook_nhat_ky.py\""}]}
+    ]
+  }
+}

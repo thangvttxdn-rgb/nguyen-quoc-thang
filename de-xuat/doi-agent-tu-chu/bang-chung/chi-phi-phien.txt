@@ -1,0 +1,21 @@
+ngay: 2026-11-13T23:12:43Z  commit_goc: af0596b  (thay đổi chưa commit)
+transcript: e4eb971a-bbab-5d85-b628-c0f1b73b5700.jsonl + thư mục tác tử phụ
+{
+  "do_duoc": {
+    "so_luot_goi": 58,
+    "token_dau_vao": 114,
+    "token_dau_ra": 85782,
+    "token_doc_cache": 10435598,
+    "token_ghi_cache_5m": 60764,
+    "token_ghi_cache_1h": 277063,
+    "usd": "6.3235",
+    "theo_model": {
+      "claude-opus-5-5": "6.3235"
+    },
+    "model_chua_co_gia": []
+  },
+  "ngan_sach": {
+    "ket_luan": "BLOCKED",
+    "ly_do": "Chưa có tỷ giá VNĐ/USD được duyệt."
+  }
+}

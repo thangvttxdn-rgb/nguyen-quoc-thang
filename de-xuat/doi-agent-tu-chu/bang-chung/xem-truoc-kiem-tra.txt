@@ -1,0 +1,3 @@
+ngay: 2026-11-13T23:18:52Z - Chromium (Playwright) giả lập, KHÔNG phải Safari thật; scrollWidth = innerWidth nghĩa là không tràn ngang
+iphone scrollWidth/innerWidth [ 390, 390 ] loi 0
+desktop scrollWidth/innerWidth [ 1280, 1280 ] loi 0

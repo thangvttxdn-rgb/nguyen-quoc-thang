@@ -42,3 +42,16 @@
 - [ ] Làm theo tài liệu trên máy chủ thật (người quản trị).
 - [ ] (Tùy chọn) Đăng nhập SQL bằng Windows Authentication thay mật khẩu trong web.config - cần sửa code kết nối.
 - [ ] Đối chiếu schema thật; thử với SQL Server thật.
+
+## Mục tiêu phụ: Thiết kế đội AI Agent tự chủ (giai đoạn 1 - khảo sát, sandbox)
+Hồ sơ: `de-xuat/doi-agent-tu-chu/HO-SO.md` · xem trước `de-xuat/doi-agent-tu-chu/XEM-TRUOC-TOAN-BO.html`.
+- [x] Kiểm kê THẬT (registry 53 mục, quyền, hook, CLI 2.1.325) và đối chiếu tài liệu chính thức (subagents, agent teams, hooks, costs).
+- [x] Chọn Subagents, không bật Agent Teams; Agent 4 = mở rộng `to-phan-bien`. Mẫu 3 tác tử + settings tại `mau/` (chưa áp dụng).
+- [x] Công cụ mẫu: sổ cái (mã việc, khóa tệp, dừng sau 3 lần lỗi, khôi phục), đo chi phí từ transcript, hook an toàn Git/bí mật, hook khóa tệp, hook nhật ký.
+- [x] Kiểm thử offline 10 kịch bản: `tests/doi_agent` 23/23; cả bộ `python -m pytest -q` 199/199, `ruff check .` sạch.
+- [x] Khảo sát rào chắn: guard.py để lọt 15 thao tác rủi ro; hook đề xuất chặn/hỏi cả 15 (`bang-chung/rao-chan.json`).
+- [x] G3 Tổ 2: FAIL 9 điểm (thiếu file bằng chứng chi phí/test, ô "đã kiểm" nói quá ở KB5/8/10, thiếu bảng trùng lặp A1/A2/sổ cái) -> đã xử lý cả 9, chưa chạy phản biện lại.
+- [ ] **BLOCKED ngân sách**: phiên lập hồ sơ đo được 6,32 USD/58 lượt (giá niêm yết, `bang-chung/chi-phi-phien.txt`); đội 4 Agent ước 0,75-0,95 USD/lượt > 10.000 đ. Chủ đầu tư cần quyết: tỷ giá, hình thức thanh toán (API hay thuê bao), trần/lượt.
+- [ ] GATE 2: duyệt gộp `hook_an_toan.py` vào `guard.py` (kèm test harness) và `settings.de-xuat.json`.
+- [ ] Thử hook trên máy Windows; xem trang trên iPhone Safari thật (mới thử Chromium giả lập).
+- [ ] Đăng trang xem trước lên claude.ai bị bộ phân loại chặn - cần chủ đầu tư cho phép công cụ Artifact nếu muốn có link.
