@@ -38,6 +38,13 @@
 - [ ] Đề xuất (cấu hình, chờ duyệt): `HYPERFRAMES_NO_TELEMETRY=1` trong `env` của `.claude/settings.local.json`.
 - [ ] **G2 BLOCKED**: chạy thử `npx hyperframes@0.9.37` bị bộ phân loại tự động chặn (mã tải từ ngoài). Cần chủ đầu tư cho phép lệnh `npx hyperframes@0.9.37` rồi render thử 1 clip 10 giây.
 
+## Mục tiêu phụ: G0 Free Claude Code (Alishahryar1/free-claude-code, AGPL-3.0)
+- [x] Rà tĩnh mã nguồn (commit `5662101`, không cài, không chạy): xác thực, mạng, quyền tác tử, cài đặt, lưu khóa.
+- [x] Biên bản `docs/G0-free-claude-code.md`: 3 điểm nghiêm trọng (nghe 0.0.0.0 không xác thực; bot điều khiển tác tử bỏ hỏi quyền; Telegram không bắt buộc danh sách người dùng) + gửi mã cho bên thứ ba; so sánh với cách đang dùng.
+- [x] G3 Tổ 2: FAIL lần 1 (8 điểm nhỏ) → đã sửa; N1-N3 được xác nhận.
+- [x] Registry: thêm kết luận `trung_lap` "Không cài"; sinh lại trang. Nghiệm thu: `python -m pytest -q` 176/176, `ruff check .` sạch.
+- [ ] Chủ đầu tư quyết: không dùng / thử trên máy riêng theo điều kiện mục 5 biên bản.
+
 ### Việc còn treo
 - [ ] Làm theo tài liệu trên máy chủ thật (người quản trị).
 - [ ] (Tùy chọn) Đăng nhập SQL bằng Windows Authentication thay mật khẩu trong web.config - cần sửa code kết nối.

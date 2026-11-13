@@ -1,6 +1,6 @@
 {
   "phien_ban": "1.0",
-  "cap_nhat": "2026-11-12",
+  "cap_nhat": "2026-11-13",
   "ghi_chu": "Nguồn dữ liệu duy nhất cho hook điều phối (.claude/hooks/dieu_phoi.py) và trang docs/ai-command-center.html. Sửa ở đây rồi chạy: python .claude/tong-chi-huy/build_page.py",
   "nhom": {
     "skill": {
@@ -1087,6 +1087,12 @@
       "b": "HyperFrames",
       "quyet_dinh": "Giữ cả hai, chia phạm vi",
       "ly_do": "Canva cho ấn phẩm tĩnh, mẫu có sẵn; HyperFrames cho video dựng bằng mã."
+    },
+    {
+      "a": "Free Claude Code (proxy đổi mô hình)",
+      "b": "Claude Code + tài khoản Anthropic",
+      "quyet_dinh": "Không cài (chờ chủ đầu tư quyết)",
+      "ly_do": "Mặc định nghe 0.0.0.0 không xác thực; bot Telegram điều khiển tác tử bỏ hỏi quyền, không bắt buộc danh sách người dùng; mã EMS gửi cho bên thứ ba; AGPL-3.0. Xem docs/G0-free-claude-code.md."
     }
   ],
   "nguon_ngoai": [
