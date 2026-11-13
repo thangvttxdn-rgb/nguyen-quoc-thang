@@ -80,3 +80,15 @@ Lần 2 chạy lại với toàn dải - kết quả ở cuối file. Bảng l�
 | `build_page.py --check` | Khớp |
 
 Commit ghi kết quả này (commit thứ 5) chỉ sửa file này; khi gỡ, đưa nó vào dải: `git revert --no-edit af0596b..HEAD`.
+
+### Lần 3 - gỡ toàn dải trên HEAD sau khi kích hoạt - THẬT
+
+| Bước | Kết quả |
+|---|---|
+| `git revert --no-edit af0596b..HEAD` trên bản sao kho (gồm cả commit kích hoạt và áp CSS) | Không xung đột |
+| `.claude/skills/ctxdn-ui-ux-unslop/`, `docs/unslop/` | Đã biến mất |
+| `git diff af0596b HEAD` | **Rỗng** - về đúng trạng thái trước khi cài |
+| `python -m pytest` | 176 passed |
+| `build_page.py --check` | Khớp |
+
+Đây là bằng chứng gỡ trên HEAD cuối cùng; lần 1 và lần 2 ở trên chỉ là lịch sử.
