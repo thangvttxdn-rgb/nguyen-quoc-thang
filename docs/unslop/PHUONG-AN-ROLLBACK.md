@@ -65,3 +65,15 @@ Lần 2 chạy lại với toàn dải - kết quả ở cuối file. Bảng l�
 | `git diff af0596b HEAD` (so với trước khi cài) | **Rỗng** - trở về đúng trạng thái cũ |
 | `python -m pytest` | 176 passed (183 trừ 7 test của unslop) |
 | `build_page.py --check` | Trang Command Center khớp registry |
+
+### Lần 2 - toàn dải commit (sau G3) - THẬT
+
+| Bước | Kết quả |
+|---|---|
+| `git revert --no-edit af0596b..de2b2d7` (4 commit: `318f482`, `60e4150`, `a3d84ee`, `de2b2d7`) | 4 commit hoàn tác, không xung đột |
+| `.claude/thu-nghiem/`, `docs/unslop/` | Đã biến mất |
+| `git diff af0596b HEAD` | **Rỗng** - về đúng trạng thái trước khi cài |
+| `python -m pytest` | 176 passed |
+| `build_page.py --check` | Khớp |
+
+Commit ghi kết quả này (commit thứ 5) chỉ sửa file này; khi gỡ, đưa nó vào dải: `git revert --no-edit af0596b..HEAD`.
