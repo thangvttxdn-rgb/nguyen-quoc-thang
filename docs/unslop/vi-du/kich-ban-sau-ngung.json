@@ -1,0 +1,16 @@
+[
+  {"cho": "#l-form"},
+  {"dien": "#l-user", "gia_tri": "thu"},
+  {"dien": "#l-pass", "gia_tri": "thu"},
+  {"bam": "#l-btn"},
+  {"cho": "#list li button"},
+  {"bam": "#list li:nth-child(2) button"},
+  {"cho": "#s-form"},
+  {"bam": ".btn.danger"},
+  {"cho": ".confirm"},
+  {"chup": "5-hop-xac-nhan"},
+  {"bam": ".btn.danger.solid"},
+  {"cho_an": "#sheet"},
+  {"cho": "#toast"},
+  {"chup": "6-sau-ngung-toast"}
+]

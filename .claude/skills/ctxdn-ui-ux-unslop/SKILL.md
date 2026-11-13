@@ -79,7 +79,7 @@ Script dùng Playwright + Chromium có sẵn, mở cả hai bản ở 360/390/76
 ảnh chụp. Kiểm: có `<meta name="viewport" content="width=device-width…">` (thiếu thì số đo điện thoại vô nghĩa),
 khung HTML trừ CSS trùng khớp, chữ trong DOM giống bản trước, không tràn ngang, chữ ≥ 12px, nút ≥ 44px trên
 điện thoại, không lỗi JavaScript/tải tài nguyên mới, nút không bị che hoặc bị lớp cố định (toast…) đè.
-Mã thoát: 0 PASS, 1 FAIL, 2 lỗi công cụ.
+Mã thoát: 0 PASS, 1 FAIL, 2 lỗi công cụ. Biến `UNSLOP_TOI=1` chạy chế độ tối.
 Đây là **mô phỏng trình duyệt** (Chromium), không thay kiểm thử trên iPhone Safari / Android Chrome thật.
 
 ## 6. Chi phí

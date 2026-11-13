@@ -1,0 +1,416 @@
+{
+  "cong_cu": "Playwright + Chromium (mô phỏng)",
+  "phien_ban": {
+    "playwright": "1.63.0",
+    "chromium": "153.0.8010.12"
+  },
+  "ngay": "2026-11-13T22:59:35.624Z",
+  "bat_bien": {
+    "khung_html_trung_khop": true,
+    "viewport": [
+      true,
+      true
+    ],
+    "script_trung_khop": true,
+    "so_script": [
+      2,
+      2
+    ],
+    "dieu_khien_trung_khop": true,
+    "so_dieu_khien": [
+      13,
+      13
+    ],
+    "dieu_khien_mat": [],
+    "dieu_khien_them": []
+  },
+  "lan_chay": [
+    {
+      "ban": "truoc",
+      "rong": 360,
+      "thiet_bi": "Android nhỏ",
+      "loi_js": [],
+      "loi_mang": [],
+      "trang_thai": [
+        {
+          "trang_thai": "5-hop-xac-nhan",
+          "anh": "truoc-360-5-hop-xac-nhan.jpg",
+          "tran_ngang": false,
+          "rong_bo_cuc": 360,
+          "rong_noi_dung": 360,
+          "chu_nho": [],
+          "nut_nho": [],
+          "nut_bi_che": [],
+          "chu_hien_thi": "Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Tên đăng nhập Mật khẩu Đăng nhập Bản xem trước: nhập tên và mật khẩu bất kỳ. Tên \"xem\" để thử tài khoản chỉ xem. Quên mật khẩu? Liên hệ quản trị hệ thống của chi nhánh. Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Nguyễn Quốc Thắng Quản lý Đăng xuất 4 đang làm · 1 đã ngừng Tìm nhân sự Tất cả Đang làm Đã ngừng Đang chạy dữ liệu mẫu. Thay đổi chỉ lưu tạm, không ảnh hưởng CSDL thật. VA Nguyễn Văn An Trạm KCTX Đà Nẵng · Khám xa viên Đang làm TB Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên Đang làm VC Lê Văn Cường Trạm KCTX Nha Trang · Trưởng ca Đang làm TD Phạm Thị Dung Tổ KCTX Kim Liên · Khám xa viên Đang làm VE Hoàng Văn Em Tổ KCTX Tuy Hoà · Thợ sửa chữa Đã ngừng Không có nhân sự nào khớp bộ lọc. Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên ✕ Đang làm Phân công đang hiệu lực Khám đoàn tàu SE3 tại ga Diêu Trì Trực ca đêm tổ Quảng Ngãi Giao việc mới Tối đa 500 ký tự. Giao việc Ngừng Trần Thị Bình và 2 phân công đang hiệu lực? Huỷ Xác nhận ngừng"
+        },
+        {
+          "trang_thai": "loi-kich-ban",
+          "buoc": {
+            "cho_an": "#sheet"
+          },
+          "loi": "page.waitForSelector: Timeout 8000ms exceeded."
+        },
+        {
+          "trang_thai": "loi-kich-ban",
+          "buoc": {
+            "cho": "#toast"
+          },
+          "loi": "page.waitForSelector: Timeout 3000ms exceeded."
+        },
+        {
+          "trang_thai": "6-sau-ngung-toast",
+          "anh": "truoc-360-6-sau-ngung-toast.jpg",
+          "tran_ngang": false,
+          "rong_bo_cuc": 360,
+          "rong_noi_dung": 360,
+          "chu_nho": [],
+          "nut_nho": [],
+          "nut_bi_che": [],
+          "chu_hien_thi": "Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Tên đăng nhập Mật khẩu Đăng nhập Bản xem trước: nhập tên và mật khẩu bất kỳ. Tên \"xem\" để thử tài khoản chỉ xem. Quên mật khẩu? Liên hệ quản trị hệ thống của chi nhánh. Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Nguyễn Quốc Thắng Quản lý Đăng xuất 3 đang làm · 2 đã ngừng Tìm nhân sự Tất cả Đang làm Đã ngừng Đang chạy dữ liệu mẫu. Thay đổi chỉ lưu tạm, không ảnh hưởng CSDL thật. VA Nguyễn Văn An Trạm KCTX Đà Nẵng · Khám xa viên Đang làm VC Lê Văn Cường Trạm KCTX Nha Trang · Trưởng ca Đang làm TD Phạm Thị Dung Tổ KCTX Kim Liên · Khám xa viên Đang làm TB Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên Đã ngừng VE Hoàng Văn Em Tổ KCTX Tuy Hoà · Thợ sửa chữa Đã ngừng Không có nhân sự nào khớp bộ lọc. Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên ✕ Đã ngừng Phân công đang hiệu lực Chưa có phân công nào đang hiệu lực. Giao việc mới Tối đa 500 ký tự. Giao việc Kích hoạt lại Phân công cũ không tự khôi phục; giao lại việc sau khi kích hoạt. Đã ngừng Trần Thị Bình và 2 phân công"
+        }
+      ]
+    },
+    {
+      "ban": "truoc",
+      "rong": 390,
+      "thiet_bi": "iPhone",
+      "loi_js": [],
+      "loi_mang": [],
+      "trang_thai": [
+        {
+          "trang_thai": "5-hop-xac-nhan",
+          "anh": "truoc-390-5-hop-xac-nhan.jpg",
+          "tran_ngang": false,
+          "rong_bo_cuc": 390,
+          "rong_noi_dung": 390,
+          "chu_nho": [],
+          "nut_nho": [],
+          "nut_bi_che": [],
+          "chu_hien_thi": "Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Tên đăng nhập Mật khẩu Đăng nhập Bản xem trước: nhập tên và mật khẩu bất kỳ. Tên \"xem\" để thử tài khoản chỉ xem. Quên mật khẩu? Liên hệ quản trị hệ thống của chi nhánh. Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Nguyễn Quốc Thắng Quản lý Đăng xuất 4 đang làm · 1 đã ngừng Tìm nhân sự Tất cả Đang làm Đã ngừng Đang chạy dữ liệu mẫu. Thay đổi chỉ lưu tạm, không ảnh hưởng CSDL thật. VA Nguyễn Văn An Trạm KCTX Đà Nẵng · Khám xa viên Đang làm TB Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên Đang làm VC Lê Văn Cường Trạm KCTX Nha Trang · Trưởng ca Đang làm TD Phạm Thị Dung Tổ KCTX Kim Liên · Khám xa viên Đang làm VE Hoàng Văn Em Tổ KCTX Tuy Hoà · Thợ sửa chữa Đã ngừng Không có nhân sự nào khớp bộ lọc. Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên ✕ Đang làm Phân công đang hiệu lực Khám đoàn tàu SE3 tại ga Diêu Trì Trực ca đêm tổ Quảng Ngãi Giao việc mới Tối đa 500 ký tự. Giao việc Ngừng Trần Thị Bình và 2 phân công đang hiệu lực? Huỷ Xác nhận ngừng"
+        },
+        {
+          "trang_thai": "loi-kich-ban",
+          "buoc": {
+            "cho_an": "#sheet"
+          },
+          "loi": "page.waitForSelector: Timeout 8000ms exceeded."
+        },
+        {
+          "trang_thai": "loi-kich-ban",
+          "buoc": {
+            "cho": "#toast"
+          },
+          "loi": "page.waitForSelector: Timeout 3000ms exceeded."
+        },
+        {
+          "trang_thai": "6-sau-ngung-toast",
+          "anh": "truoc-390-6-sau-ngung-toast.jpg",
+          "tran_ngang": false,
+          "rong_bo_cuc": 390,
+          "rong_noi_dung": 390,
+          "chu_nho": [],
+          "nut_nho": [],
+          "nut_bi_che": [],
+          "chu_hien_thi": "Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Tên đăng nhập Mật khẩu Đăng nhập Bản xem trước: nhập tên và mật khẩu bất kỳ. Tên \"xem\" để thử tài khoản chỉ xem. Quên mật khẩu? Liên hệ quản trị hệ thống của chi nhánh. Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Nguyễn Quốc Thắng Quản lý Đăng xuất 3 đang làm · 2 đã ngừng Tìm nhân sự Tất cả Đang làm Đã ngừng Đang chạy dữ liệu mẫu. Thay đổi chỉ lưu tạm, không ảnh hưởng CSDL thật. VA Nguyễn Văn An Trạm KCTX Đà Nẵng · Khám xa viên Đang làm VC Lê Văn Cường Trạm KCTX Nha Trang · Trưởng ca Đang làm TD Phạm Thị Dung Tổ KCTX Kim Liên · Khám xa viên Đang làm TB Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên Đã ngừng VE Hoàng Văn Em Tổ KCTX Tuy Hoà · Thợ sửa chữa Đã ngừng Không có nhân sự nào khớp bộ lọc. Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên ✕ Đã ngừng Phân công đang hiệu lực Chưa có phân công nào đang hiệu lực. Giao việc mới Tối đa 500 ký tự. Giao việc Kích hoạt lại Phân công cũ không tự khôi phục; giao lại việc sau khi kích hoạt. Đã ngừng Trần Thị Bình và 2 phân công"
+        }
+      ]
+    },
+    {
+      "ban": "truoc",
+      "rong": 768,
+      "thiet_bi": "Máy tính bảng",
+      "loi_js": [],
+      "loi_mang": [],
+      "trang_thai": [
+        {
+          "trang_thai": "5-hop-xac-nhan",
+          "anh": "truoc-768-5-hop-xac-nhan.jpg",
+          "tran_ngang": false,
+          "rong_bo_cuc": 768,
+          "rong_noi_dung": 768,
+          "chu_nho": [],
+          "nut_nho": [],
+          "nut_bi_che": [],
+          "chu_hien_thi": "Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Tên đăng nhập Mật khẩu Đăng nhập Bản xem trước: nhập tên và mật khẩu bất kỳ. Tên \"xem\" để thử tài khoản chỉ xem. Quên mật khẩu? Liên hệ quản trị hệ thống của chi nhánh. Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Nguyễn Quốc Thắng Quản lý Đăng xuất 4 đang làm · 1 đã ngừng Tìm nhân sự Tất cả Đang làm Đã ngừng Đang chạy dữ liệu mẫu. Thay đổi chỉ lưu tạm, không ảnh hưởng CSDL thật. VA Nguyễn Văn An Trạm KCTX Đà Nẵng · Khám xa viên Đang làm TB Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên Đang làm VC Lê Văn Cường Trạm KCTX Nha Trang · Trưởng ca Đang làm TD Phạm Thị Dung Tổ KCTX Kim Liên · Khám xa viên Đang làm VE Hoàng Văn Em Tổ KCTX Tuy Hoà · Thợ sửa chữa Đã ngừng Không có nhân sự nào khớp bộ lọc. Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên ✕ Đang làm Phân công đang hiệu lực Khám đoàn tàu SE3 tại ga Diêu Trì Trực ca đêm tổ Quảng Ngãi Giao việc mới Tối đa 500 ký tự. Giao việc Ngừng Trần Thị Bình và 2 phân công đang hiệu lực? Huỷ Xác nhận ngừng"
+        },
+        {
+          "trang_thai": "loi-kich-ban",
+          "buoc": {
+            "cho_an": "#sheet"
+          },
+          "loi": "page.waitForSelector: Timeout 8000ms exceeded."
+        },
+        {
+          "trang_thai": "loi-kich-ban",
+          "buoc": {
+            "cho": "#toast"
+          },
+          "loi": "page.waitForSelector: Timeout 3000ms exceeded."
+        },
+        {
+          "trang_thai": "6-sau-ngung-toast",
+          "anh": "truoc-768-6-sau-ngung-toast.jpg",
+          "tran_ngang": false,
+          "rong_bo_cuc": 768,
+          "rong_noi_dung": 768,
+          "chu_nho": [],
+          "nut_nho": [],
+          "nut_bi_che": [],
+          "chu_hien_thi": "Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Tên đăng nhập Mật khẩu Đăng nhập Bản xem trước: nhập tên và mật khẩu bất kỳ. Tên \"xem\" để thử tài khoản chỉ xem. Quên mật khẩu? Liên hệ quản trị hệ thống của chi nhánh. Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Nguyễn Quốc Thắng Quản lý Đăng xuất 3 đang làm · 2 đã ngừng Tìm nhân sự Tất cả Đang làm Đã ngừng Đang chạy dữ liệu mẫu. Thay đổi chỉ lưu tạm, không ảnh hưởng CSDL thật. VA Nguyễn Văn An Trạm KCTX Đà Nẵng · Khám xa viên Đang làm VC Lê Văn Cường Trạm KCTX Nha Trang · Trưởng ca Đang làm TD Phạm Thị Dung Tổ KCTX Kim Liên · Khám xa viên Đang làm TB Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên Đã ngừng VE Hoàng Văn Em Tổ KCTX Tuy Hoà · Thợ sửa chữa Đã ngừng Không có nhân sự nào khớp bộ lọc. Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên ✕ Đã ngừng Phân công đang hiệu lực Chưa có phân công nào đang hiệu lực. Giao việc mới Tối đa 500 ký tự. Giao việc Kích hoạt lại Phân công cũ không tự khôi phục; giao lại việc sau khi kích hoạt. Đã ngừng Trần Thị Bình và 2 phân công"
+        }
+      ]
+    },
+    {
+      "ban": "truoc",
+      "rong": 1366,
+      "thiet_bi": "Máy tính Windows",
+      "loi_js": [],
+      "loi_mang": [],
+      "trang_thai": [
+        {
+          "trang_thai": "5-hop-xac-nhan",
+          "anh": "truoc-1366-5-hop-xac-nhan.jpg",
+          "tran_ngang": false,
+          "rong_bo_cuc": 1366,
+          "rong_noi_dung": 1366,
+          "chu_nho": [],
+          "nut_nho": [],
+          "nut_bi_che": [],
+          "chu_hien_thi": "Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Tên đăng nhập Mật khẩu Đăng nhập Bản xem trước: nhập tên và mật khẩu bất kỳ. Tên \"xem\" để thử tài khoản chỉ xem. Quên mật khẩu? Liên hệ quản trị hệ thống của chi nhánh. Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Nguyễn Quốc Thắng Quản lý Đăng xuất 4 đang làm · 1 đã ngừng Tìm nhân sự Tất cả Đang làm Đã ngừng Đang chạy dữ liệu mẫu. Thay đổi chỉ lưu tạm, không ảnh hưởng CSDL thật. VA Nguyễn Văn An Trạm KCTX Đà Nẵng · Khám xa viên Đang làm TB Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên Đang làm VC Lê Văn Cường Trạm KCTX Nha Trang · Trưởng ca Đang làm TD Phạm Thị Dung Tổ KCTX Kim Liên · Khám xa viên Đang làm VE Hoàng Văn Em Tổ KCTX Tuy Hoà · Thợ sửa chữa Đã ngừng Không có nhân sự nào khớp bộ lọc. Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên ✕ Đang làm Phân công đang hiệu lực Khám đoàn tàu SE3 tại ga Diêu Trì Trực ca đêm tổ Quảng Ngãi Giao việc mới Tối đa 500 ký tự. Giao việc Ngừng Trần Thị Bình và 2 phân công đang hiệu lực? Huỷ Xác nhận ngừng"
+        },
+        {
+          "trang_thai": "loi-kich-ban",
+          "buoc": {
+            "cho_an": "#sheet"
+          },
+          "loi": "page.waitForSelector: Timeout 8000ms exceeded."
+        },
+        {
+          "trang_thai": "loi-kich-ban",
+          "buoc": {
+            "cho": "#toast"
+          },
+          "loi": "page.waitForSelector: Timeout 3000ms exceeded."
+        },
+        {
+          "trang_thai": "6-sau-ngung-toast",
+          "anh": "truoc-1366-6-sau-ngung-toast.jpg",
+          "tran_ngang": false,
+          "rong_bo_cuc": 1366,
+          "rong_noi_dung": 1366,
+          "chu_nho": [],
+          "nut_nho": [],
+          "nut_bi_che": [],
+          "chu_hien_thi": "Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Tên đăng nhập Mật khẩu Đăng nhập Bản xem trước: nhập tên và mật khẩu bất kỳ. Tên \"xem\" để thử tài khoản chỉ xem. Quên mật khẩu? Liên hệ quản trị hệ thống của chi nhánh. Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Nguyễn Quốc Thắng Quản lý Đăng xuất 3 đang làm · 2 đã ngừng Tìm nhân sự Tất cả Đang làm Đã ngừng Đang chạy dữ liệu mẫu. Thay đổi chỉ lưu tạm, không ảnh hưởng CSDL thật. VA Nguyễn Văn An Trạm KCTX Đà Nẵng · Khám xa viên Đang làm VC Lê Văn Cường Trạm KCTX Nha Trang · Trưởng ca Đang làm TD Phạm Thị Dung Tổ KCTX Kim Liên · Khám xa viên Đang làm TB Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên Đã ngừng VE Hoàng Văn Em Tổ KCTX Tuy Hoà · Thợ sửa chữa Đã ngừng Không có nhân sự nào khớp bộ lọc. Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên ✕ Đã ngừng Phân công đang hiệu lực Chưa có phân công nào đang hiệu lực. Giao việc mới Tối đa 500 ký tự. Giao việc Kích hoạt lại Phân công cũ không tự khôi phục; giao lại việc sau khi kích hoạt. Đã ngừng Trần Thị Bình và 2 phân công"
+        }
+      ]
+    },
+    {
+      "ban": "sau",
+      "rong": 360,
+      "thiet_bi": "Android nhỏ",
+      "loi_js": [],
+      "loi_mang": [],
+      "trang_thai": [
+        {
+          "trang_thai": "5-hop-xac-nhan",
+          "anh": "sau-360-5-hop-xac-nhan.jpg",
+          "tran_ngang": false,
+          "rong_bo_cuc": 360,
+          "rong_noi_dung": 360,
+          "chu_nho": [],
+          "nut_nho": [],
+          "nut_bi_che": [],
+          "chu_hien_thi": "Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Tên đăng nhập Mật khẩu Đăng nhập Bản xem trước: nhập tên và mật khẩu bất kỳ. Tên \"xem\" để thử tài khoản chỉ xem. Quên mật khẩu? Liên hệ quản trị hệ thống của chi nhánh. Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Nguyễn Quốc Thắng Quản lý Đăng xuất 4 đang làm · 1 đã ngừng Tìm nhân sự Tất cả Đang làm Đã ngừng Đang chạy dữ liệu mẫu. Thay đổi chỉ lưu tạm, không ảnh hưởng CSDL thật. VA Nguyễn Văn An Trạm KCTX Đà Nẵng · Khám xa viên Đang làm TB Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên Đang làm VC Lê Văn Cường Trạm KCTX Nha Trang · Trưởng ca Đang làm TD Phạm Thị Dung Tổ KCTX Kim Liên · Khám xa viên Đang làm VE Hoàng Văn Em Tổ KCTX Tuy Hoà · Thợ sửa chữa Đã ngừng Không có nhân sự nào khớp bộ lọc. Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên ✕ Đang làm Phân công đang hiệu lực Khám đoàn tàu SE3 tại ga Diêu Trì Trực ca đêm tổ Quảng Ngãi Giao việc mới Tối đa 500 ký tự. Giao việc Ngừng Trần Thị Bình và 2 phân công đang hiệu lực? Huỷ Xác nhận ngừng"
+        },
+        {
+          "trang_thai": "loi-kich-ban",
+          "buoc": {
+            "cho_an": "#sheet"
+          },
+          "loi": "page.waitForSelector: Timeout 8000ms exceeded."
+        },
+        {
+          "trang_thai": "loi-kich-ban",
+          "buoc": {
+            "cho": "#toast"
+          },
+          "loi": "page.waitForSelector: Timeout 3000ms exceeded."
+        },
+        {
+          "trang_thai": "6-sau-ngung-toast",
+          "anh": "sau-360-6-sau-ngung-toast.jpg",
+          "tran_ngang": false,
+          "rong_bo_cuc": 360,
+          "rong_noi_dung": 360,
+          "chu_nho": [],
+          "nut_nho": [],
+          "nut_bi_che": [],
+          "chu_hien_thi": "Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Tên đăng nhập Mật khẩu Đăng nhập Bản xem trước: nhập tên và mật khẩu bất kỳ. Tên \"xem\" để thử tài khoản chỉ xem. Quên mật khẩu? Liên hệ quản trị hệ thống của chi nhánh. Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Nguyễn Quốc Thắng Quản lý Đăng xuất 3 đang làm · 2 đã ngừng Tìm nhân sự Tất cả Đang làm Đã ngừng Đang chạy dữ liệu mẫu. Thay đổi chỉ lưu tạm, không ảnh hưởng CSDL thật. VA Nguyễn Văn An Trạm KCTX Đà Nẵng · Khám xa viên Đang làm VC Lê Văn Cường Trạm KCTX Nha Trang · Trưởng ca Đang làm TD Phạm Thị Dung Tổ KCTX Kim Liên · Khám xa viên Đang làm TB Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên Đã ngừng VE Hoàng Văn Em Tổ KCTX Tuy Hoà · Thợ sửa chữa Đã ngừng Không có nhân sự nào khớp bộ lọc. Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên ✕ Đã ngừng Phân công đang hiệu lực Chưa có phân công nào đang hiệu lực. Giao việc mới Tối đa 500 ký tự. Giao việc Kích hoạt lại Phân công cũ không tự khôi phục; giao lại việc sau khi kích hoạt. Đã ngừng Trần Thị Bình và 2 phân công"
+        }
+      ]
+    },
+    {
+      "ban": "sau",
+      "rong": 390,
+      "thiet_bi": "iPhone",
+      "loi_js": [],
+      "loi_mang": [],
+      "trang_thai": [
+        {
+          "trang_thai": "5-hop-xac-nhan",
+          "anh": "sau-390-5-hop-xac-nhan.jpg",
+          "tran_ngang": false,
+          "rong_bo_cuc": 390,
+          "rong_noi_dung": 390,
+          "chu_nho": [],
+          "nut_nho": [],
+          "nut_bi_che": [],
+          "chu_hien_thi": "Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Tên đăng nhập Mật khẩu Đăng nhập Bản xem trước: nhập tên và mật khẩu bất kỳ. Tên \"xem\" để thử tài khoản chỉ xem. Quên mật khẩu? Liên hệ quản trị hệ thống của chi nhánh. Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Nguyễn Quốc Thắng Quản lý Đăng xuất 4 đang làm · 1 đã ngừng Tìm nhân sự Tất cả Đang làm Đã ngừng Đang chạy dữ liệu mẫu. Thay đổi chỉ lưu tạm, không ảnh hưởng CSDL thật. VA Nguyễn Văn An Trạm KCTX Đà Nẵng · Khám xa viên Đang làm TB Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên Đang làm VC Lê Văn Cường Trạm KCTX Nha Trang · Trưởng ca Đang làm TD Phạm Thị Dung Tổ KCTX Kim Liên · Khám xa viên Đang làm VE Hoàng Văn Em Tổ KCTX Tuy Hoà · Thợ sửa chữa Đã ngừng Không có nhân sự nào khớp bộ lọc. Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên ✕ Đang làm Phân công đang hiệu lực Khám đoàn tàu SE3 tại ga Diêu Trì Trực ca đêm tổ Quảng Ngãi Giao việc mới Tối đa 500 ký tự. Giao việc Ngừng Trần Thị Bình và 2 phân công đang hiệu lực? Huỷ Xác nhận ngừng"
+        },
+        {
+          "trang_thai": "loi-kich-ban",
+          "buoc": {
+            "cho_an": "#sheet"
+          },
+          "loi": "page.waitForSelector: Timeout 8000ms exceeded."
+        },
+        {
+          "trang_thai": "loi-kich-ban",
+          "buoc": {
+            "cho": "#toast"
+          },
+          "loi": "page.waitForSelector: Timeout 3000ms exceeded."
+        },
+        {
+          "trang_thai": "6-sau-ngung-toast",
+          "anh": "sau-390-6-sau-ngung-toast.jpg",
+          "tran_ngang": false,
+          "rong_bo_cuc": 390,
+          "rong_noi_dung": 390,
+          "chu_nho": [],
+          "nut_nho": [],
+          "nut_bi_che": [],
+          "chu_hien_thi": "Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Tên đăng nhập Mật khẩu Đăng nhập Bản xem trước: nhập tên và mật khẩu bất kỳ. Tên \"xem\" để thử tài khoản chỉ xem. Quên mật khẩu? Liên hệ quản trị hệ thống của chi nhánh. Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Nguyễn Quốc Thắng Quản lý Đăng xuất 3 đang làm · 2 đã ngừng Tìm nhân sự Tất cả Đang làm Đã ngừng Đang chạy dữ liệu mẫu. Thay đổi chỉ lưu tạm, không ảnh hưởng CSDL thật. VA Nguyễn Văn An Trạm KCTX Đà Nẵng · Khám xa viên Đang làm VC Lê Văn Cường Trạm KCTX Nha Trang · Trưởng ca Đang làm TD Phạm Thị Dung Tổ KCTX Kim Liên · Khám xa viên Đang làm TB Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên Đã ngừng VE Hoàng Văn Em Tổ KCTX Tuy Hoà · Thợ sửa chữa Đã ngừng Không có nhân sự nào khớp bộ lọc. Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên ✕ Đã ngừng Phân công đang hiệu lực Chưa có phân công nào đang hiệu lực. Giao việc mới Tối đa 500 ký tự. Giao việc Kích hoạt lại Phân công cũ không tự khôi phục; giao lại việc sau khi kích hoạt. Đã ngừng Trần Thị Bình và 2 phân công"
+        }
+      ]
+    },
+    {
+      "ban": "sau",
+      "rong": 768,
+      "thiet_bi": "Máy tính bảng",
+      "loi_js": [],
+      "loi_mang": [],
+      "trang_thai": [
+        {
+          "trang_thai": "5-hop-xac-nhan",
+          "anh": "sau-768-5-hop-xac-nhan.jpg",
+          "tran_ngang": false,
+          "rong_bo_cuc": 768,
+          "rong_noi_dung": 768,
+          "chu_nho": [],
+          "nut_nho": [],
+          "nut_bi_che": [],
+          "chu_hien_thi": "Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Tên đăng nhập Mật khẩu Đăng nhập Bản xem trước: nhập tên và mật khẩu bất kỳ. Tên \"xem\" để thử tài khoản chỉ xem. Quên mật khẩu? Liên hệ quản trị hệ thống của chi nhánh. Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Nguyễn Quốc Thắng Quản lý Đăng xuất 4 đang làm · 1 đã ngừng Tìm nhân sự Tất cả Đang làm Đã ngừng Đang chạy dữ liệu mẫu. Thay đổi chỉ lưu tạm, không ảnh hưởng CSDL thật. VA Nguyễn Văn An Trạm KCTX Đà Nẵng · Khám xa viên Đang làm TB Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên Đang làm VC Lê Văn Cường Trạm KCTX Nha Trang · Trưởng ca Đang làm TD Phạm Thị Dung Tổ KCTX Kim Liên · Khám xa viên Đang làm VE Hoàng Văn Em Tổ KCTX Tuy Hoà · Thợ sửa chữa Đã ngừng Không có nhân sự nào khớp bộ lọc. Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên ✕ Đang làm Phân công đang hiệu lực Khám đoàn tàu SE3 tại ga Diêu Trì Trực ca đêm tổ Quảng Ngãi Giao việc mới Tối đa 500 ký tự. Giao việc Ngừng Trần Thị Bình và 2 phân công đang hiệu lực? Huỷ Xác nhận ngừng"
+        },
+        {
+          "trang_thai": "loi-kich-ban",
+          "buoc": {
+            "cho_an": "#sheet"
+          },
+          "loi": "page.waitForSelector: Timeout 8000ms exceeded."
+        },
+        {
+          "trang_thai": "loi-kich-ban",
+          "buoc": {
+            "cho": "#toast"
+          },
+          "loi": "page.waitForSelector: Timeout 3000ms exceeded."
+        },
+        {
+          "trang_thai": "6-sau-ngung-toast",
+          "anh": "sau-768-6-sau-ngung-toast.jpg",
+          "tran_ngang": false,
+          "rong_bo_cuc": 768,
+          "rong_noi_dung": 768,
+          "chu_nho": [],
+          "nut_nho": [],
+          "nut_bi_che": [],
+          "chu_hien_thi": "Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Tên đăng nhập Mật khẩu Đăng nhập Bản xem trước: nhập tên và mật khẩu bất kỳ. Tên \"xem\" để thử tài khoản chỉ xem. Quên mật khẩu? Liên hệ quản trị hệ thống của chi nhánh. Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Nguyễn Quốc Thắng Quản lý Đăng xuất 3 đang làm · 2 đã ngừng Tìm nhân sự Tất cả Đang làm Đã ngừng Đang chạy dữ liệu mẫu. Thay đổi chỉ lưu tạm, không ảnh hưởng CSDL thật. VA Nguyễn Văn An Trạm KCTX Đà Nẵng · Khám xa viên Đang làm VC Lê Văn Cường Trạm KCTX Nha Trang · Trưởng ca Đang làm TD Phạm Thị Dung Tổ KCTX Kim Liên · Khám xa viên Đang làm TB Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên Đã ngừng VE Hoàng Văn Em Tổ KCTX Tuy Hoà · Thợ sửa chữa Đã ngừng Không có nhân sự nào khớp bộ lọc. Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên ✕ Đã ngừng Phân công đang hiệu lực Chưa có phân công nào đang hiệu lực. Giao việc mới Tối đa 500 ký tự. Giao việc Kích hoạt lại Phân công cũ không tự khôi phục; giao lại việc sau khi kích hoạt. Đã ngừng Trần Thị Bình và 2 phân công"
+        }
+      ]
+    },
+    {
+      "ban": "sau",
+      "rong": 1366,
+      "thiet_bi": "Máy tính Windows",
+      "loi_js": [],
+      "loi_mang": [],
+      "trang_thai": [
+        {
+          "trang_thai": "5-hop-xac-nhan",
+          "anh": "sau-1366-5-hop-xac-nhan.jpg",
+          "tran_ngang": false,
+          "rong_bo_cuc": 1366,
+          "rong_noi_dung": 1366,
+          "chu_nho": [],
+          "nut_nho": [],
+          "nut_bi_che": [],
+          "chu_hien_thi": "Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Tên đăng nhập Mật khẩu Đăng nhập Bản xem trước: nhập tên và mật khẩu bất kỳ. Tên \"xem\" để thử tài khoản chỉ xem. Quên mật khẩu? Liên hệ quản trị hệ thống của chi nhánh. Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Nguyễn Quốc Thắng Quản lý Đăng xuất 4 đang làm · 1 đã ngừng Tìm nhân sự Tất cả Đang làm Đã ngừng Đang chạy dữ liệu mẫu. Thay đổi chỉ lưu tạm, không ảnh hưởng CSDL thật. VA Nguyễn Văn An Trạm KCTX Đà Nẵng · Khám xa viên Đang làm TB Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên Đang làm VC Lê Văn Cường Trạm KCTX Nha Trang · Trưởng ca Đang làm TD Phạm Thị Dung Tổ KCTX Kim Liên · Khám xa viên Đang làm VE Hoàng Văn Em Tổ KCTX Tuy Hoà · Thợ sửa chữa Đã ngừng Không có nhân sự nào khớp bộ lọc. Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên ✕ Đang làm Phân công đang hiệu lực Khám đoàn tàu SE3 tại ga Diêu Trì Trực ca đêm tổ Quảng Ngãi Giao việc mới Tối đa 500 ký tự. Giao việc Ngừng Trần Thị Bình và 2 phân công đang hiệu lực? Huỷ Xác nhận ngừng"
+        },
+        {
+          "trang_thai": "loi-kich-ban",
+          "buoc": {
+            "cho_an": "#sheet"
+          },
+          "loi": "page.waitForSelector: Timeout 8000ms exceeded."
+        },
+        {
+          "trang_thai": "loi-kich-ban",
+          "buoc": {
+            "cho": "#toast"
+          },
+          "loi": "page.waitForSelector: Timeout 3000ms exceeded."
+        },
+        {
+          "trang_thai": "6-sau-ngung-toast",
+          "anh": "sau-1366-6-sau-ngung-toast.jpg",
+          "tran_ngang": false,
+          "rong_bo_cuc": 1366,
+          "rong_noi_dung": 1366,
+          "chu_nho": [],
+          "nut_nho": [],
+          "nut_bi_che": [],
+          "chu_hien_thi": "Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Tên đăng nhập Mật khẩu Đăng nhập Bản xem trước: nhập tên và mật khẩu bất kỳ. Tên \"xem\" để thử tài khoản chỉ xem. Quên mật khẩu? Liên hệ quản trị hệ thống của chi nhánh. Chi nhánh Toa xe Đà Nẵng Phân công nhân sự Nguyễn Quốc Thắng Quản lý Đăng xuất 3 đang làm · 2 đã ngừng Tìm nhân sự Tất cả Đang làm Đã ngừng Đang chạy dữ liệu mẫu. Thay đổi chỉ lưu tạm, không ảnh hưởng CSDL thật. VA Nguyễn Văn An Trạm KCTX Đà Nẵng · Khám xa viên Đang làm VC Lê Văn Cường Trạm KCTX Nha Trang · Trưởng ca Đang làm TD Phạm Thị Dung Tổ KCTX Kim Liên · Khám xa viên Đang làm TB Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên Đã ngừng VE Hoàng Văn Em Tổ KCTX Tuy Hoà · Thợ sửa chữa Đã ngừng Không có nhân sự nào khớp bộ lọc. Trần Thị Bình Trạm KCTX Diêu Trì · Khám xa viên ✕ Đã ngừng Phân công đang hiệu lực Chưa có phân công nào đang hiệu lực. Giao việc mới Tối đa 500 ký tự. Giao việc Kích hoạt lại Phân công cũ không tự khôi phục; giao lại việc sau khi kích hoạt. Đã ngừng Trần Thị Bình và 2 phân công"
+        }
+      ]
+    }
+  ],
+  "ket_luan": "FAIL",
+  "loi": [
+    "360px/loi-kich-ban: page.waitForSelector: Timeout 8000ms exceeded.",
+    "360px/loi-kich-ban: page.waitForSelector: Timeout 3000ms exceeded.",
+    "390px/loi-kich-ban: page.waitForSelector: Timeout 8000ms exceeded.",
+    "390px/loi-kich-ban: page.waitForSelector: Timeout 3000ms exceeded.",
+    "768px/loi-kich-ban: page.waitForSelector: Timeout 8000ms exceeded.",
+    "768px/loi-kich-ban: page.waitForSelector: Timeout 3000ms exceeded.",
+    "1366px/loi-kich-ban: page.waitForSelector: Timeout 8000ms exceeded.",
+    "1366px/loi-kich-ban: page.waitForSelector: Timeout 3000ms exceeded."
+  ],
+  "ghi_chu": [
+    "360px/6-sau-ngung-toast: không so chữ được vì bản trước vấp lỗi kịch bản ở bước trước đó",
+    "390px/6-sau-ngung-toast: không so chữ được vì bản trước vấp lỗi kịch bản ở bước trước đó",
+    "768px/6-sau-ngung-toast: không so chữ được vì bản trước vấp lỗi kịch bản ở bước trước đó",
+    "1366px/6-sau-ngung-toast: không so chữ được vì bản trước vấp lỗi kịch bản ở bước trước đó"
+  ],
+  "loi_ban_truoc": [
+    "360px: page.waitForSelector: Timeout 8000ms exceeded.",
+    "360px: page.waitForSelector: Timeout 3000ms exceeded.",
+    "390px: page.waitForSelector: Timeout 8000ms exceeded.",
+    "390px: page.waitForSelector: Timeout 3000ms exceeded.",
+    "768px: page.waitForSelector: Timeout 8000ms exceeded.",
+    "768px: page.waitForSelector: Timeout 3000ms exceeded.",
+    "1366px: page.waitForSelector: Timeout 8000ms exceeded.",
+    "1366px: page.waitForSelector: Timeout 3000ms exceeded."
+  ]
+}

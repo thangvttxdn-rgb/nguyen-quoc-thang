@@ -157,7 +157,7 @@ const ketQua = { cong_cu: "Playwright + Chromium (mô phỏng)", phien_ban: phie
 
 for (const [ban, file] of [["truoc", truoc], ["sau", sau]]) {
   for (const kc of RONG) {
-    const trang = await trinhDuyet.newPage({ viewport: { width: kc.rong, height: kc.cao }, deviceScaleFactor: 1, isMobile: kc.dt && kc.rong < 768, hasTouch: kc.dt });
+    const trang = await trinhDuyet.newPage({ viewport: { width: kc.rong, height: kc.cao }, deviceScaleFactor: 1, isMobile: kc.dt && kc.rong < 768, hasTouch: kc.dt, colorScheme: process.env.UNSLOP_TOI ? "dark" : "light" });
     const loiJs = [], loiMang = [];
     trang.on("pageerror", (e) => loiJs.push(String(e.message || e)));
     trang.on("console", (m) => { if (m.type() === "error") (/Failed to load resource|ERR_/.test(m.text()) ? loiMang : loiJs).push(m.text()); });

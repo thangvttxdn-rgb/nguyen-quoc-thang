@@ -59,6 +59,10 @@ Hộp "xác nhận ngừng" **không đo được trên bản trước** (bướ
 40 ảnh + `ket-qua.json`): toast đè hai nút "Huỷ" / "Xác nhận ngừng" ở cả 4 cỡ. Đây là **đo trên biến thể**.
 Với **bản hiện hành** thì chỉ suy luận: bấm "Ngừng nhân sự" bị chặn nên chưa mở được hộp xác nhận để đo - **CẦN CĂN CỨ**.
 
+Chế độ tối (`colorScheme: dark`, 4 cỡ, `kiem-thu/toi/`): **PASS**, 0 lỗi, 0 lỗi JavaScript.
+
+Sau "Xác nhận ngừng" (bảng vẫn mở, `kiem-thu/sau-ngung/`): toast hiện ở đầu màn hình, **không đè nút nào** ở 4 cỡ (THẬT, mô phỏng).
+
 Bản sau xử lý bằng CSS: toast lên đầu màn hình và có `pointer-events: none`; nút cao 44 px.
 Đã áp vào `src/static/app.css`: toast đầu màn hình + `pointer-events: none`; `.chip` và `.logout` 44 px; mã màu trạng thái
 và băng dữ liệu mẫu theo bảng mục 5. **Chưa áp** phần còn lại của `sau.html`: toast vẫn nền gradient, chữ 14.5px, bóng đậm;
@@ -91,6 +95,5 @@ chip giữ padding 6px 14px và bo 999px. Các khác biệt này không ảnh h�
 | iPhone Safari thật, Android Chrome thật | Không có thiết bị/dịch vụ thiết bị trong phiên đám mây |
 | WebKit (gần Safari) | Không cài thêm trình duyệt (cần xin phép) |
 | Máy Windows thật | Phiên chạy trên Linux |
-| Chế độ tối | Bản sau có bảng màu tối nhưng chưa chụp kiểm |
-| Toast ở đầu màn hình khi bảng trượt đã đóng | Sau "Đã ngừng…" / "Đã kích hoạt lại…" toast có thể đè tiêu đề và nút "Đăng xuất" vài giây (bấm xuyên được, che chữ). Kịch bản chưa có bước chụp trạng thái này |
+| Toast đầu màn hình khi bảng trượt đã đóng (nút X hoặc sau "Đã kích hoạt lại…") | **Chưa đo.** Đã đo trường hợp bảng vẫn mở sau "Xác nhận ngừng" (`kiem-thu/sau-ngung/`): không nút nào bị đè ở 4 cỡ. Trường hợp toast đè tiêu đề/Đăng xuất khi bảng đã đóng vẫn có thể xảy ra |
 | CTXĐN AI OS 3.0, Quản lý tài sản, Báo cáo tự động | Không có mã nguồn trong kho |
