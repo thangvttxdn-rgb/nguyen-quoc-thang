@@ -51,13 +51,13 @@ với trạng thái mới `thu-nghiem`.
 
 | Thành phần | Vị trí | Ghi chú |
 |---|---|---|
-| Bản gốc unslop | `.claude/thu-nghiem/unslop/` | Chép nguyên vẹn + `LICENSE`; mã băm ở `.claude/thu-nghiem/unslop.sha256`, có test |
-| Lớp bọc CTXĐN | `.claude/thu-nghiem/ctxdn-ui-ux-unslop/SKILL.md` | Bất biến nghiệp vụ, ngoài phạm vi, quy trình tiếng Việt |
-| Bộ kiểm thử | `.claude/thu-nghiem/ctxdn-ui-ux-unslop/scripts/kiem_tra_giao_dien.mjs` | 4 cỡ màn hình, so trước/sau |
+| Bản gốc unslop | `.claude/skills/ctxdn-ui-ux-unslop/unslop/` | Chép nguyên vẹn + `LICENSE`; mã băm ở `.claude/skills/ctxdn-ui-ux-unslop/unslop.sha256`, có test |
+| Lớp bọc CTXĐN | `.claude/skills/ctxdn-ui-ux-unslop/SKILL.md` | Bất biến nghiệp vụ, ngoài phạm vi, quy trình tiếng Việt |
+| Bộ kiểm thử | `.claude/skills/ctxdn-ui-ux-unslop/scripts/kiem_tra_giao_dien.mjs` | 4 cỡ màn hình, so trước/sau |
 | Tuyến điều phối | `giao-dien` trong registry | Hook gắn nhãn "THỬ NGHIỆM … chỉ làm trên bản sao" |
 
 Vì sao không chép thẳng vào `.claude/skills/` như README: Claude Code tự nạp mọi thư mục ở đó, tức là
-**kích hoạt thật** - trái yêu cầu "chỉ đăng ký Registry thử nghiệm". Kích hoạt: xem `PHUONG-AN-ROLLBACK.md` mục 3.
+**kích hoạt thật**. Lúc đầu chưa kích hoạt; sau khi chủ đầu tư duyệt, đã chuyển vào `.claude/skills/` (`PHUONG-AN-ROLLBACK.md` mục 3).
 
 ## 5. Chạy thử - DEMO trên bản sao
 
@@ -71,7 +71,7 @@ Kết quả kiểm thử: `BAO-CAO-KIEM-THU.md`.
 |---|---|
 | Repository được xác minh | **ĐẠT** |
 | Kiểm tra bảo mật | **ĐẠT có điều kiện** (`BAO-CAO-BAO-MAT.md`) |
-| Cài đặt thử | **ĐẠT** ở vùng thử nghiệm; **chưa kích hoạt** trong `.claude/skills/` (chờ duyệt) |
+| Cài đặt thử | **ĐẠT**; đã kích hoạt trong `.claude/skills/` sau khi chủ đầu tư duyệt (13/11/2026) |
 | Registry thử nghiệm không xung đột | **ĐẠT** (`python -m pytest` 185 passed, `ruff` sạch) |
 | Hướng dẫn tiếng Việt | **PARTIAL** - phần Windows chưa chạy trên máy Windows |
 | Kiểm thử có bằng chứng | **PARTIAL** - Chromium mô phỏng (lần đầu không hợp lệ do thiếu viewport, đã chạy lại); iPhone Safari, Android Chrome, Windows thật: BLOCKED |

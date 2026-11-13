@@ -4,13 +4,13 @@ description: Nâng cấp giao diện phần mềm nội bộ CTXĐN (EMS, AI OS 
 license: CC-BY-4.0 (phần dẫn xuất từ unslop của Damir Sokolovsky, https://github.com/heydamir/unslop)
 ---
 
-# ctxdn-ui-ux-unslop (THỬ NGHIỆM)
+# ctxdn-ui-ux-unslop
 
-Lớp CTXĐN bọc ngoài kỹ năng **unslop** (bản gốc nguyên vẹn tại `../unslop/`, commit
+Lớp CTXĐN bọc ngoài kỹ năng **unslop** (bản gốc nguyên vẹn tại `unslop/`, commit
 `97daa3eb365670ea3f87ed85356cbfcee18105a5`, CC BY 4.0 - giữ ghi công Damir Sokolovsky, @heydamir).
 Khi luật dưới đây khác bản gốc, **luật dưới đây thắng**.
 
-Trạng thái: `thu-nghiem`. Chỉ chạy trên **bản sao trong sandbox** (scratchpad hoặc `docs/unslop/vi-du/`),
+Đã kích hoạt ngày 13/11/2026 (`.claude/skills/`). Việc sửa mã vẫn chỉ làm trên **bản sao trong sandbox** (scratchpad hoặc `docs/unslop/vi-du/`),
 không sửa thẳng `src/` khi chưa có nhiệm vụ cụ thể được chủ đầu tư giao.
 
 ## 1. Bất biến nghiệp vụ (không bao giờ được đổi)
@@ -72,7 +72,7 @@ Kiểm tra giao diện trước/sau ở 360, 390, 768, 1366 px và xuất báo c
 ## 5. Kiểm thử bắt buộc
 
 ```
-node .claude/thu-nghiem/ctxdn-ui-ux-unslop/scripts/kiem_tra_giao_dien.mjs <truoc.html> <sau.html> <thu-muc-ket-qua>
+node .claude/skills/ctxdn-ui-ux-unslop/scripts/kiem_tra_giao_dien.mjs <truoc.html> <sau.html> <thu-muc-ket-qua>
 ```
 
 Script dùng Playwright + Chromium có sẵn, mở cả hai bản ở 360/390/768/1366 px, ghi `ket-qua.json` và

@@ -24,8 +24,8 @@ bo góc: nút 8-10px, thẻ 12-16px; biểu tượng 16-18px nét 1.5. CTXĐN th
 
 ## 2. Trạng thái hiện tại: THỬ NGHIỆM
 
-Kỹ năng **chưa kích hoạt** - không có lệnh `/ctxdn-ui-ux-unslop`. Khi gõ yêu cầu có "giao diện", "unslop",
-"làm đẹp"…, Tổng chỉ huy nhắc đọc file `.claude/thu-nghiem/ctxdn-ui-ux-unslop/SKILL.md` và chỉ làm trên bản sao.
+Kỹ năng **đã kích hoạt** (13/11/2026) - gọi bằng `/ctxdn-ui-ux-unslop`. Khi gõ yêu cầu có "giao diện", "unslop",
+"làm đẹp"…, Tổng chỉ huy nhắc đọc file `.claude/skills/ctxdn-ui-ux-unslop/SKILL.md` và chỉ làm trên bản sao.
 
 ## 3. Câu lệnh mẫu cho Claude
 
@@ -56,7 +56,7 @@ npx playwright@1.63.0 install chromium
 $env:NODE_PATH = "$env:USERPROFILE\ctxdn-ui-test\node_modules"
 
 # Mỗi lần kiểm thử
-node <đường-dẫn-kho>\.claude\thu-nghiem\ctxdn-ui-ux-unslop\scripts\kiem_tra_giao_dien.mjs `
+node <đường-dẫn-kho>\.claude\skills\ctxdn-ui-ux-unslop\scripts\kiem_tra_giao_dien.mjs `
   <đường-dẫn-kho>\docs\unslop\vi-du\truoc.html `
   <đường-dẫn-kho>\docs\unslop\vi-du\sau.html `
   .\ket-qua --kich-ban <đường-dẫn-kho>\docs\unslop\vi-du\kich-ban-ems.json

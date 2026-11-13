@@ -1,7 +1,7 @@
-# Bản vá ĐỀ XUẤT cho src/static/app.css (chưa áp vào src/ - cần chủ đầu tư duyệt)
-# Áp thử: git apply --check docs/unslop/PATCH-src-static-app.css.diff  (rồi git apply nếu được duyệt)
-# Đã kiểm trên bản sao kho: python -m pytest 185 passed, ruff sạch.
-# Thay đổi: thông báo nổi lên đầu màn hình + pointer-events:none; nút lọc (.chip) và Đăng xuất (.logout) 38 → 44 px.
+# Bản vá cho src/static/app.css - ĐÃ ÁP vào src/ (duyệt 13/11/2026), giữ lại làm hồ sơ.
+# Đã kiểm pytest 185 passed, ruff sạch. KHÔNG kiểm giao diện trên thiết bị thật.
+# Thay đổi: thông báo nổi lên đầu màn hình + pointer-events:none (che tiêu đề và nút Đăng xuất khoảng 3 giây sau khi bảng đóng - CHƯA ĐO);
+# nút lọc (.chip) và Đăng xuất (.logout) 38 → 44 px.
 diff --git a/src/static/app.css b/src/static/app.css
 index 4061e05..24f0f4f 100644
 --- a/src/static/app.css

@@ -6,7 +6,7 @@
 - Đối tượng: `docs/unslop/vi-du/truoc.html` (chép từ `docs/giao-dien-mobile.html`, bản xem trước EMS có API giả lập)
   và `docs/unslop/vi-du/sau.html` (**DEMO** - áp dụng ctxdn-ui-ux-unslop).
 - Bằng chứng: `ket-qua.json` + 40 ảnh `truoc|sau-<cỡ>-<trạng thái>.jpg` cùng thư mục.
-- Lệnh: `node .claude/thu-nghiem/ctxdn-ui-ux-unslop/scripts/kiem_tra_giao_dien.mjs docs/unslop/vi-du/truoc.html docs/unslop/vi-du/sau.html docs/unslop/kiem-thu --kich-ban docs/unslop/vi-du/kich-ban-ems.json`
+- Lệnh: `node .claude/skills/ctxdn-ui-ux-unslop/scripts/kiem_tra_giao_dien.mjs docs/unslop/vi-du/truoc.html docs/unslop/vi-du/sau.html docs/unslop/kiem-thu --kich-ban docs/unslop/vi-du/kich-ban-ems.json`
 
 ## 0. Lần chạy đầu bị hủy (G3 phát hiện)
 
@@ -30,33 +30,37 @@ Lần chạy 10:59 UTC báo PASS nhưng **không hợp lệ** ở 360/390/768 px
 | Mã `<script>` (2 khối) | Trùng từng byte |
 | Nút, ô nhập, biểu mẫu | 13 = 13, cùng `id`/`name`/`type` |
 | Phần đầu file | **Có sửa ngoài CSS**: bỏ thẻ `<link>` Google Fonts, đổi một dòng chú thích. Từ `<section class="login">` đến hết file trùng khớp |
-| Chữ trong DOM | Giống nhau ở 18/20 trạng thái. 2 trạng thái "xác nhận ngừng" ở 360 và 390 px **không so được** vì bản trước không bấm tới được (mục 4); hai trạng thái này chỉ dựa vào việc khung HTML và `<script>` trùng khớp |
+| Chữ trong DOM | Giống nhau ở **16/20** trạng thái so được. 4 trạng thái "xác nhận ngừng" (mỗi cỡ một) **không so được** vì bản trước không mở được hộp xác nhận (mục 4); 4 trạng thái này chỉ dựa vào việc khung HTML và `<script>` trùng khớp |
 | API, CSDL, `src/` | Không đụng |
 
 ## 3. Kết quả theo cỡ màn hình - THẬT (mô phỏng), bố cục dựng đúng khổ
 
+Số liệu lấy từ `kiem-thu/ket-qua.json` (lần chạy mới, cùng ngày). Mỗi cỡ: 5 trạng thái, 2 bước kịch bản.
+
 | Cỡ | Thiết bị giả lập | Bản trước | Bản sau |
 |---|---|---|---|
-| 360 px | Android nhỏ | 4 nút < 44 px; toast đè nút "Ngừng nhân sự" và chặn bấm quá 3 giây | **PASS** |
+| 360 px | Android nhỏ | 4 nút < 44 px; toast đè nút "Ngừng nhân sự"; bấm bị chặn (2 bước timeout 3 giây) | **PASS** |
 | 390 px | iPhone | Như 360 px | **PASS** |
-| 768 px | Máy tính bảng | 4 nút < 44 px; toast đè nút "Ngừng nhân sự" (bấm được sau khi chờ) | **PASS** |
-| 1366 px | Windows | Toast đè nút "Ngừng nhân sự" (bấm được sau khi chờ) | **PASS** |
+| 768 px | Máy tính bảng | Như 360 px | **PASS** |
+| 1366 px | Windows | Không có nút < 44 px; toast đè nút "Ngừng nhân sự"; bấm bị chặn (2 bước timeout) | **PASS** |
 
 Bản sau ở cả 4 cỡ: không tràn ngang, không chữ < 12 px, không nút < 44 px, không nút bị che hoặc bị đè,
 0 lỗi JavaScript, 0 lỗi tải tài nguyên. Kết luận script: `PASS: 8 lần chạy, 0 lỗi`.
 
-## 4. Lỗi giao diện thật ở bản hiện hành
+## 4. Lỗi giao diện thật ở bản trước (THẬT, 4 cỡ)
 
-1. **Toast đè nút "Ngừng nhân sự"** sau khi giao việc, ở cả 4 cỡ (THẬT, `ket-qua.json` trạng thái 4). Ở 360 và
-   390 px còn **chặn bấm**: Playwright báo `<div id="toast"> intercepts pointer events`, quá 3 giây vẫn không bấm được.
-2. **Toast ở đáy màn hình đè hai nút "Huỷ" / "Xác nhận ngừng"** của hộp xác nhận, ở cả 4 cỡ. Đo trên biến thể
-   `vi-du/sau-toast-day.html` (bản sau, toast để ở đáy như bản hiện hành, cho bấm xuyên): `kiem-thu/toast-day/ket-qua.json`,
-   ảnh `kiem-thu/toast-day/sau-360-5-xac-nhan-ngung.jpg`. Trên **bản hiện hành** chưa đo trực tiếp được (bấm bị chặn
-   trước khi hộp mở) - **CẦN CĂN CỨ**: khả năng cao xảy ra nếu người dùng bấm "Ngừng nhân sự" ngay khi toast vừa tắt.
-3. **Nút lọc và nút Đăng xuất cao 38 px**, dưới mức 44 px của màn hình cảm ứng (360/390/768 px).
+1. **Toast đè nút "Ngừng nhân sự"** sau khi giao việc, ở cả 4 cỡ (`ket-qua.json`, trạng thái `4-vua-giao-viec`:
+   `button.btn.danger bị đè bởi div#toast`). Bước bấm bị chặn đến khi hết thời gian chờ 3 giây, ở cả 4 cỡ.
+2. **Nút lọc và nút Đăng xuất cao 38 px**, dưới mức 44 px của màn hình cảm ứng (360/390/768 px).
 
-Bản sau xử lý bằng CSS: toast chuyển lên đầu màn hình và có `pointer-events: none`; nút cao 44 px.
-Đây là phát hiện trên bản xem trước; cần đối chiếu `src/static/app.css` thật trước khi sửa (chưa sửa `src/`).
+Hộp "xác nhận ngừng" **không đo được trên bản trước** (bước bấm trước đó đã lỗi).
+
+**Bản biến thể toast ở đáy** (`vi-du/sau-toast-day.html`, chỉ đổi vị trí toast về đáy như bản hiện hành, `kiem-thu/toast-day/`,
+40 ảnh + `ket-qua.json`): toast đè hai nút "Huỷ" / "Xác nhận ngừng" ở cả 4 cỡ. Đây là **đo trên biến thể**.
+Với **bản hiện hành** thì chỉ suy luận: bấm "Ngừng nhân sự" bị chặn nên chưa mở được hộp xác nhận để đo - **CẦN CĂN CỨ**.
+
+Bản sau xử lý bằng CSS: toast lên đầu màn hình và có `pointer-events: none`; nút cao 44 px.
+Bản sau đã được áp vào `src/static/app.css` (xem mục 7 của `BAO-CAO-KHAO-SAT-UNSLOP.md`).
 
 ## 5. Thay đổi trình bày (DEMO)
 

@@ -308,24 +308,20 @@
       "nguon": "repo",
       "mo_ta": "Nâng cấp giao diện phần mềm nội bộ (EMS, AI OS 3.0, quản lý tài sản, báo cáo tự động) theo phương pháp unslop: rà dấu hiệu, chuẩn hóa khoảng cách, màu, chữ, biểu tượng, tối ưu điện thoại, so sánh trước/sau. Chỉ sửa lớp trình bày, bất biến nghiệp vụ.",
       "khi_dung": "Được giao nâng cấp, làm đẹp, chuẩn hóa giao diện. Kiểm tra tái sử dụng kỹ năng này trước khi tạo kỹ năng giao diện mới.",
-      "goi": "Đọc .claude/thu-nghiem/ctxdn-ui-ux-unslop/SKILL.md (chưa có lệnh /)",
+      "goi": "/ctxdn-ui-ux-unslop",
       "vi_du": "Rà giao diện docs/giao-dien-mobile.html theo unslop, chỉ báo dấu hiệu, chưa sửa",
-      "duong_dan": ".claude/thu-nghiem/ctxdn-ui-ux-unslop/SKILL.md",
-      "trang_thai": "thu-nghiem",
-      "ly_do": "Thử nghiệm: chưa kích hoạt (nằm ở .claude/thu-nghiem/, Claude Code không tự nạp). Chỉ chạy trên bản sao trong sandbox; kích hoạt cần chủ đầu tư duyệt - docs/unslop/PHUONG-AN-ROLLBACK.md."
+      "duong_dan": ".claude/skills/ctxdn-ui-ux-unslop/SKILL.md"
     },
     {
       "id": "unslop",
       "nhom": "skill",
       "phan_muc": "Giao diện",
       "nguon": "repo",
-      "mo_ta": "Bản gốc unslop (heydamir, CC BY 4.0, commit 97daa3e): 9 lượt sửa giao diện kiểu AI - khoảng cách, màu, biểu tượng, chữ, kiểu chữ, bố cục, chi tiết, hình ảnh, chuyển động. Giữ nguyên, không sửa.",
+      "mo_ta": "Bản gốc unslop (heydamir, CC BY 4.0, commit 97daa3e): 9 lượt sửa giao diện kiểu AI - khoảng cách, màu, biểu tượng, chữ, kiểu chữ, bố cục, chi tiết, hình ảnh, chuyển động. Giữ nguyên, không sửa; chỉ gọi qua ctxdn-ui-ux-unslop.",
       "khi_dung": "Chỉ đọc qua ctxdn-ui-ux-unslop (lớp bọc thắng khi khác nhau). Không gọi trực tiếp.",
       "goi": "Qua ctxdn-ui-ux-unslop",
       "vi_du": "",
-      "duong_dan": ".claude/thu-nghiem/unslop/SKILL.md",
-      "trang_thai": "thu-nghiem",
-      "ly_do": "Thử nghiệm: chưa kích hoạt (nằm ở .claude/thu-nghiem/, Claude Code không tự nạp). Chỉ chạy trên bản sao trong sandbox; kích hoạt cần chủ đầu tư duyệt - docs/unslop/PHUONG-AN-ROLLBACK.md. Sinh ảnh trả phí (fal, Replicate, OpenAI images, Higgsfield) và font CDN: không dùng.",
+      "duong_dan": ".claude/skills/ctxdn-ui-ux-unslop/unslop/SKILL.md",
       "chi_qua": "ctxdn-ui-ux-unslop"
     },
     {
@@ -1195,12 +1191,12 @@
       "phien_ban": "main (chưa có tag)",
       "commit": "97daa3eb365670ea3f87ed85356cbfcee18105a5",
       "giay_phep": "CC-BY-4.0",
-      "cai_bang": "chép skills/unslop (+LICENSE) vào .claude/thu-nghiem/unslop - theo hướng dẫn README, đổi đích sang vùng thử nghiệm",
+      "cai_bang": "chép skills/unslop (+LICENSE) vào .claude/skills/ctxdn-ui-ux-unslop/unslop (đã kích hoạt qua lớp bọc)",
       "thu_muc": [
-        ".claude/thu-nghiem/unslop/",
-        ".claude/thu-nghiem/ctxdn-ui-ux-unslop/"
+        ".claude/skills/ctxdn-ui-ux-unslop/unslop/",
+        ".claude/skills/ctxdn-ui-ux-unslop/"
       ],
-      "sua_doi": "Không sửa bản gốc (kiểm bằng .claude/thu-nghiem/unslop.sha256). Lớp bọc CTXĐN: ctxdn-ui-ux-unslop.",
+      "sua_doi": "Không sửa bản gốc (kiểm bằng .claude/skills/ctxdn-ui-ux-unslop/unslop.sha256). Lớp bọc CTXĐN: ctxdn-ui-ux-unslop.",
       "bien_ban": "docs/unslop/BAO-CAO-KHAO-SAT-UNSLOP.md"
     }
   ]

@@ -202,8 +202,8 @@ h3 { font-size: 14px; font-weight: 500; color: var(--muted); }
 .confirm { display: grid; gap: 12px; padding: 12px; border-radius: 10px; background: var(--off-bg); border: 1px solid color-mix(in srgb, var(--off) 30%, transparent); }
 .confirm .two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
-/* Thông báo nổi: đặt ở đầu màn hình, không chặn bấm - bản gốc ở đáy, đè và chặn nút "Ngừng nhân sự",
-   "Xác nhận ngừng" của bảng trượt */
+/* BIẾN THỂ ĐỂ ĐO: thông báo nổi đặt ở ĐÁY như bản hiện hành (cho bấm xuyên). Dùng để kiểm chứng
+   toast đè nút "Huỷ" / "Xác nhận ngừng" - không phải bản sửa. */
 .toast {
   position: fixed; left: 50%; transform: translateX(-50%); z-index: 20;
   bottom: calc(24px + env(safe-area-inset-bottom, 0px));

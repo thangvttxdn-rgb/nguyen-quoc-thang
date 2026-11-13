@@ -179,11 +179,11 @@ def test_sua_loi_giao_dien_van_uu_tien_ma_nguon():
 
 def test_muc_thu_nghiem_duoc_gan_nhan_trong_ke_hoach():
     ke_hoach = dieu_phoi.ke_hoach(dieu_phoi.phan_tich("Nâng cấp giao diện EMS", REG), REG)
-    assert "ctxdn-ui-ux-unslop (THỬ NGHIỆM" in ke_hoach
-    assert ".claude/thu-nghiem/ctxdn-ui-ux-unslop/SKILL.md" in ke_hoach
+    assert "kỹ năng ctxdn-ui-ux-unslop" in ke_hoach
+    assert "THỬ NGHIỆM" not in ke_hoach
     # Bản gốc không được giao trực tiếp: không xuất hiện trong kế hoạch.
     assert "kỹ năng unslop" not in ke_hoach
-    assert ".claude/thu-nghiem/unslop/SKILL.md" not in ke_hoach
+    assert ".claude/skills/ctxdn-ui-ux-unslop/unslop/SKILL.md" not in ke_hoach
 
 
 def test_muc_thu_nghiem_co_duong_dan_va_chi_qua_hop_le():
@@ -197,7 +197,7 @@ def test_muc_thu_nghiem_co_duong_dan_va_chi_qua_hop_le():
 
 def test_ban_goc_unslop_khong_bi_sua():
     import hashlib
-    goc = GOC / ".claude" / "thu-nghiem"
+    goc = GOC / ".claude" / "skills" / "ctxdn-ui-ux-unslop"
     ds = {}
     for dong in (goc / "unslop.sha256").read_text(encoding="utf-8").splitlines():
         ma, ten = dong.split(maxsplit=1)

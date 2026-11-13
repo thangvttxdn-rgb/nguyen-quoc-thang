@@ -43,14 +43,16 @@ Nếu đã cài Playwright theo hướng dẫn Windows: xóa thư mục `%USERPR
 ## 3. Kích hoạt (chỉ khi chủ đầu tư duyệt)
 
 ```bash
-git mv .claude/thu-nghiem/ctxdn-ui-ux-unslop .claude/skills/ctxdn-ui-ux-unslop
-git mv .claude/thu-nghiem/unslop .claude/skills/ctxdn-ui-ux-unslop/unslop
+git mv .claude/skills/ctxdn-ui-ux-unslop .claude/skills/ctxdn-ui-ux-unslop
+git mv .claude/skills/ctxdn-ui-ux-unslop/unslop .claude/skills/ctxdn-ui-ux-unslop/unslop
 ```
 
 Rồi sửa đường dẫn `../unslop/` trong `SKILL.md` thành `unslop/`, sửa `duong_dan` và `trang_thai` trong registry
 (bỏ `thu-nghiem`, đổi test `test_muc_thu_nghiem_khong_nam_trong_thu_muc_skills` và `test_ban_goc_unslop_khong_bi_sua`
 theo đường dẫn mới), chạy `build_page.py` và pytest. Bản gốc `unslop` vẫn **không** đặt thẳng ở `.claude/skills/unslop`
 để không tự kích hoạt ngoài lớp bọc. Kích hoạt chỉ ảnh hưởng phiên Claude Code mở kho này, không phải máy chủ IIS.
+
+**Đã thực hiện 13/11/2026** theo duyệt của chủ đầu tư (`git mv`, không xóa; registry và test đã cập nhật đường dẫn).
 
 Quay lui sau kích hoạt: `git revert` commit kích hoạt.
 
