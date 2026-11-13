@@ -43,7 +43,7 @@
 - [x] Bảo mật: không tải mã, không telemetry, không ký tự ẩn; rủi ro sinh ảnh trả phí, sửa chữ chạm cảnh báo an toàn → chặn ở lớp bọc.
 - [x] Cài thử vào `.claude/thu-nghiem/` (không tự nạp); lớp bọc `ctxdn-ui-ux-unslop` + bộ kiểm thử 4 cỡ màn hình.
 - [x] Registry: trạng thái mới `thu-nghiem`, tuyến `giao-dien` ("giao diện" chuyển khỏi tuyến mã nguồn), 5 kết luận trùng lặp.
-- [x] DEMO trên bản sao EMS: đổi CSS (+ bỏ font CDN), kiểm thử PASS 8/8 (chạy lại sau khi thêm viewport); phát hiện toast chặn/đè nút "Ngừng nhân sự" và hộp xác nhận ở 360 px.
+- [x] DEMO trên bản sao EMS: đổi CSS (+ bỏ font CDN), kiểm thử PASS 8/8 (chạy lại sau khi thêm viewport); phát hiện toast đè nút "Ngừng nhân sự" (4 cỡ, chặn bấm ở 360/390 px); toast ở đáy đè hộp xác nhận (đo trên biến thể, với bản hiện hành CẦN CĂN CỨ).
 - [x] G3: `/code-review` 10 điểm, Tổ 2 FAIL 15 điểm - đã xử lý hết (viewport, ngoại lệ lớp bọc, bỏ bản gốc khỏi tuyến, bảng mã màu, rollback toàn dải, NODE_PATH).
 - [x] Nghiệm thu kỹ thuật: `python -m pytest` 185 passed, `ruff check .` sạch. Tổng: **PARTIAL**.
 - [ ] Chờ duyệt: kích hoạt vào `.claude/skills/` (`docs/unslop/PHUONG-AN-ROLLBACK.md` mục 3).

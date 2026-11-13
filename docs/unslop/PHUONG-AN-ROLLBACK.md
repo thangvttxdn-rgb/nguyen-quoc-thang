@@ -11,9 +11,10 @@ Toàn bộ thay đổi nằm trong kho, không đụng PATH, registry Windows, c
 | Thêm | `docs/unslop/` (hồ sơ, `vi-du/`, `kiem-thu/`) |
 | Sửa | `.claude/tong-chi-huy/registry.json` (+2 mục, +1 tuyến, `giao diện` chuyển tuyến, +5 trùng lặp, +1 nguồn ngoài) |
 | Sửa | `.claude/hooks/dieu_phoi.py` (hàm `_ten_muc`: nhãn thử nghiệm) |
-| Sửa | `tests/harness/test_dieu_phoi.py` (trạng thái `thu-nghiem`, +7 test) |
+| Sửa | `tests/harness/test_dieu_phoi.py` (trạng thái `thu-nghiem`, +9 test) |
 | Sửa | `docs/ai-command-center.html` (nhãn thử nghiệm + dữ liệu registry sinh lại) |
 | Sửa | `todo.md`, `MEMORY.md` |
+| Commit | `318f482` cài đặt · `60e4150` ghi kết quả gỡ lần 1 · `a3d84ee` sửa sau /code-review · `de2b2d7` sửa sau Tổ 2 · các commit ghi kết quả/sửa chữ sau đó. Gỡ: `git revert --no-edit af0596b..HEAD` |
 
 ## 2. Gỡ hoàn toàn
 

@@ -30,27 +30,30 @@ Lần chạy 10:59 UTC báo PASS nhưng **không hợp lệ** ở 360/390/768 px
 | Mã `<script>` (2 khối) | Trùng từng byte |
 | Nút, ô nhập, biểu mẫu | 13 = 13, cùng `id`/`name`/`type` |
 | Phần đầu file | **Có sửa ngoài CSS**: bỏ thẻ `<link>` Google Fonts, đổi một dòng chú thích. Từ `<section class="login">` đến hết file trùng khớp |
-| Chữ trong DOM | Giống nhau ở 16/20 trạng thái. 4 trạng thái "xác nhận ngừng" **không so được** vì bản trước không bấm tới được (mục 4); phần này chỉ dựa vào việc khung HTML và `<script>` trùng khớp |
+| Chữ trong DOM | Giống nhau ở 18/20 trạng thái. 2 trạng thái "xác nhận ngừng" ở 360 và 390 px **không so được** vì bản trước không bấm tới được (mục 4); hai trạng thái này chỉ dựa vào việc khung HTML và `<script>` trùng khớp |
 | API, CSDL, `src/` | Không đụng |
 
 ## 3. Kết quả theo cỡ màn hình - THẬT (mô phỏng), bố cục dựng đúng khổ
 
 | Cỡ | Thiết bị giả lập | Bản trước | Bản sau |
 |---|---|---|---|
-| 360 px | Android nhỏ | 4 nút < 44 px; toast chặn và đè nút "Ngừng nhân sự" | **PASS** |
-| 390 px | iPhone | Như trên | **PASS** |
-| 768 px | Máy tính bảng | Như trên | **PASS** |
-| 1366 px | Windows | Toast chặn và đè nút "Ngừng nhân sự" | **PASS** |
+| 360 px | Android nhỏ | 4 nút < 44 px; toast đè nút "Ngừng nhân sự" và chặn bấm quá 3 giây | **PASS** |
+| 390 px | iPhone | Như 360 px | **PASS** |
+| 768 px | Máy tính bảng | 4 nút < 44 px; toast đè nút "Ngừng nhân sự" (bấm được sau khi chờ) | **PASS** |
+| 1366 px | Windows | Toast đè nút "Ngừng nhân sự" (bấm được sau khi chờ) | **PASS** |
 
 Bản sau ở cả 4 cỡ: không tràn ngang, không chữ < 12 px, không nút < 44 px, không nút bị che hoặc bị đè,
 0 lỗi JavaScript, 0 lỗi tải tài nguyên. Kết luận script: `PASS: 8 lần chạy, 0 lỗi`.
 
 ## 4. Lỗi giao diện thật ở bản hiện hành
 
-1. **Toast chặn và đè nút "Ngừng nhân sự"** sau khi giao việc, ở mọi cỡ: Playwright báo
-   `<div id="toast"> intercepts pointer events`, bấm không được tới khi toast tắt.
-2. **Ở 360 px, toast đè cả hai nút "Huỷ" / "Xác nhận ngừng"** của hộp xác nhận (lỗi này lộ ra khi đo đúng khổ).
-3. **Nút lọc và nút Đăng xuất cao 38 px**, dưới mức 44 px của màn hình cảm ứng.
+1. **Toast đè nút "Ngừng nhân sự"** sau khi giao việc, ở cả 4 cỡ (THẬT, `ket-qua.json` trạng thái 4). Ở 360 và
+   390 px còn **chặn bấm**: Playwright báo `<div id="toast"> intercepts pointer events`, quá 3 giây vẫn không bấm được.
+2. **Toast ở đáy màn hình đè hai nút "Huỷ" / "Xác nhận ngừng"** của hộp xác nhận, ở cả 4 cỡ. Đo trên biến thể
+   `vi-du/sau-toast-day.html` (bản sau, toast để ở đáy như bản hiện hành, cho bấm xuyên): `kiem-thu/toast-day/ket-qua.json`,
+   ảnh `kiem-thu/toast-day/sau-360-5-xac-nhan-ngung.jpg`. Trên **bản hiện hành** chưa đo trực tiếp được (bấm bị chặn
+   trước khi hộp mở) - **CẦN CĂN CỨ**: khả năng cao xảy ra nếu người dùng bấm "Ngừng nhân sự" ngay khi toast vừa tắt.
+3. **Nút lọc và nút Đăng xuất cao 38 px**, dưới mức 44 px của màn hình cảm ứng (360/390/768 px).
 
 Bản sau xử lý bằng CSS: toast chuyển lên đầu màn hình và có `pointer-events: none`; nút cao 44 px.
 Đây là phát hiện trên bản xem trước; cần đối chiếu `src/static/app.css` thật trước khi sửa (chưa sửa `src/`).
@@ -71,7 +74,7 @@ Bản sau xử lý bằng CSS: toast chuyển lên đầu màn hình và có `po
 |---|---|---|
 | `--on` đang làm | `#047857` / `#34d399` | `#1d6b45` / `#7fcfa3` |
 | `--off` đã ngừng, nút Ngừng, hộp xác nhận | `#e11d48` / `#fb7185` | `#b42318` / `#f19a90` |
-| Băng "dữ liệu mẫu" | Nền dải cam-hồng | Nền cam phẳng `#fdebd9`, viền trái `#c2410c` (giữ độ nổi) |
+| Băng "dữ liệu mẫu" | Nền dải cam-hồng | Nền cam phẳng `#fdebd9`, viền trái `#c2410c`; tối: `#3a2414`, viền `#fb923c` (giữ độ nổi) |
 
 Đổi mã màu ngữ nghĩa cần chủ đầu tư duyệt trước khi áp vào EMS thật.
 
@@ -83,4 +86,5 @@ Bản sau xử lý bằng CSS: toast chuyển lên đầu màn hình và có `po
 | WebKit (gần Safari) | Không cài thêm trình duyệt (cần xin phép) |
 | Máy Windows thật | Phiên chạy trên Linux |
 | Chế độ tối | Bản sau có bảng màu tối nhưng chưa chụp kiểm |
+| Toast ở đầu màn hình khi bảng trượt đã đóng | Sau "Đã ngừng…" / "Đã kích hoạt lại…" toast có thể đè tiêu đề và nút "Đăng xuất" vài giây (bấm xuyên được, che chữ). Kịch bản chưa có bước chụp trạng thái này |
 | CTXĐN AI OS 3.0, Quản lý tài sản, Báo cáo tự động | Không có mã nguồn trong kho |

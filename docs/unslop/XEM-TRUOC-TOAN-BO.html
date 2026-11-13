@@ -79,7 +79,7 @@ footer code { font-size: 13px; }
 <div class="tbl"><table>
 <tr><th>Tiêu chí</th><th>Kết quả</th><th>Căn cứ</th></tr>
 <tr><td>Repository được xác minh</td><td><span class="tag that">ĐẠT</span></td><td>Clone, ghi commit, giấy phép; đọc toàn văn phần chính, dò mẫu trên cả 23 file</td></tr>
-<tr><td>Kiểm tra bảo mật</td><td><span class="tag that">ĐẠT có điều kiện</span></td><td>Không tải mã, không gửi dữ liệu, không ký tự ẩn; 9 rủi ro có biện pháp</td></tr>
+<tr><td>Kiểm tra bảo mật</td><td><span class="tag that">ĐẠT có điều kiện</span></td><td>Không tải mã, không gửi dữ liệu, không ký tự ẩn; 12 rủi ro có biện pháp</td></tr>
 <tr><td>Cài đặt thử</td><td><span class="tag that">ĐẠT</span></td><td>Chép nguyên vẹn theo README vào vùng thử nghiệm, khóa mã băm</td></tr>
 <tr><td>Registry thử nghiệm không xung đột</td><td><span class="tag that">ĐẠT</span></td><td><code>pytest</code> 185 passed, <code>ruff</code> sạch; bản gốc không được giao trực tiếp</td></tr>
 <tr><td>Hướng dẫn tiếng Việt</td><td><span class="tag demo">PARTIAL</span></td><td>Hướng dẫn Windows chưa chạy trên máy Windows</td></tr>
@@ -129,7 +129,7 @@ footer code { font-size: 13px; }
 <tr><td>768 px<br><small>Máy tính bảng</small></td><td><span class="ok">0</span> → <span class="ok">0</span></td><td><span class="ok">0</span> → <span class="ok">0</span></td><td><span class="bad">4</span> → <span class="ok">0</span></td><td><span class="bad">2</span> → <span class="ok">0</span></td><td><span class="ok">0</span> → <span class="ok">0</span></td><td><span class="ok">0</span> → <span class="ok">0</span></td><td><b class='ok'>PASS</b></td></tr>
 <tr><td>1366 px<br><small>Máy tính Windows</small></td><td><span class="ok">0</span> → <span class="ok">0</span></td><td><span class="ok">0</span> → <span class="ok">0</span></td><td><span class="ok">0</span> → <span class="ok">0</span></td><td><span class="bad">2</span> → <span class="ok">0</span></td><td><span class="ok">0</span> → <span class="ok">0</span></td><td><span class="ok">0</span> → <span class="ok">0</span></td><td><b class='ok'>PASS</b></td></tr>
 </table></div>
-<p class="note" style="margin-top:12px">"Bấm không được" ở bản trước: thông báo nổi chặn nút "Ngừng nhân sự" sau khi giao việc (2 bước kịch bản lỗi mỗi cỡ); ở 360 px nó còn đè hai nút của hộp xác nhận. Bản sau đưa thông báo lên đầu màn hình và cho bấm xuyên qua. Hộp "xác nhận ngừng" không so chữ được với bản trước (bản trước không tới được bước này).</p>
+<p class="note" style="margin-top:12px">"Bấm không được" ở bản trước: thông báo nổi đè nút "Ngừng nhân sự" ở cả 4 cỡ và chặn bấm quá 3 giây ở 360/390 px (2 bước kịch bản lỗi ở mỗi cỡ này), nên hộp "xác nhận ngừng" ở 360/390 px không so chữ được với bản trước (so được 18/20 trạng thái). Đo thêm trên biến thể để toast ở đáy: toast đè cả hai nút "Huỷ" / "Xác nhận ngừng" - với bản hiện hành là suy ra, <span class="tag demo">CẦN CĂN CỨ</span>. Bản sau đưa thông báo lên đầu màn hình và cho bấm xuyên qua.</p>
 <div class="tbl" style="margin-top:12px"><table>
 <tr><th>Môi trường</th><th>Trạng thái</th></tr>
 <tr><td>Chromium 360 / 390 / 768 / 1366 px (Linux)</td><td><span class="tag that">THẬT · mô phỏng</span></td></tr>

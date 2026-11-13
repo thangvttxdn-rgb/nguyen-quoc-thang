@@ -61,7 +61,8 @@ Vì sao không chép thẳng vào `.claude/skills/` như README: Claude Code t�
 
 ## 5. Chạy thử - DEMO trên bản sao
 
-Áp dụng lớp bọc lên bản sao `docs/giao-dien-mobile.html` → `docs/unslop/vi-du/sau.html`, chỉ thay khối CSS.
+Áp dụng lớp bọc lên bản sao `docs/giao-dien-mobile.html` → `docs/unslop/vi-du/sau.html`: thay khối CSS, bỏ thẻ
+font Google; cả bản trước và bản sau được thêm thẻ viewport như template thật để đo đúng khổ điện thoại.
 Kết quả kiểm thử: `BAO-CAO-KIEM-THU.md`.
 
 ## 6. Kết luận theo tiêu chí XI
@@ -82,8 +83,8 @@ Kết quả kiểm thử: `BAO-CAO-KIEM-THU.md`.
 ## 7. Phản biện G3
 
 - `/code-review`: 10 điểm về script kiểm thử và hook - đã sửa hết.
-- Tổ 2 (`to-phan-bien`): **FAIL**, 15 điểm. Đã sửa hết, đáng kể nhất:
-  - Kiểm thử 360/390 px lần đầu đo sai khổ (thiếu viewport). Đã chạy lại và lộ thêm lỗi toast đè hộp xác nhận.
+- Tổ 2 (`to-phan-bien`) lần 1: **FAIL**, 15 điểm. Lần 2: 15 điểm đã sửa đúng, còn 7 lỗi văn bản (số trạng thái so chữ 18/20, nguồn của nhận định toast, số rủi ro, số test, mô tả "chỉ CSS", toast đè đầu trang chưa kiểm, màu tối băng dữ liệu mẫu) - đã sửa hết. Đáng kể nhất ở lần 1:
+  - Kiểm thử 360/390 px lần đầu đo sai khổ (thiếu viewport). Đã chạy lại. Toast đè hộp xác nhận chỉ đo được trên biến thể toast-ở-đáy; với bản hiện hành là suy ra, CẦN CĂN CỨ.
   - Lớp bọc bổ sung các ngoại lệ với bản gốc: emoji cảnh báo, màu ngữ nghĩa, dữ liệu mẫu, cột hẹp, công cụ thiết kế, lucide.
   - Bỏ bản gốc khỏi danh sách hỗ trợ của tuyến.
   - Nhãn "giữ nguyên màu" sửa thành bảng mã cũ → mới.
