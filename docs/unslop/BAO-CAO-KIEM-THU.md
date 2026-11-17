@@ -66,8 +66,8 @@ Sau "Xác nhận ngừng" (bảng vẫn mở, `kiem-thu/sau-ngung/`): toast hi�
 Bản sau xử lý bằng CSS: toast lên đầu màn hình và có `pointer-events: none`; nút cao 44 px.
 Đã áp vào `src/static/app.css`: toast đầu màn hình + `pointer-events: none`; `.chip` và `.logout` 44 px; mã màu trạng thái
 và băng dữ liệu mẫu theo bảng mục 5. **Đã áp thêm (commit sau `3e0ee05`):** nền toast chuyển sang `var(--ink)` không gradient, bo góc 10 px, bóng nhẹ hơn;
-`.chip` padding 8 × 16 px, bo 10 px. **Chưa áp:** toàn bộ header vẫn gradient xanh-tím (`.top`, `.login`), vì đây là
-nhận diện giao diện hiện có, chưa có quyết định bỏ. Kiểm thử đo trên `sau.html`, nên các khác biệt CSS này chưa được đo lại trên `src/`.
+`.chip` padding 8 × 16 px, bo 10 px. **Quyết định (chủ đầu tư, 17/11/2026): giữ header gradient xanh-tím** (`.top`, `.login`) như nhận diện hiện có;
+`sau.html` (DEMO) đổi header sang nền trung tính, phần đó **không áp** vào `src/`. Kiểm thử đo trên `sau.html`, nên các khác biệt CSS này chưa được đo lại trên `src/`.
 
 ## 5. Thay đổi trình bày (DEMO)
 

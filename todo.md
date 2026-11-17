@@ -49,6 +49,7 @@
 - [x] Đã kích hoạt vào `.claude/skills/ctxdn-ui-ux-unslop/` (duyệt 13/11/2026; `git mv`, không xóa).
 - [x] Đã áp bản vá `src/static/app.css` (toast lên đầu màn hình + `pointer-events: none`; nút lọc và Đăng xuất 44 px) - duyệt 13/11/2026.
 - [x] Đã đổi mã màu trạng thái và băng dữ liệu mẫu trong `src/static/app.css` (bảng ở `docs/unslop/BAO-CAO-KIEM-THU.md` mục 5) - duyệt 13/11/2026.
+- [x] Quyết định 17/11/2026: giữ header gradient xanh-tím (không áp đổi header của bản DEMO).
 - [ ] BLOCKED: kiểm thử iPhone Safari, Android Chrome, máy Windows thật; AI OS 3.0, Quản lý tài sản, Báo cáo tự động không có trong kho.
 
 ### Việc còn treo
